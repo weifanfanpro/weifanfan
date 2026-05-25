@@ -1,0 +1,94 @@
+/* ═══ Points Order List — 暖调古典 ═══ */
+.order-list-page {
+  background: #f5f2ed;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    );
+  min-height: 100vh;
+}
+
+.list-tip {
+  margin-bottom: 12rpx;
+  padding: 12rpx 16rpx;
+  border-radius: 14rpx;
+  color: #b0a99f;
+  font-size: 22rpx;
+  background: #fffefb;
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+}
+
+.order-item {
+  margin-bottom: 14rpx;
+  padding: 14rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  border-radius: 22rpx;
+  background: #fffefb;
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+  box-shadow:
+    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
+    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+}
+
+.order-item--deleting {
+  pointer-events: none;
+  animation: orderDeleteFadeUp 220ms ease forwards;
+}
+
+.cover {
+  width: 130rpx;
+  height: 130rpx;
+  border-radius: 12rpx;
+  background: #f5f2ed;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 27rpx;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.meta {
+  margin-top: 4rpx;
+  color: #b0a99f;
+  font-size: 22rpx;
+}
+
+.right {
+  text-align: right;
+}
+
+.cost {
+  color: #2E9E8F;
+  font-size: 26rpx;
+  font-weight: 800;
+}
+
+.status {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #1c1917;
+}
+
+@keyframes orderDeleteFadeUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-16rpx);
+  }
+}

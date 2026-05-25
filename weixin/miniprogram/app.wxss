@@ -1,0 +1,389 @@
+/** app.wxss **/
+@import "miniprogram_npm/tdesign-miniprogram/common/style/theme/_index.wxss";
+@import "miniprogram_npm/tdesign-miniprogram/common/style/index.wxss";
+
+page {
+  --td-brand-color: #2E9E8F;
+  --td-brand-color-active: #268577;
+  --td-brand-color-disabled: rgba(46, 158, 143, 0.35);
+  --td-brand-color-light: rgba(46, 158, 143, 0.12);
+
+  --td-success-color: #4CAF7D;
+  --td-warning-color: #E8A840;
+  --td-error-color: #E85D5D;
+  /* 自定义 TabBar：真机上避免”透底”影响阅读 */
+  --td-tab-bar-bg-color: var(--app-blur-bg);
+  --td-tab-bar-border-color: var(--app-blur-border);
+  --td-tab-bar-color: rgba(28, 25, 23, 0.62);
+  --td-tab-bar-active-color: var(--td-brand-color);
+  --td-tab-bar-active-bg: rgba(46, 158, 143, 0.10);
+
+  /* 暖调古典：柔和米色底 + 温润卡片阴影 */
+  --app-bg: #f5f2ed;
+  --app-card-bg: #fffefb;
+  --app-card-radius: 24rpx;
+  --app-card-shadow: 0 18rpx 60rpx rgba(28, 25, 23, 0.06);
+  --app-card-shadow-sm: 0 10rpx 28rpx rgba(28, 25, 23, 0.04);
+  --app-blur-bg: rgba(245, 242, 237, 0.92);
+  --app-blur-border: rgba(28, 25, 23, 0.06);
+  --app-text: #1c1917;
+  --app-text-2: #6b645c;
+  --app-text-3: #b0a99f;
+  --app-border: rgba(28, 25, 23, 0.06);
+  --app-hero-grad: radial-gradient(circle at 30% 20%, rgba(46, 158, 143, 0.12), rgba(46, 158, 143, 0) 55%),
+    linear-gradient(180deg, rgba(46, 158, 143, 0.06), rgba(46, 158, 143, 0));
+  --app-accent-grad: linear-gradient(135deg, #2E9E8F, #45BFB0);
+  --app-success-grad: linear-gradient(135deg, #4CAF7D, #6BC49A);
+  --app-warning-grad: linear-gradient(135deg, #E8A840, #F0C060);
+  --app-danger-grad: linear-gradient(135deg, #E85D5D, #F08080);
+  --app-space-1: 8rpx;
+  --app-space-2: 12rpx;
+  --app-space-3: 16rpx;
+  --app-space-4: 20rpx;
+  --app-space-5: 24rpx;
+  --app-space-6: 28rpx;
+  --app-space-7: 32rpx;
+  --app-radius-sm: 14rpx;
+  --app-radius-md: 18rpx;
+  --app-radius-lg: 24rpx;
+  --app-radius-xl: 30rpx;
+  --app-font-xs: 22rpx;
+  --app-font-sm: 24rpx;
+  --app-font-md: 28rpx;
+  --app-font-lg: 32rpx;
+  --app-font-xl: 38rpx;
+  --app-shadow-md: 0 14rpx 38rpx rgba(28, 25, 23, 0.08);
+  --app-shadow-lg: 0 22rpx 70rpx rgba(28, 25, 23, 0.1);
+
+  background: var(--app-bg);
+  color: var(--td-text-color-primary);
+  font-size: 32rpx;
+}
+
+page,
+.page {
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
+/* 已移除深色模式：不再提供 theme-dark/theme-light */
+
+.page-padding {
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.safe-bottom {
+  /* 更稳：避免 iPhone 手势条/不同机型把底部按钮“吃掉” */
+  padding-bottom: calc(env(safe-area-inset-bottom) + 48rpx);
+}
+
+/* Tab 页滚动区域：额外避开自定义 TabBar */
+.safe-tabbar {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 160rpx);
+}
+
+.big-title {
+  font-size: 44rpx;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.section-title {
+  margin: 24rpx 0 12rpx;
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.muted {
+  color: var(--td-text-color-secondary);
+}
+
+.sub {
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  color: var(--app-text-3);
+}
+
+.small {
+  font-size: 24rpx;
+}
+
+.mt {
+  margin-top: 24rpx;
+}
+
+.mb {
+  margin-bottom: 24rpx;
+}
+
+.pad {
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.card {
+  background: var(--app-card-bg);
+  border-radius: var(--app-card-radius);
+  box-shadow: var(--app-card-shadow-sm);
+  border: 1rpx solid var(--app-border);
+}
+
+.card + .card {
+  margin-top: 20rpx;
+}
+
+.card-elevated {
+  box-shadow: var(--app-shadow-md);
+}
+
+.card-outline {
+  border-style: dashed;
+  border-color: rgba(46, 158, 143, 0.2);
+}
+
+.card-accent {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-accent::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(155deg, rgba(46, 158, 143, 0.08), rgba(91, 122, 107, 0.04) 55%, rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.glass-bar {
+  background: var(--app-blur-bg);
+  backdrop-filter: blur(12px);
+  border-top: none;
+}
+
+.tap-scale {
+  transform-origin: center;
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.tap-scale:active {
+  transform: scale(0.98);
+  opacity: 0.92;
+}
+
+.content {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
+}
+
+.page-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.page-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.page-content {
+  padding: var(--app-space-5);
+  box-sizing: border-box;
+}
+
+.page-footer {
+  padding: var(--app-space-4) var(--app-space-5) calc(env(safe-area-inset-bottom) + 20rpx);
+  box-sizing: border-box;
+  background: var(--app-blur-bg);
+  border-top: 1rpx solid var(--app-blur-border);
+  backdrop-filter: blur(10px);
+}
+
+/* 页面切换/进入：微动效（不改逻辑，纯样式） */
+.anim-in {
+  animation: appFadeUp 260ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+@keyframes appFadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10rpx, 0);
+    filter: blur(6rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+/* 系统减少动态效果：自动禁用动画 */
+@media (prefers-reduced-motion: reduce) {
+  .anim-in {
+    animation: none;
+  }
+}
+
+/* 品牌统一头部（用于各页面标题区）— 暖调古典 */
+.brand-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28rpx;
+  padding: 32rpx 28rpx 24rpx;
+  margin-bottom: 16rpx;
+  background: linear-gradient(148deg, #1c1917 0%, #2d2824 52%, #3a342e 100%);
+  box-shadow:
+    0 24rpx 60rpx rgba(28, 25, 23, 0.25),
+    0 4rpx 12rpx rgba(28, 25, 23, 0.08);
+}
+
+.brand-hero::before {
+  content: '';
+  position: absolute;
+  top: 16rpx;
+  left: 16rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-top: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-left: 2rpx solid rgba(46, 158, 143, 0.3);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.brand-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 16rpx;
+  right: 16rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-bottom: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-right: 2rpx solid rgba(46, 158, 143, 0.3);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.brand-hero .hero-title {
+  position: relative;
+  z-index: 1;
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #fffefb;
+  line-height: 1.2;
+}
+
+.brand-hero .hero-sub {
+  position: relative;
+  z-index: 1;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: rgba(255, 254, 251, 0.55);
+  line-height: 1.55;
+}
+
+/* 视角统一标记：顶部渐变胶囊 */
+.hero-view-capsule {
+  position: relative;
+  z-index: 1;
+  margin-top: 14rpx;
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  padding: 8rpx 18rpx;
+  border-radius: 999rpx;
+  background: rgba(91, 122, 107, 0.08);
+  border: 1rpx solid rgba(91, 122, 107, 0.15);
+}
+
+.hero-view-capsule__dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: #5b7a6b;
+  box-shadow: none;
+}
+
+.hero-view-capsule__text {
+  font-size: 24rpx;
+  line-height: 1.3;
+  color: #b0a99f;
+  font-weight: 600;
+}
+
+/* 通用年轻化组件表现：尽量覆盖全页面常见结构 */
+.header,
+.hero,
+.top-card,
+.profile,
+.summary,
+.module-card {
+  border-radius: var(--app-radius-lg);
+}
+
+.section-title,
+.title,
+.hero-title {
+  color: var(--app-text);
+  letter-spacing: 0.4rpx;
+}
+
+.subtitle,
+.tip-sub,
+.subline,
+.desc,
+.hint,
+.empty-desc {
+  color: var(--app-text-3);
+}
+
+.bottom-bar,
+.actions-fixed,
+.action-bar,
+.input-dock {
+  background: var(--app-blur-bg);
+  border-top: 1rpx solid var(--app-blur-border);
+  backdrop-filter: blur(10px);
+}
+
+/* 统一 TDesign 常见组件视觉，减少页面重复定义 */
+t-button[theme="primary"] {
+  border-radius: 999rpx;
+}
+
+t-cell-group,
+t-collapse,
+t-radio-group,
+t-checkbox-group,
+t-textarea,
+t-input {
+  border-radius: var(--app-radius-md);
+}
+
+t-empty,
+.empty-wrap {
+  padding: 28rpx;
+  border-radius: var(--app-radius-lg);
+  background: rgba(255, 254, 251, 0.82);
+  border: 1rpx solid var(--app-border);
+}
+
+/* 已移除深色模式：不再跟随 prefers-color-scheme */
+
+/* 兜底：tdesign 内置样式会跟随系统 prefers-color-scheme:dark
+ * 为保证“开/不开深色模式”视觉一致，这里把其 dark 分支改回浅色对应取值
+ */
+@media (prefers-color-scheme: dark) {
+  .page,
+  page {
+    --td-picker-transparent-color: rgba(255, 255, 255, 0);
+    --td-button-primary-disabled-color: var(--td-text-color-anti, var(--td-font-white-1, #fff));
+    --td-skeleton-animation-gradient: rgba(0, 0, 0, 0.04);
+    --td-slider-dot-bg-color: #fff;
+    --td-slider-dot-disabled-bg-color: #fff;
+    --td-slider-dot-disabled-border-color: #f3f3f3;
+    --td-switch-dot-disabled-color: var(--td-font-white-1, #fff);
+    --td-switch-loading-color: var(--td-brand-color);
+    --td-progress-circle-inner-bg-color: var(--bg-color-page);
+  }
+}

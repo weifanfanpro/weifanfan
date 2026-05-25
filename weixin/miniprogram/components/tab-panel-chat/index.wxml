@@ -1,0 +1,226 @@
+<view class="chat-panel">
+  <!-- ═══ Top toolbar ═══ -->
+  <view class="toolbar" id="toolbar">
+    <view class="toolbar-side toolbar-side--left">
+      <view class="toolbar-btn tap-scale" bindtap="onOpenDrawer" hover-class="toolbar-btn--hover">
+        <t-icon name="view-list" size="44rpx" />
+      </view>
+    </view>
+    <view class="toolbar-center">
+      <text class="toolbar-title">{{sessionTitle}}</text>
+    </view>
+    <view class="toolbar-side toolbar-side--right">
+      <view class="toolbar-btn tap-scale" bindtap="onNewChat" hover-class="toolbar-btn--hover">
+        <t-icon name="add" size="44rpx" />
+      </view>
+    </view>
+  </view>
+
+  <!-- ═══ Session drawer (slide from left) ═══ -->
+  <view
+    class="drawer-mask {{drawerOpen ? 'drawer-mask--show' : ''}}"
+    style="top: {{toolbarH}}px; bottom: {{inputH}}px"
+    catchtap="onCloseDrawer"
+  />
+  <view
+    class="drawer {{drawerOpen ? 'drawer--open' : ''}}"
+    style="top: {{toolbarH}}px; bottom: {{inputH}}px"
+  >
+    <view class="drawer-head">
+      <text class="drawer-head-title">历史对话</text>
+      <view class="drawer-head-close" bindtap="onCloseDrawer">
+        <t-icon name="close" size="40rpx" />
+      </view>
+    </view>
+    <scroll-view scroll-y class="drawer-scroll" enhanced show-scrollbar="{{false}}">
+      <block wx:if="{{sessionListLoading}}">
+        <view class="drawer-state">
+          <t-loading theme="dots" size="40rpx" />
+        </view>
+      </block>
+      <block wx:elif="{{sessions.length === 0}}">
+        <view class="drawer-state drawer-state--empty">暂无历史记录</view>
+      </block>
+      <block wx:else>
+        <view
+          wx:for="{{sessions}}"
+          wx:key="sessionId"
+          class="session-item {{sessionId === item.sessionId ? 'session-item--active' : ''}}"
+        >
+          <view class="session-item-body" data-id="{{item.sessionId}}" bindtap="onPickSession">
+            <text class="session-item-title">{{item.title}}</text>
+            <text class="session-item-time">{{item.timeText}}</text>
+          </view>
+          <view class="session-item-del" data-id="{{item.sessionId}}" catchtap="onDeleteSession">
+            <t-icon name="delete" size="36rpx" />
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <!-- ═══ Thinking status pill ═══ -->
+  <view wx:if="{{thinkingLabel}}" class="thinking-pill" style="top: {{toolbarH}}px;">
+    <view class="thinking-dot"></view>
+    <text class="thinking-text">{{thinkingLabel}}</text>
+  </view>
+
+  <!-- ═══ Main chat area ═══ -->
+  <view class="chat-main">
+    <!-- Welcome state -->
+    <block wx:if="{{messages.length === 0 && !sending}}">
+      <view class="welcome">
+        <view class="welcome-icon-wrap">
+          <view class="welcome-icon">
+            <text class="welcome-icon-text">AI</text>
+          </view>
+        </view>
+        <text class="welcome-heading">嗨！我是智药助理</text>
+        <text class="welcome-desc">我可以帮你了解用药常识、提醒与健康管理，请把你的问题交给我~</text>
+        <view class="welcome-hints">
+          <view class="welcome-hint tap-scale" bindtap="onQuickQuestion" data-q="感冒了可以吃什么药？">
+            <text>感冒了可以吃什么药？</text>
+          </view>
+          <view class="welcome-hint tap-scale" bindtap="onQuickQuestion" data-q="降压药漏服了怎么办？">
+            <text>降压药漏服了怎么办？</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- Messages -->
+    <scroll-view
+      wx:else
+      scroll-y
+      class="chat-scroll"
+      scroll-into-view="{{scrollTarget}}"
+      scroll-with-animation
+      enhanced
+      show-scrollbar="{{false}}"
+      key="{{_scrollKey}}"
+    >
+      <view wx:for="{{messages}}" wx:key="index" id="msg-{{index}}" class="msg-wrap">
+        <!-- User message -->
+        <view wx:if="{{item.role === 'user'}}" class="msg-row msg-row--user">
+          <view
+            wx:if="{{item.consultAttach}}"
+            class="msg-consult-link tap-scale"
+            data-index="{{index}}"
+            bindtap="onOpenMsgConsultDetail"
+          >查看关联药品</view>
+          <view class="bubble bubble--user">
+            <text class="bubble-text bubble-text--user">{{item.displayContent || item.content}}</text>
+          </view>
+        </view>
+
+        <!-- AI message -->
+        <view wx:else class="msg-row msg-row--ai">
+          <view class="ai-avatar">
+            <text class="ai-avatar-text">AI</text>
+          </view>
+          <view class="msg-ai-body">
+            <!-- Reasoning toggle -->
+            <view wx:if="{{item.reasoning}}" class="reasoning-block">
+              <view class="reasoning-toggle" data-index="{{index}}" bindtap="onToggleReasoning">
+                <t-icon name="{{reasoningOpen[index] ? 'chevron-up' : 'chevron-down'}}" size="28rpx" />
+                <text>思考过程</text>
+              </view>
+              <view wx:if="{{reasoningOpen[index]}}" class="reasoning-content">
+                <text class="reasoning-text" user-select>{{item.reasoning}}</text>
+              </view>
+            </view>
+            <!-- Main response -->
+            <view class="bubble bubble--ai">
+              <text class="bubble-text bubble-text--ai" user-select>{{item.content}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Typing indicator -->
+      <view wx:if="{{sending}}" class="msg-row msg-row--ai">
+        <view class="ai-avatar">
+          <text class="ai-avatar-text">AI</text>
+        </view>
+        <view class="typing-indicator">
+          <t-loading theme="dots" size="32rpx" />
+          <text class="typing-label">正在回复...</text>
+        </view>
+      </view>
+      <view id="chat-anchor" class="chat-anchor"></view>
+    </scroll-view>
+  </view>
+
+  <!-- ═══ Tool option pills ═══ -->
+  <view class="option-bar">
+    <scroll-view scroll-x class="option-scroll" enhanced show-scrollbar="{{false}}" enable-flex>
+      <view class="option-inner">
+        <view class="option-pill {{deepThinking ? 'option-pill--on' : ''}} tap-scale" bindtap="toggleDeepThinking">
+          <t-icon name="layers" size="28rpx" />
+          <text>深度思考</text>
+        </view>
+        <view class="option-pill {{webSearch ? 'option-pill--on' : ''}} tap-scale" bindtap="toggleWebSearch">
+          <t-icon name="internet" size="28rpx" />
+          <text>联网搜索</text>
+        </view>
+        <view class="option-pill option-pill--accent tap-scale" bindtap="onOpenMedicineSheet">
+          <t-icon name="medicine-bottle" size="28rpx" />
+          <text>选择咨询药品</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- ═══ Medicine pick sheet ═══ -->
+  <view class="sheet-mask {{sheetVisible ? 'sheet-mask--show' : ''}}" catchtap="onCloseSheet" />
+  <view class="sheet {{sheetVisible ? 'sheet--open' : ''}}">
+    <view class="sheet-title">选择咨询方式</view>
+    <view class="sheet-item tap-scale" bindtap="onSheetScan">
+      <text class="sheet-item-label">扫描药品</text>
+    </view>
+    <view class="sheet-item tap-scale" bindtap="onSheetPickList">
+      <text class="sheet-item-label">从药单选择</text>
+    </view>
+    <view class="sheet-cancel tap-scale" bindtap="onCloseSheet">取消</view>
+  </view>
+
+  <!-- ═══ Input dock ═══ -->
+  <view class="input-dock" id="input-dock">
+    <view wx:if="{{toolStatusText}}" class="tool-badge">{{toolStatusText}}</view>
+    <view class="input-card">
+      <!-- Consult chip -->
+      <view wx:if="{{consultTitle}}" class="consult-chip">
+        <view class="consult-chip-body tap-scale" bindtap="onOpenConsultDetail">
+          <view class="consult-chip-info">
+            <text class="consult-chip-name">{{consultTitle}}</text>
+            <text class="consult-chip-hint">点击查看详情</text>
+          </view>
+        </view>
+        <view class="consult-chip-x" catchtap="onClearConsult">x</view>
+      </view>
+      <!-- Textarea -->
+      <view class="input-row">
+        <textarea
+          class="input-field"
+          value="{{inputValue}}"
+          placeholder="请输入你的健康问题"
+          placeholder-class="input-placeholder"
+          maxlength="-1"
+          auto-height
+          show-confirm-bar="{{false}}"
+          cursor-spacing="24"
+          bindinput="onInput"
+          confirm-type="send"
+          bindconfirm="onSend"
+        />
+        <view class="send-area {{canSend ? '' : 'send-area--off'}}" bindtap="onSend">
+          <view class="send-circle">
+            <t-icon name="arrow-up" size="36rpx" color="#ffffff" />
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <t-toast id="t-toast" />
+</view>

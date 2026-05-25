@@ -1,0 +1,275 @@
+<view class="page anim-in">
+  <custom-navbar title="智药助理" showBack="{true}" />
+  <scroll-view class="scrollarea" scroll-y type="list" enhanced="{{true}}" bounces="{{true}}">
+    <view class="page-padding safe-bottom content">
+      <view class="brand-hero reminder-hero card-accent">
+        <view class="reminder-hero-glow"></view>
+        <view class="reminder-hero-top">
+          <view class="hero-chip">提醒模板</view>
+          <view class="hero-time">{{pageTimeText}}</view>
+        </view>
+        <view class="hero-title">设置提醒</view>
+        <view class="hero-sub">
+          <text wx:if="{{drugName}}">{{drugName}}</text>
+          <text wx:elif="{{medicineId}}">加载中…</text>
+          <text wx:else>未命名药品</text>
+        </view>
+        <view class="hero-view-capsule reminder-view-capsule">
+          <view class="hero-view-capsule__dot"></view>
+          <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>
+        </view>
+      </view>
+
+      <view class="editorial-head">
+        <view class="editorial-head-main">用药规则</view>
+        <view class="editorial-head-tag">Rule</view>
+      </view>
+      <view class="editorial-head-sub">基础参数、频次与进食关系</view>
+      <view class="card reminder-card tap-scale editorial-module">
+        <t-cell-group bordered>
+          <t-cell class="rule-edit-cell">
+            <view slot="title" class="rule-edit-title">用药方式</view>
+            <view slot="note" class="text-inline">
+              <t-input
+                class="text-inline-input"
+                size="small"
+                value="{{usageMethodText}}"
+                placeholder="例如：口服 / 外用 / 滴眼…"
+                bind:change="onUsageMethodTextChange"
+              />
+            </view>
+          </t-cell>
+          <t-cell
+            title="每日次数"
+            note="{{dailyFrequency}} 次/日"
+            arrow
+            bind:tap="openDailyFreqPopup"
+          />
+
+          <block wx:for="{{timeList}}" wx:for-item="t" wx:for-index="idx">
+            <block wx:if="{{idx < dailyFrequency}}">
+              <picker mode="time" value="{{t}}" bindchange="onTimeChange" data-idx="{{idx}}">
+                <t-cell
+                  wx:if="{{dailyFrequency === 1}}"
+                  title="用药时间"
+                  note="{{t}}"
+                  arrow
+                />
+                <t-cell
+                  wx:else
+                  title="第 {{idx + 1}} 次时间"
+                  note="{{t}}"
+                  arrow
+                />
+              </picker>
+            </block>
+          </block>
+          <t-cell class="rule-edit-cell">
+            <view slot="title" class="rule-edit-title">用量</view>
+            <view slot="note" class="dose-text-wrap">
+              <t-input
+                class="dose-text-input"
+                size="small"
+                value="{{doseText}}"
+                placeholder="例如：每次 2 片 / 每次适量"
+                bind:change="onDoseTextChange"
+              />
+            </view>
+          </t-cell>
+          <t-cell wx:if="{{isQuantifiable}}" class="rule-edit-cell">
+            <view slot="title" class="rule-edit-title">药品总量</view>
+            <view slot="note" class="text-inline">
+              <t-input
+                class="text-inline-input"
+                size="small"
+                value="{{totalAmountText}}"
+                placeholder="例如：总量 30 片 / 2 瓶 / 10g"
+                bind:change="onTotalAmountTextChange"
+              />
+            </view>
+          </t-cell>
+          <t-cell
+            title="饭前/饭后/空腹"
+            note="{{mealTimingLabel}}"
+            arrow
+            bind:tap="openMealPopup"
+          />
+        </t-cell-group>
+      </view>
+
+      <view class="editorial-head">
+        <view class="editorial-head-main">重复周期</view>
+        <view class="editorial-head-tag">Cycle</view>
+      </view>
+      <view class="editorial-head-sub">控制提醒节奏与星期分布</view>
+      <view class="card reminder-card tap-scale editorial-module">
+        <t-cell-group bordered>
+          <t-cell>
+            <view slot="title">
+              <t-radio-group value="{{repeatMode}}" bind:change="onRepeatModeChange">
+                <t-radio value="everyday">每天</t-radio>
+                <t-radio value="weekday">周一到周五</t-radio>
+                <t-radio value="custom">自定义星期</t-radio>
+              </t-radio-group>
+            </view>
+          </t-cell>
+          <t-cell wx:if="{{repeatMode === 'custom'}}" title="选择星期">
+            <view slot="note" class="weekday-wrap">
+              <view class="weekday-grid">
+                <view
+                  wx:for="{{weekdayOptions}}"
+                  wx:key="value"
+                  class="weekday-pill {{weekdaySelected[item.value] ? 'weekday-pill--active' : ''}}"
+                  data-value="{{item.value}}"
+                  bind:tap="onToggleCustomWeekday"
+                >
+                  {{item.label}}
+                </view>
+              </view>
+            </view>
+          </t-cell>
+        </t-cell-group>
+      </view>
+
+      <view class="editorial-head">
+        <view class="editorial-head-main">提醒方式</view>
+        <view class="editorial-head-tag">Notify</view>
+      </view>
+      <view class="editorial-head-sub">多通道提醒，按你的习惯组合</view>
+      <view class="card reminder-card tap-scale editorial-module">
+        <t-cell-group bordered>
+          <t-cell title="微信服务通知">
+            <view slot="right-icon" catchtap="noop">
+              <t-switch value="{{notify.wechat}}" bind:change="onNotifyChange" data-key="wechat" />
+            </view>
+          </t-cell>
+          <t-cell title="电话提醒">
+            <view slot="right-icon" catchtap="noop">
+              <t-switch value="{{phoneNotifyFake}}" bind:change="onPhoneNotifyFakeChange" />
+            </view>
+          </t-cell>
+          <t-cell title="响铃提醒">
+            <view slot="right-icon" catchtap="noop">
+              <t-switch value="{{notify.ring}}" bind:change="onNotifyChange" data-key="ring" />
+            </view>
+          </t-cell>
+          <t-cell title="震动">
+            <view slot="right-icon" catchtap="noop">
+              <t-switch value="{{notify.vibrate}}" bind:change="onNotifyChange" data-key="vibrate" />
+            </view>
+          </t-cell>
+        </t-cell-group>
+      </view>
+
+      <view class="editorial-head">
+        <view class="editorial-head-main">手机日历</view>
+        <view class="editorial-head-tag">Calendar</view>
+      </view>
+      <view class="editorial-head-sub">同步系统级提醒，确保不错过</view>
+      <view class="card calendar-card reminder-card tap-scale editorial-module editorial-module--feature">
+        <view class="calendar-hint">
+          按当前页面上的用药时间与重复规则，写入本机系统日历；到点由系统日历通知（请在系统设置中开启日历通知与铃声）。须在本页点击同步；修改用药方案后请到系统日历中手动删除旧事件。
+        </view>
+        <t-button
+          theme="light"
+          block
+          size="medium"
+          loading="{{calendarSyncing}}"
+          disabled="{{calendarSyncing || !calendarSyncSupported}}"
+          class="tap-scale calendar-sync-btn"
+          bind:tap="onSyncToPhoneCalendar"
+        >
+          {{calendarSyncing ? '正在写入…' : (calendarSyncSupported ? '同步到手机日历' : '当前环境不支持')}}
+        </t-button>
+      </view>
+
+      <view class="editorial-head">
+        <view class="editorial-head-main">AI 合理性检查</view>
+        <view class="editorial-head-tag">Insight</view>
+      </view>
+      <view class="editorial-head-sub">从公开资料评估方案合理性</view>
+      <view class="card ai-check-card reminder-card tap-scale editorial-module editorial-module--feature">
+        <view class="ai-check-hint">
+          将使用深度思考与联网检索，从公开资料角度评估当前设置（仅供参考，不能替代医生与说明书）。
+        </view>
+        <t-button
+          theme="light"
+          block
+          size="medium"
+          loading="{{aiCheckLoading}}"
+          disabled="{{aiCheckLoading}}"
+          class="tap-scale ai-check-btn"
+          bind:tap="onAiCheck"
+        >
+          {{aiCheckLoading ? '分析中…' : 'AI 检查合理性'}}
+        </t-button>
+
+        <view wx:if="{{aiCheckReasoning}}" class="ai-block ai-block--reasoning">
+          <view class="ai-block-title">思考过程</view>
+          <text class="ai-block-text" user-select>{{aiCheckReasoning}}</text>
+        </view>
+        <view wx:if="{{aiCheckResult}}" class="ai-block">
+          <view class="ai-block-title">分析与建议</view>
+          <text class="ai-block-text" user-select>{{aiCheckResult}}</text>
+        </view>
+        <view wx:if="{{aiSuggestion}}" class="ai-adopt-row">
+          <view wx:if="{{aiSuggestion.summary}}" class="ai-summary-line">{{aiSuggestion.summary}}</view>
+          <t-button theme="primary" size="medium" block class="tap-scale" bind:tap="onAdoptAiSuggestion">
+            采纳建议并填入表单
+          </t-button>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="bottom-bar reminder-bottom-bar">
+    <view class="page-padding bottom-bar-inner reminder-bottom-inner">
+      <t-button theme="primary" size="large" block class="tap-scale reminder-save-btn" bind:tap="onSave">
+        保存提醒
+      </t-button>
+    </view>
+  </view>
+
+  <!-- 每日次数选择弹层 -->
+  <t-popup visible="{{dailyFreqPopupVisible}}" placement="bottom">
+    <view class="popup-panel page-padding safe-bottom">
+      <view class="popup-title">选择每日次数</view>
+      <view class="popup-body">
+        <t-radio-group value="{{dailyFrequency}}" bind:change="onDailyFrequencyChange">
+          <t-radio value="1">1 次/日</t-radio>
+          <t-radio value="2">2 次/日</t-radio>
+          <t-radio value="3">3 次/日</t-radio>
+          <t-radio value="4">4 次/日</t-radio>
+        </t-radio-group>
+      </view>
+      <view class="popup-footer">
+        <t-button theme="primary" block size="large" class="tap-scale" bind:tap="closeDailyFreqPopup">
+          完成
+        </t-button>
+      </view>
+    </view>
+  </t-popup>
+
+  <!-- 饭前/饭后/空腹 选择弹层 -->
+  <t-popup visible="{{mealPopupVisible}}" placement="bottom">
+    <view class="popup-panel page-padding safe-bottom">
+      <view class="popup-title">选择与进食关系</view>
+      <view class="popup-body">
+        <t-radio-group value="{{mealTiming}}" bind:change="onMealTimingChange">
+          <t-radio value="none">按医嘱/未指定</t-radio>
+          <t-radio value="before">饭前</t-radio>
+          <t-radio value="after">饭后</t-radio>
+          <t-radio value="empty">空腹</t-radio>
+        </t-radio-group>
+      </view>
+      <view class="popup-footer">
+        <t-button theme="primary" block size="large" class="tap-scale" bind:tap="closeMealPopup">
+          完成
+        </t-button>
+      </view>
+    </view>
+  </t-popup>
+
+  <t-toast id="t-toast" />
+</view>
+

@@ -1,0 +1,219 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="漏服统计" showBack="{true}" />
+  <view class="stats-hero">
+    <view class="stats-hero-glow"></view>
+    <view class="hero-title">{{heroTitle}}</view>
+    <view class="hero-sub">{{heroSubtitle}}</view>
+    <view class="hero-view-capsule">
+      <view class="hero-view-capsule__dot"></view>
+      <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>
+    </view>
+  </view>
+
+  <view class="card pad">
+    <view class="stat-row">
+      <view class="stat">
+        <view class="num">{{stats.total}}</view>
+        <view class="label muted">总提醒次数</view>
+      </view>
+      <view class="stat">
+        <view class="num ok">{{stats.ok}}</view>
+        <view class="label muted">已按时</view>
+      </view>
+      <view class="stat">
+        <view class="num warn">{{stats.missed}}</view>
+        <view class="label muted">漏服</view>
+      </view>
+    </view>
+
+    <view class="mt">
+      <t-progress percentage="{{stats.rate}}" />
+      <view class="muted small">按时率：{{stats.rate}}%</view>
+    </view>
+  </view>
+
+  <view class="section-title">本周风险分析</view>
+  <view class="card pad risk-card risk-{{riskLevel}}">
+    <view class="risk-head">
+      <view>
+        <view class="risk-title">本周风险分</view>
+        <view class="risk-num">{{riskScore}}</view>
+      </view>
+      <view class="risk-meta">
+        <view class="risk-meta-item">连续漏服：{{streakMissedDays}} 天</view>
+        <view class="risk-meta-item">高风险时段：{{highRiskSlotText}}</view>
+      </view>
+    </view>
+    <view class="tips-wrap" wx:if="{{suggestions.length}}">
+      <view class="tips-title">家属提醒建议</view>
+      <view wx:for="{{suggestions}}" wx:key="*this" class="tip-line">- {{item}}</view>
+    </view>
+  </view>
+
+  <view class="section-title">周日历视图</view>
+  <view class="card pad">
+    <view class="week-strip">
+      <view
+        wx:for="{{weekly}}"
+        wx:key="date"
+        class="day-pill {{selectedDay && selectedDay.date === item.date ? 'day-pill--active' : ''}} {{item.isFuture ? 'day-pill--future' : (item.missed > 1 ? 'day-pill--danger' : (item.missed > 0 ? 'day-pill--warn' : 'day-pill--ok'))}}"
+        data-date="{{item.date}}"
+        bindtap="onPickDay"
+      >
+        <view class="day-pill-week">{{item.day}}</view>
+        <view class="day-pill-date">{{item.dateShort}}</view>
+      </view>
+    </view>
+    <view wx:if="{{selectedDay}}" class="day-detail">
+      <view class="day-detail-title">{{selectedDay.day}}（{{selectedDay.date}}）</view>
+      <view class="muted">{{selectedDay.desc}}</view>
+      <view class="day-detail-tag {{selectedDay.isFuture ? 'detail-future' : (selectedDay.missed === 0 ? 'detail-ok' : 'detail-missed')}}">
+        {{selectedDay.isFuture ? '未到时间' : (selectedDay.missed === 0 ? '状态正常' : ('漏服 ' + selectedDay.missed + ' 次'))}}
+      </view>
+    </view>
+  </view>
+
+  <view class="section-title">本周明细</view>
+  <view class="card">
+    <t-cell-group bordered>
+      <t-cell
+        wx:for="{{weekly}}"
+        wx:key="date"
+        title="{{item.day}}"
+        description="{{item.date}} · {{item.desc}}"
+        class="{{item.isToday ? 'today-cell' : ''}}"
+      >
+        <view slot="note">
+          <t-tag
+            theme="{{item.isFuture ? 'default' : (item.missed === 0 ? 'primary' : 'danger')}}"
+            variant="{{item.isFuture ? 'light' : 'default'}}"
+          >
+            {{item.isFuture ? '未到' : (item.missed === 0 ? '正常' : ('漏服 ' + item.missed + ' 次'))}}
+          </t-tag>
+        </view>
+      </t-cell>
+    </t-cell-group>
+  </view>
+
+  <view class="mt">
+    <t-button variant="outline" size="large" block class="tap-scale" bindtap="onOpenLastWeek">
+      上周记录
+    </t-button>
+  </view>
+
+  <view class="mt">
+    <t-button variant="outline" size="large" block class="tap-scale" bindtap="onOpenHistory">
+      历史周报
+    </t-button>
+  </view>
+
+  <t-popup visible="{{lastWeekVisible}}" placement="bottom" bindclose="onCloseLastWeek">
+    <view class="popup-panel page-padding safe-bottom">
+      <view class="popup-title">上周关怀周报</view>
+      <view wx:if="{{lastWeek}}">
+        <view class="muted small" style="text-align:center;margin-bottom:16rpx;">
+          {{lastWeek.weekStart}} ~ {{lastWeek.weekEnd}}
+        </view>
+        <view class="card pad" style="border:0;box-shadow:none;">
+          <view class="stat-row">
+            <view class="stat">
+              <view class="num">{{lastWeek.stats.total}}</view>
+              <view class="label muted">总提醒次数</view>
+            </view>
+            <view class="stat">
+              <view class="num ok">{{lastWeek.stats.ok}}</view>
+              <view class="label muted">已按时</view>
+            </view>
+            <view class="stat">
+              <view class="num warn">{{lastWeek.stats.missed}}</view>
+              <view class="label muted">漏服</view>
+            </view>
+          </view>
+          <view class="mt">
+            <t-progress percentage="{{lastWeek.stats.rate}}" />
+            <view class="muted small">按时率：{{lastWeek.stats.rate}}%</view>
+          </view>
+        </view>
+        <view class="section-title">上周明细</view>
+        <view class="card">
+          <t-cell-group bordered>
+            <t-cell wx:for="{{lastWeek.weekly}}" wx:key="date" title="{{item.day}}" description="{{item.date}} · {{item.desc}}">
+              <view slot="note">
+                <t-tag theme="{{item.missed === 0 ? 'primary' : 'danger'}}">
+                  {{item.missed === 0 ? '正常' : ('漏服 ' + item.missed + ' 次')}}
+                </t-tag>
+              </view>
+            </t-cell>
+          </t-cell-group>
+        </view>
+        <view class="card pad weekly-brief-card" wx:if="{{weeklyBrief}}">
+          <view class="weekly-brief-title">关怀建议摘要</view>
+          <view class="weekly-brief-line">漏服总数：{{weeklyBrief.totalMissed}} 次</view>
+          <view class="weekly-brief-line">高风险时段：{{weeklyBrief.topRiskSlotText}}</view>
+          <view class="weekly-brief-line">连续改善：{{weeklyBrief.improveDays}} 天</view>
+          <view class="weekly-brief-msg">{{weeklyBrief.message}}</view>
+          <view class="mt">
+            <t-button size="medium" variant="outline" block bindtap="onCopyWeeklyBrief">复制关怀话术</t-button>
+          </view>
+        </view>
+      </view>
+      <view class="popup-footer">
+        <t-button theme="primary" block size="large" class="tap-scale" bindtap="onCloseLastWeek">关闭</t-button>
+      </view>
+    </view>
+  </t-popup>
+
+  <t-popup visible="{{historyVisible}}" placement="bottom" bindclose="onCloseHistory">
+    <view class="popup-panel page-padding safe-bottom">
+      <view class="popup-title">历史周报</view>
+      <view class="muted small" style="text-align:center;margin-bottom:16rpx;">
+        仅展示已生成的周报快照
+      </view>
+
+      <view class="card" wx:if="{{weeklyHistory.length}}">
+        <t-cell-group bordered>
+          <t-cell
+            wx:for="{{weeklyHistory}}"
+            wx:key="id"
+            title="{{item.weekStart}} ~ {{item.weekEnd}}"
+            description="漏服 {{item.stats.missed}} 次 · 按时率 {{item.stats.rate}}%"
+            data-id="{{item.id}}"
+            arrow
+            bindtap="onPickHistory"
+          />
+        </t-cell-group>
+      </view>
+
+      <view class="card pad mt" wx:if="{{historyDetail}}">
+        <view class="muted small" style="text-align:center;margin-bottom:12rpx;">
+          {{historyDetail.weekStart}} ~ {{historyDetail.weekEnd}}
+        </view>
+        <view class="stat-row">
+          <view class="stat">
+            <view class="num">{{historyDetail.stats.total}}</view>
+            <view class="label muted">总提醒次数</view>
+          </view>
+          <view class="stat">
+            <view class="num ok">{{historyDetail.stats.ok}}</view>
+            <view class="label muted">已按时</view>
+          </view>
+          <view class="stat">
+            <view class="num warn">{{historyDetail.stats.missed}}</view>
+            <view class="label muted">漏服</view>
+          </view>
+        </view>
+        <view class="mt">
+          <t-progress percentage="{{historyDetail.stats.rate}}" />
+          <view class="muted small">按时率：{{historyDetail.stats.rate}}%</view>
+        </view>
+      </view>
+
+      <view class="popup-footer">
+        <t-button theme="primary" block size="large" class="tap-scale" bindtap="onCloseHistory">关闭</t-button>
+      </view>
+    </view>
+  </t-popup>
+
+  <t-toast id="t-toast" />
+</view>
+

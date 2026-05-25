@@ -1,0 +1,26 @@
+<t-tab-bar class="app-tabbar" value="{{value}}" bind:change="onChange" fixed safe-area-inset-bottom bordered>
+  <t-tab-bar-item value="0">
+    <view slot="icon" class="tab-icon">
+      <image src="{{value === 0 ? list[0].activeIcon : list[0].defaultIcon}}" mode="aspectFit" />
+    </view>
+    首页
+  </t-tab-bar-item>
+  <t-tab-bar-item value="1">
+    <view slot="icon" class="tab-icon">
+      <image src="{{value === 1 ? list[1].activeIcon : list[1].defaultIcon}}" mode="aspectFit" />
+    </view>
+    扫药
+  </t-tab-bar-item>
+  <t-tab-bar-item value="2">
+    <view slot="icon" class="tab-icon tab-icon--ai">
+      <image src="{{value === 2 ? list[2].activeIcon : list[2].defaultIcon}}" mode="aspectFit" />
+    </view>
+    咨询
+  </t-tab-bar-item>
+  <t-tab-bar-item value="3">
+    <view slot="icon" class="tab-icon">
+      <image src="{{value === 3 ? list[3].activeIcon : list[3].defaultIcon}}" mode="aspectFit" />
+    </view>
+    我的
+  </t-tab-bar-item>
+</t-tab-bar>

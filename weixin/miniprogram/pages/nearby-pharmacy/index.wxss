@@ -1,0 +1,191 @@
+/* ═══ Nearby Pharmacy — 暖调古典 ═══ */
+.page {
+  min-height: 100vh;
+  background: #f5f2ed;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    );
+}
+
+.support-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28rpx;
+  padding: 28rpx 24rpx;
+  margin-bottom: 16rpx;
+  background: linear-gradient(148deg, #1c1917 0%, #2d2824 52%, #3a342e 100%);
+  box-shadow:
+    0 24rpx 60rpx rgba(28, 25, 23, 0.25),
+    0 4rpx 12rpx rgba(28, 25, 23, 0.08);
+}
+
+.support-hero::before {
+  content: '';
+  position: absolute;
+  top: 16rpx;
+  left: 16rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-top: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-left: 2rpx solid rgba(46, 158, 143, 0.3);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.support-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 16rpx;
+  right: 16rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-bottom: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-right: 2rpx solid rgba(46, 158, 143, 0.3);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.support-hero-glow {
+  position: absolute;
+  right: -80rpx;
+  top: -78rpx;
+  width: 260rpx;
+  height: 260rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(46, 158, 143, 0.12), rgba(46, 158, 143, 0));
+}
+
+.support-hero .hero-title,
+.support-hero .hero-sub,
+.support-hero .hero-view-capsule {
+  position: relative;
+  z-index: 1;
+}
+
+.support-hero .hero-title {
+  color: #fffefb;
+}
+
+.support-hero .hero-sub {
+  color: rgba(255, 254, 251, 0.55);
+}
+
+.support-hero .hero-view-capsule {
+  margin-top: 14rpx;
+  background: rgba(91, 122, 107, 0.08);
+  border: 1rpx solid rgba(91, 122, 107, 0.15);
+}
+
+.support-hero .hero-view-capsule__dot {
+  background: #5b7a6b;
+  box-shadow: none;
+}
+
+.support-hero .hero-view-capsule__text {
+  color: #b0a99f;
+}
+
+.notice-card {
+  margin-top: 10rpx;
+  margin-bottom: 14rpx;
+}
+
+.toolbar {
+  position: relative;
+  overflow: hidden;
+  padding: 20rpx;
+  border-radius: 24rpx;
+  background: #fffefb;
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+  box-shadow:
+    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
+    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+}
+
+.toolbar::before {
+  content: '';
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  width: 18rpx;
+  height: 18rpx;
+  border-top: 1.5rpx solid rgba(46, 158, 143, 0.12);
+  border-left: 1.5rpx solid rgba(46, 158, 143, 0.12);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.toolbar-head {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 14rpx;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.toolbar-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.toolbar-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.loading-wrap,
+.empty-wrap {
+  margin-top: 28rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.empty-wrap.card {
+  border-radius: 24rpx;
+  padding: 24rpx;
+}
+
+.result-card {
+  position: relative;
+  margin-top: 12rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  background: #fffefb;
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+  box-shadow:
+    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
+    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+}
+
+.result-head {
+  padding: 16rpx 20rpx 6rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.result-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  padding: 28rpx 0 12rpx;
+}
+
+.end-hint {
+  text-align: center;
+  padding: 16rpx 0 8rpx;
+}

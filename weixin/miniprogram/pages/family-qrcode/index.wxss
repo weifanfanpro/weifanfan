@@ -1,0 +1,48 @@
+/* ═══ Family QR Code — 暖调古典 ═══ */
+.qr-card {
+  position: relative;
+  overflow: hidden;
+  margin-top: 18rpx;
+  border-radius: 24rpx;
+  background: #fffefb;
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+  box-shadow:
+    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
+    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+}
+
+.qr-card::before {
+  content: '';
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  width: 18rpx;
+  height: 18rpx;
+  border-top: 1.5rpx solid rgba(46, 158, 143, 0.12);
+  border-left: 1.5rpx solid rgba(46, 158, 143, 0.12);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.qr-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 18rpx 0 10rpx;
+}
+
+.code-row {
+  margin-top: 10rpx;
+}
+
+.code {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  letter-spacing: 0.5rpx;
+  color: #1c1917;
+  word-break: break-all;
+}
+
+.mt {
+  margin-top: 20rpx;
+}

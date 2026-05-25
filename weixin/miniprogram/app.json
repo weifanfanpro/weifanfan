@@ -1,0 +1,58 @@
+{
+  "pages": [
+    "pages/tab-shell/index",
+    "pages/index/index",
+    "pages/scan/index",
+    "pages/scan-result/index",
+    "pages/medicine-library/index",
+    "pages/nearby-pharmacy/index",
+    "pages/ai-chat/index",
+    "pages/ai-chat-scan-medicine/index",
+    "pages/ai-chat-pick-medicine/index",
+    "pages/ai-chat-consult-medicine-detail/index",
+    "pages/family/index",
+    "pages/mine/index",
+    "pages/login/index",
+    "pages/family-bind/index",
+    "pages/family-qrcode/index",
+    "pages/profile-edit/index",
+    "pages/drug-detail/index",
+    "pages/reminder-setting/index",
+    "pages/add-medicine/index",
+    "pages/medicine-list/index",
+    "pages/stock-monitor/index",
+    "pages/history/index",
+    "pages/missed-stats/index",
+    "pages/points-mall/index",
+    "pages/address-list/index",
+    "pages/address-edit/index",
+    "pages/points-product-detail/index",
+    "pages/points-order-confirm/index",
+    "pages/points-order-pay/index",
+    "pages/points-order-transport/index",
+    "pages/points-order-list/index",
+    "pages/points-order-detail/index",
+    "pages/help/index",
+    "pages/about/index"
+  ],
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于查找附近的药店"
+    }
+  },
+  "window": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "智药助理",
+    "navigationBarBackgroundColor": "#1c1917",
+    "backgroundColor": "#f5f2ed",
+    "backgroundColorTop": "#1c1917",
+    "backgroundColorBottom": "#f5f2ed",
+    "backgroundTextStyle": "light"
+  },
+  "componentFramework": "glass-easel",
+  "lazyCodeLoading": "requiredComponents"
+}

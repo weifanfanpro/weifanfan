@@ -1,0 +1,106 @@
+<view class="page page-padding transport-page">
+  <custom-navbar title="物流运输" showBack="{true}" />
+  <view class="hero card-elevated anim-in">
+    <view class="hero-top">
+      <view class="hero-status">
+        <view class="hero-status-title">{{statusTitle}}</view>
+        <view class="hero-status-sub">{{statusSub}}</view>
+      </view>
+      <view class="hero-badge">{{mockWaybill}}</view>
+    </view>
+
+    <view class="progress">
+      <view class="step {{stepIndex>=0?'step--done':''}}">
+        <view class="dot"></view>
+        <view class="txt">已创建</view>
+      </view>
+      <view class="bar {{stepIndex>=1?'bar--done':''}}"></view>
+      <view class="step {{stepIndex>=1?'step--done':''}}">
+        <view class="dot"></view>
+        <view class="txt">揽收</view>
+      </view>
+      <view class="bar {{stepIndex>=2?'bar--done':''}}"></view>
+      <view class="step {{stepIndex>=2?'step--done':''}}">
+        <view class="dot"></view>
+        <view class="txt">运输中</view>
+      </view>
+      <view class="bar {{stepIndex>=3?'bar--done':''}}"></view>
+      <view class="step {{stepIndex>=3?'step--done':''}}">
+        <view class="dot"></view>
+        <view class="txt">签收</view>
+      </view>
+    </view>
+
+    <view class="hero-footer">
+      <view class="eta">{{etaText}}</view>
+      <view class="hint">{{hintText}}</view>
+    </view>
+  </view>
+
+  <view class="content">
+    <view class="card map-card anim-in">
+      <view class="map-head">
+        <view class="map-title">运输路线</view>
+        <view class="map-sub">{{courierName}} · 运单号 {{mockWaybill}}</view>
+      </view>
+
+      <view class="fake-map">
+        <view class="map-grid"></view>
+        <view class="map-land"></view>
+        <view class="map-water"></view>
+        <view class="map-roads">
+          <view class="road r1"></view>
+          <view class="road r2"></view>
+          <view class="road r3"></view>
+          <view class="road r4"></view>
+          <view class="road r5"></view>
+          <view class="road r6"></view>
+          <view class="road r7"></view>
+        </view>
+        <view class="map-label l1">成渝高速</view>
+        <view class="map-label l2">绕城高速</view>
+        <view class="map-label l3">G93</view>
+
+        <view class="route-seg seg1"></view>
+        <view class="route-seg seg2"></view>
+        <view class="route-seg seg3"></view>
+
+        <view class="pin pin-start">
+          <view class="pin-dot"></view>
+          <view class="pin-text">{{startCity}}</view>
+        </view>
+        <view class="pin pin-end">
+          <view class="pin-dot pin-dot--end"></view>
+          <view class="pin-text">{{endCity}}</view>
+        </view>
+
+        <view class="truck" style="left: {{truckX}}%; top: {{truckY}}%;">
+          <view class="truck-core"></view>
+          <view class="truck-glow"></view>
+        </view>
+      </view>
+
+      <view class="map-footer">
+        <view class="mf-left">
+          <view class="mf-label">当前进度</view>
+          <view class="mf-value">{{progressText}}</view>
+        </view>
+        <view class="mf-right">
+          <view class="pill">{{phaseText}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card tips-card anim-in">
+      <view class="tips-title">物流动态</view>
+      <view class="tips-item">{{tips[0]}}</view>
+      <view class="tips-item">{{tips[1]}}</view>
+      <view class="tips-item">{{tips[2]}}</view>
+    </view>
+  </view>
+
+  <view class="bottom-action">
+    <view class="back-home tap-scale" bindtap="onBackHome">返回首页</view>
+  </view>
+</view>
+

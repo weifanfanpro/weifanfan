@@ -1,0 +1,36 @@
+<view class="page">
+  <custom-navbar title="关联药品信息" showBack="{true}" />
+  <scroll-view class="scrollarea" scroll-y enhanced show-scrollbar="{{true}}" bounces="{{true}}">
+    <view class="page-padding safe-bottom content">
+      <view class="header card">
+        <view class="drug-name">{{drug.name}}</view>
+        <view wx:if="{{drug.viewLabel}}" class="view-hint muted">咨询视角：{{drug.viewLabel}}</view>
+        <view class="header-tags">
+          <t-tag theme="primary" variant="light">{{drug.tagTimes}}</t-tag>
+          <t-tag theme="default" variant="light">{{drug.tagDose}}</t-tag>
+          <t-tag theme="default" variant="light">{{drug.tagWhen}}</t-tag>
+        </view>
+      </view>
+
+      <view class="card collapse-card">
+        <t-collapse value="{{opened}}" bind:change="onCollapseChange">
+          <t-collapse-panel value="dose" header="用法用量（最重要）">
+            <view class="panel-text">{{drug.usageFull}}</view>
+          </t-collapse-panel>
+          <t-collapse-panel value="func" header="主治功能">
+            <view class="panel-text">{{drug.indication}}</view>
+          </t-collapse-panel>
+          <t-collapse-panel value="notice" header="注意事项（精简）">
+            <view wx:if="{{drug.precautionsLines.length}}" class="panel-list">
+              <view wx:for="{{drug.precautionsLines}}" wx:for-index="idx" wx:key="idx" class="li">· {{item}}</view>
+            </view>
+            <view wx:else class="panel-text">{{drug.precautions}}</view>
+          </t-collapse-panel>
+          <t-collapse-panel value="contra" header="禁忌/慎用人群">
+            <view class="panel-text">{{drug.contraindications}}</view>
+          </t-collapse-panel>
+        </t-collapse>
+      </view>
+    </view>
+  </scroll-view>
+</view>

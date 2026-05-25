@@ -1,0 +1,52 @@
+<view class="tab-shell">
+  <custom-navbar title="智药助理" showBack="{false}" />
+  <swiper
+    class="tab-shell-swiper"
+    current="{{tabIndex}}"
+    duration="{{280}}"
+    bindchange="onSwiperChange"
+  >
+    <swiper-item class="tab-shell-item">
+      <tab-panel-home class="tab-shell-panel" active="{{tabIndex === 0}}" />
+    </swiper-item>
+    <swiper-item class="tab-shell-item">
+      <tab-panel-scan class="tab-shell-panel" active="{{tabIndex === 1}}" />
+    </swiper-item>
+    <swiper-item class="tab-shell-item">
+      <tab-panel-chat class="tab-shell-panel" active="{{tabIndex === 2}}" />
+    </swiper-item>
+    <swiper-item class="tab-shell-item">
+      <tab-panel-mine class="tab-shell-panel" active="{{tabIndex === 3}}" />
+    </swiper-item>
+  </swiper>
+
+  <!-- fixed 会脱离文档流导致 Swiper 占满屏、内容被底栏遮住；壳页已用 flex 占位，故关闭 fixed -->
+  <t-tab-bar class="app-tabbar" value="{{tabIndex}}" bind:change="onTabBarChange" fixed="{{false}}" safe-area-inset-bottom bordered>
+    <t-tab-bar-item value="0">
+      <view slot="icon" class="tab-icon">
+        <image src="{{tabIndex === 0 ? list[0].activeIcon : list[0].defaultIcon}}" mode="aspectFit" />
+        <view wx:if="{{familyPendingCount > 0}}" class="tab-badge">{{familyPendingCount > 99 ? '99+' : familyPendingCount}}</view>
+      </view>
+      首页
+    </t-tab-bar-item>
+    <t-tab-bar-item value="1">
+      <view slot="icon" class="tab-icon">
+        <image src="{{tabIndex === 1 ? list[1].activeIcon : list[1].defaultIcon}}" mode="aspectFit" />
+      </view>
+      扫药
+    </t-tab-bar-item>
+    <t-tab-bar-item value="2">
+      <view slot="icon" class="tab-icon tab-icon--ai">
+        <image src="{{tabIndex === 2 ? list[2].activeIcon : list[2].defaultIcon}}" mode="aspectFit" />
+      </view>
+      咨询
+    </t-tab-bar-item>
+    <t-tab-bar-item value="3">
+      <view slot="icon" class="tab-icon">
+        <image src="{{tabIndex === 3 ? list[3].activeIcon : list[3].defaultIcon}}" mode="aspectFit" />
+        <view wx:if="{{familyPendingCount > 0}}" class="tab-badge">{{familyPendingCount > 99 ? '99+' : familyPendingCount}}</view>
+      </view>
+      我的
+    </t-tab-bar-item>
+  </t-tab-bar>
+</view>

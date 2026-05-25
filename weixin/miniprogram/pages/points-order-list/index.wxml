@@ -1,0 +1,27 @@
+<view class="page page-padding order-list-page">
+  <custom-navbar title="我的订单" showBack="{true}" />
+  <view wx:if="{{!loading && list.length > 0}}" class="list-tip">长按订单卡片可删除记录</view>
+  <view wx:if="{{!loading && list.length === 0}}" class="card">
+    <t-empty description="暂无订单" />
+  </view>
+  <view
+    wx:for="{{list}}"
+    wx:key="orderId"
+    class="order-item card tap-scale {{deletingOrderId === item.orderId ? 'order-item--deleting' : ''}}"
+    data-id="{{item.orderId}}"
+    data-status="{{item.status}}"
+    bind:tap="onOpenDetail"
+    catch:longpress="onLongDelete"
+  >
+    <image class="cover" src="{{item.firstItem.cover}}" mode="aspectFill" />
+    <view class="main">
+      <view class="name">{{item.firstItem.name}} x{{item.firstItem.quantity}}</view>
+      <view class="meta">订单号：{{item.orderId}}</view>
+      <view class="meta">创建时间：{{item.createdAtText}}</view>
+    </view>
+    <view class="right">
+      <view class="cost">{{item.pointsCost}} 积分</view>
+      <view class="status">{{item.status}}</view>
+    </view>
+  </view>
+</view>

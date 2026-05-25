@@ -1,0 +1,48 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="个人信息" showBack="{true}" />
+  <view class="profile-hero">
+    <view class="profile-hero-glow"></view>
+    <view class="profile-hero-main">
+      <image class="profile-avatar" src="{{avatarPreviewUrl || profile.avatarUrl}}" mode="aspectFill" />
+      <view class="meta">
+        <view class="name">{{profile.nickName}}</view>
+        <view class="sub">{{heroSubtitle}}</view>
+      </view>
+      <view class="hero-chip">资料编辑</view>
+    </view>
+  </view>
+
+  <view class="card account-card">
+    <view class="card-title">账号资料</view>
+    <t-cell-group bordered>
+      <t-cell title="昵称">
+        <view slot="note" class="full">
+          <view class="nickname-input-wrap">
+            <input
+              class="nickname-input"
+              type="text"
+              value="{{profile.nickName}}"
+              placeholder="请输入昵称"
+              bindinput="onNicknameInput"
+            />
+          </view>
+        </view>
+      </t-cell>
+      <t-cell title="头像">
+        <view slot="note" class="avatar-actions">
+          <t-button size="small" variant="outline" class="tap-scale avatar-pick-btn" bind:tap="onChooseAvatarFromAlbum">从相册选择</t-button>
+        </view>
+      </t-cell>
+    </t-cell-group>
+  </view>
+
+  <view class="actions-float">
+    <t-button theme="primary" size="large" block loading="{{loading}}" class="tap-scale" bind:tap="onSave">
+      保存资料
+    </t-button>
+    <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onBack">返回</t-button>
+  </view>
+
+  <t-toast id="t-toast" />
+</view>
+

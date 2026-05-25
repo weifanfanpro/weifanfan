@@ -1,0 +1,80 @@
+/* ═══ Points Order Detail — 暖调古典 ═══ */
+.detail-page {
+  background: #f5f2ed;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    );
+  min-height: 100vh;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+}
+
+.mt {
+  margin-top: 14rpx;
+}
+
+.mt2 {
+  margin-top: 12rpx;
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 25rpx;
+  color: #6b645c;
+  padding: 8rpx 0;
+}
+
+.title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.addr {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #6b645c;
+}
+
+.timeline-item {
+  margin-top: 14rpx;
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+}
+
+.dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 999rpx;
+  background: #2E9E8F;
+  margin-top: 10rpx;
+}
+
+.timeline-text {
+  font-size: 25rpx;
+  color: #1c1917;
+}
+
+.timeline-sub {
+  margin-top: 4rpx;
+  color: #b0a99f;
+  font-size: 22rpx;
+}
+
+.bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(245, 242, 237, 0.88);
+  backdrop-filter: blur(14px);
+  padding: 16rpx 22rpx calc(16rpx + env(safe-area-inset-bottom));
+  border-top: none;
+}

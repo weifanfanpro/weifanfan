@@ -1,0 +1,223 @@
+<view class="page anim-in">
+  <scroll-view class="scrollarea" scroll-y type="list">
+    <view class="page-padding safe-shell">
+
+      <!-- ═══ Hero ═══ -->
+      <view class="card-3d-wrap card-3d-wrap--hero">
+        <view
+          id="tilt-hero"
+          class="hero card-3d"
+          style="{{heroTiltStyle}}"
+          data-tilt-id="tilt-hero"
+          data-tilt-key="hero"
+          bind:touchstart="onTiltTouchStart"
+          bind:touchmove="onTiltTouchMove"
+          bind:touchend="onTiltTouchEnd"
+          bind:touchcancel="onTiltTouchEnd"
+        >
+          <view class="card-3d-shine"></view>
+
+          <!-- 回纹角饰 -->
+          <view class="corner corner--tl"></view>
+          <view class="corner corner--tr"></view>
+          <view class="corner corner--bl"></view>
+          <view class="corner corner--br"></view>
+
+          <!-- 水印暗纹 -->
+          <view class="hero-watermark"></view>
+
+          <view class="hero-row">
+            <view class="hero-date">{{dateText}}</view>
+            <view class="hero-time-chip">{{heroTimeText}}</view>
+          </view>
+          <view class="hero-num-row">
+            <text class="hero-num">{{pendingCount}}</text>
+            <view class="hero-num-meta">
+              <text class="hero-num-unit">次待服药</text>
+              <view class="hero-num-bar"></view>
+              <view class="hero-view-pill">
+                <view class="hero-view-dot"></view>
+                <text class="hero-view-text">{{viewLabel}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- ═══ Metrics — 轮播 ═══ -->
+      <view class="metrics-wrap">
+        <swiper
+          class="metrics-swiper"
+          duration="350"
+          easing-function="easeInOutCubic"
+          circular="{{false}}"
+          autoplay
+          interval="3500"
+          previous-margin="28rpx"
+          next-margin="28rpx"
+          bind:change="onMetricSwiperChange"
+        >
+          <swiper-item>
+            <view class="swiper-item-wrap">
+              <view class="metric metric--risk">
+                <view class="metric-corner metric-corner--tl"></view>
+                <view class="metric-corner metric-corner--br"></view>
+                <view class="metric-label">漏服风险</view>
+                <view class="metric-val">{{riskScore}}<text class="metric-u">分</text></view>
+                <view class="metric-sub">{{riskLevelText}}</view>
+              </view>
+            </view>
+          </swiper-item>
+          <swiper-item>
+            <view class="swiper-item-wrap">
+              <view class="metric metric--stock" bind:tap="onOpenStockMonitor">
+                <view class="metric-corner metric-corner--tl"></view>
+                <view class="metric-corner metric-corner--br"></view>
+                <view class="metric-label">余量提醒</view>
+                <view class="metric-val">{{lowStockCount}}<text class="metric-u">个</text></view>
+                <view class="metric-sub">点击查看</view>
+              </view>
+            </view>
+          </swiper-item>
+        </swiper>
+        <!-- 自定义指示器 -->
+        <view class="metric-dots">
+          <view class="metric-dot {{metricSwiperIndex === 0 ? 'metric-dot--active' : ''}}"></view>
+          <view class="metric-dot {{metricSwiperIndex === 1 ? 'metric-dot--active' : ''}}"></view>
+        </view>
+      </view>
+
+      <!-- ═══ Risk Hint ═══ -->
+      <view wx:if="{{riskHint}}" class="hint hint--{{riskLevel}}">
+        <text>{{riskLevel === 'high' ? '⚠' : '💡'}} {{riskHint}}</text>
+      </view>
+
+      <!-- ═══ 古典分割线 ═══ -->
+      <view class="ornament-divider">
+        <view class="od-line"></view>
+        <view class="od-center">
+          <view class="od-diamond"></view>
+        </view>
+        <view class="od-line"></view>
+      </view>
+
+      <!-- ═══ Quick Actions ═══ -->
+      <view class="section-head">
+        <view class="sh-ornament"></view>
+        <text class="section-label">快捷操作</text>
+        <view class="sh-ornament sh-ornament--right"></view>
+      </view>
+      <view class="quick">
+        <view class="quick-card tap-scale" bind:tap="onAddMedicine">
+          <view class="qc-corners">
+            <view class="qc-corner qc-corner--tl"></view>
+            <view class="qc-corner qc-corner--br"></view>
+          </view>
+          <view class="qc-icon qc-icon--add">＋</view>
+          <view class="qc-body">
+            <text class="qc-label">添加药品</text>
+            <text class="qc-sub">录入新药品信息</text>
+          </view>
+        </view>
+        <view class="quick-card tap-scale" bind:tap="onGoScan">
+          <view class="qc-corners">
+            <view class="qc-corner qc-corner--tl"></view>
+            <view class="qc-corner qc-corner--br"></view>
+          </view>
+          <view class="qc-icon qc-icon--scan">◎</view>
+          <view class="qc-body">
+            <text class="qc-label">AI 扫描识药</text>
+            <text class="qc-sub">拍照识别药品</text>
+          </view>
+        </view>
+      </view>
+      <view class="quick-full tap-scale" bind:tap="onNearbyPharmacy">
+        <view class="qc-corners">
+          <view class="qc-corner qc-corner--tl"></view>
+          <view class="qc-corner qc-corner--br"></view>
+        </view>
+        <view class="qc-icon qc-icon--pharmacy">⊞</view>
+        <text class="qc-full-label">附近药店</text>
+        <text class="qc-full-sub">查找周边药店 →</text>
+      </view>
+
+      <!-- ═══ 古典分割线 ═══ -->
+      <view class="ornament-divider">
+        <view class="od-line"></view>
+        <view class="od-center">
+          <view class="od-diamond"></view>
+        </view>
+        <view class="od-line"></view>
+      </view>
+
+      <!-- ═══ Empty State ═══ -->
+      <view wx:if="{{sections.length === 0}}" class="card-3d-wrap card-3d-wrap--empty">
+        <view
+          id="tilt-empty"
+          class="empty card-3d"
+          style="{{emptyTiltStyle}}"
+          data-tilt-id="tilt-empty"
+          data-tilt-key="empty"
+          bind:touchstart="onTiltTouchStart"
+          bind:touchmove="onTiltTouchMove"
+          bind:touchend="onTiltTouchEnd"
+          bind:touchcancel="onTiltTouchEnd"
+        >
+          <view class="card-3d-shine"></view>
+          <view class="empty-mark">✓</view>
+          <view class="empty-title">今天暂无待服药</view>
+          <view class="empty-sub">添加药品并设置提醒后，会在这里按时间展示。</view>
+        </view>
+      </view>
+
+      <!-- ═══ Timeline ═══ -->
+      <view
+        wx:for="{{sections}}"
+        wx:key="key"
+        class="tl-section"
+      >
+        <view class="tl-head">
+          <view class="tl-head-dot"></view>
+          <text class="tl-head-label">{{item.label}}</text>
+          <text class="tl-head-count">{{item.items.length}} 条</text>
+        </view>
+
+        <view
+          wx:for="{{item.items}}"
+          wx:for-item="med"
+          wx:key="id"
+          class="tl-row tap-scale"
+          bind:tap="onOpenDrugDetail"
+          data-medicine-id="{{med.medicineId}}"
+          data-name="{{med.name}}"
+        >
+          <view class="tl-time">{{med.time}}</view>
+          <view class="tl-mid">
+            <view class="tl-dot tl-dot--{{med.statusClass}}">
+              <view class="tl-dot-inner"></view>
+            </view>
+            <view class="tl-stem"></view>
+          </view>
+          <view class="tl-card tl-card--{{med.statusClass}}">
+            <view class="tl-top">
+              <text class="tl-name">{{med.name}}</text>
+              <text class="tl-tag tl-tag--{{med.statusClass}}">{{med.statusLabel}}</text>
+            </view>
+            <view class="tl-bottom">
+              <text class="tl-dose">{{med.dose}}</text>
+              <view
+                class="tl-btn tl-btn--{{med.statusClass}} {{med.actionPulse ? 'tl-btn--pulse' : ''}} {{med.actionDisabled ? 'tl-btn--disabled' : ''}}"
+                catch:tap="onTake"
+                data-id="{{med.id}}"
+                data-disabled="{{med.actionDisabled}}"
+              >
+                <text>{{med.actionIcon}} {{med.actionText}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+  </scroll-view>
+</view>

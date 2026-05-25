@@ -1,0 +1,30 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="家属二维码" showBack="{true}" />
+  <view class="brand-hero">
+    <view class="hero-title">绑定二维码</view>
+    <view class="hero-sub">让照护者使用“扫码绑定”扫描此码即可完成绑定。</view>
+  </view>
+
+  <view class="card pad qr-card">
+    <view class="qr-wrap">
+      <t-qrcode
+        value="{{qrValue}}"
+        size="{{qrPx}}"
+        level="M"
+        bg-color="#ffffff"
+      />
+    </view>
+    <view class="code-row">
+      <view class="muted small">绑定码</view>
+      <view class="code">{{openid}}</view>
+    </view>
+    <view class="mt">
+      <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onCopy">
+        复制绑定码
+      </t-button>
+    </view>
+  </view>
+
+  <t-toast id="t-toast" />
+</view>
+

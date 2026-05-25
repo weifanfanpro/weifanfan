@@ -1,0 +1,38 @@
+<view class="page detail-page">
+  <custom-navbar title="商品详情" showBack="{true}" />
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <t-loading theme="spinner" />
+  </view>
+
+  <view wx:elif="{{product}}" class="detail-scroll">
+    <image class="cover" src="{{product.cover}}" mode="aspectFill" />
+    <view class="content anim-in">
+      <view class="category-chip">{{product.category}}</view>
+      <view class="name">{{product.name}}</view>
+      <view class="desc">{{product.desc}}</view>
+      <view class="meta">模拟库存：{{product.stockMock}}</view>
+      <view class="price">{{product.pointsPrice}} 积分 / 件</view>
+      <view class="qty-card">
+        <view class="qty-row">
+          <text class="qty-label">数量</text>
+          <view class="qty-stepper">
+            <view class="step-btn {{quantity <= 1 ? 'step-btn--disabled' : ''}}" bind:tap="onStepDown">-</view>
+            <input class="qty-input" type="number" value="{{quantity}}" bindinput="onQuantityChange" />
+            <view class="step-btn {{quantity >= 99 ? 'step-btn--disabled' : ''}}" bind:tap="onStepUp">+</view>
+          </view>
+        </view>
+        <view class="calc-row">
+          <text>预计消耗</text>
+          <text class="calc-value">{{pointsCost}} 积分</text>
+        </view>
+      </view>
+    </view>
+    <view class="bottom">
+      <view class="bottom-info">
+        <view class="bottom-label">合计</view>
+        <view class="bottom-price">{{pointsCost}} 积分</view>
+      </view>
+      <t-button class="bottom-btn" theme="primary" bind:tap="onGoConfirm">立即兑换</t-button>
+    </view>
+  </view>
+</view>

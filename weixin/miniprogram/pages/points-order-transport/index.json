@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "物流运输",
+  "usingComponents": {
+    "custom-navbar": "../../components/custom-navbar/index"
+  }
+}

@@ -1,0 +1,53 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="药品余量监控" showBack="{true}" />
+  <view class="stock-hero">
+    <view class="stock-hero-glow"></view>
+    <view class="hero-title">{{heroTitle}}</view>
+    <view class="hero-sub">{{heroSubtitle}}</view>
+    <view class="hero-view-capsule">
+      <view class="hero-view-capsule__dot"></view>
+      <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length === 0}}" class="empty-wrap card">
+    <t-empty description="{{emptyText}}" />
+  </view>
+
+  <view wx:else class="stock-list">
+    <view
+      wx:for="{{list}}"
+      wx:key="userMedicineId"
+      class="card stock-card"
+    >
+      <view class="row row-top">
+        <view class="name">{{item.name}}</view>
+        <t-tag
+          theme="{{item.level === 'low' ? 'danger' : (item.level === 'warning' ? 'warning' : (item.level === 'enough' ? 'success' : 'default'))}}"
+        >
+          {{item.levelText}}
+        </t-tag>
+      </view>
+      <view class="stock-metrics">
+        <view class="muted line">当前总量：{{item.totalAmountText}}</view>
+        <view class="muted line">每次用量：{{item.doseText || unsetText}}</view>
+        <view class="muted line">日均消耗：{{item.dailyUseAmount > 0 ? (item.dailyUseAmount + ' ' + item.unit + '/日') : unknownDailyUseText}}</view>
+      </view>
+      <view class="line remain">
+        预计剩余：
+        <text class="remain-val">{{item.daysLeft == null ? '—' : (item.daysLeft + ' 天')}}</text>
+      </view>
+      <view class="mt16">
+        <t-button
+          variant="outline"
+          size="small"
+          data-name="{{item.name}}"
+          data-medicineid="{{item.medicineId}}"
+          bind:tap="onOpenSetting"
+        >
+          调整提醒与总量
+        </t-button>
+      </view>
+    </view>
+  </view>
+</view>

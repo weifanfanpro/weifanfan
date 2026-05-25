@@ -1,0 +1,51 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="服药记录" showBack="{true}" />
+  <view class="history-hero">
+    <view class="history-hero-glow"></view>
+    <view class="hero-title">{{heroTitle}}</view>
+    <view class="hero-sub">{{heroSubtitle}}</view>
+    <view class="hero-view-capsule">
+      <view class="hero-view-capsule__dot"></view>
+      <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>
+    </view>
+  </view>
+
+  <view class="days-filter-row">
+    <view class="days-label muted small">查看范围：</view>
+    <picker
+      mode="selector"
+      range="{{daysRange}}"
+      value="{{selectedDays}}"
+      bindchange="onDaysChange"
+    >
+      <view class="days-picker">
+        <text class="days-picker-text">{{daysLabel}}</text>
+        <t-icon name="chevron-down" size="28rpx" color="#6b645c" />
+      </view>
+    </picker>
+  </view>
+
+  <view wx:if="{{list.length === 0}}" class="empty-wrap card">
+    <t-empty description="{{emptyText}}" />
+  </view>
+
+  <view wx:else class="card history-list-card">
+    <view class="history-hint muted small">
+      <text class="history-hint-dot"></text>
+      <text>以下为最近服药完成记录</text>
+    </view>
+    <view class="history-list">
+      <view wx:for="{{list}}" wx:key="id" class="history-row tap-scale">
+        <view class="history-row-main">
+          <view class="history-name">{{item.name}}</view>
+          <view class="history-time">{{item.time}}</view>
+        </view>
+        <view class="history-row-side">
+          <t-tag theme="{{item.status === 'ok' ? 'primary' : 'danger'}}">
+            {{item.status === 'ok' ? okText : missedText}}
+          </t-tag>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

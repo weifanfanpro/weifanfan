@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "附近药店",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-cell": "tdesign-miniprogram/cell/cell",
+    "t-cell-group": "tdesign-miniprogram/cell-group/cell-group",
+    "t-empty": "tdesign-miniprogram/empty/empty",
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "t-notice-bar": "tdesign-miniprogram/notice-bar/notice-bar",
+    "custom-navbar": "../../components/custom-navbar/index"
+  }
+}

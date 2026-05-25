@@ -1,0 +1,122 @@
+<view class="mine-root">
+  <scroll-view scroll-y class="mine-scroll" enhanced show-scrollbar="{{false}}">
+    <view class="page page-padding mine-content anim-in">
+
+      <!-- Profile Hero -->
+      <view class="profile-hero" bind:tap="onEditProfile">
+        <view class="profile-hero-glow"></view>
+        <view class="mine-corner mine-corner--tl"></view>
+        <view class="mine-corner mine-corner--tr"></view>
+        <view class="mine-corner mine-corner--bl"></view>
+        <view class="mine-corner mine-corner--br"></view>
+
+        <view class="profile-hero-content">
+          <view class="profile-hero-top">
+            <view class="profile-avatar-ring">
+              <t-avatar image="{{user.avatarUrl}}" size="120rpx" />
+            </view>
+            <view class="profile-info">
+              <text class="profile-name">{{user.nickName}}</text>
+              <text class="profile-status" wx:if="{{isAuthed}}">已登录</text>
+              <text class="profile-hint" wx:if="{{isAuthed}}">点击修改头像和昵称</text>
+              <text class="profile-hint" wx:else>登录后享受完整功能</text>
+            </view>
+            <view class="profile-edit-btn tap-scale" catch:tap="onEditProfile">
+              <text class="profile-edit-text">编辑</text>
+            </view>
+          </view>
+          <view class="profile-hero-bottom">
+            <text class="profile-org">健康管理中心</text>
+            <view class="profile-points-pill tap-scale" catch:tap="onGoPointsMall">
+              <text class="profile-points-text">积分 {{pointsBalance}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Perspective & Family -->
+      <view class="action-row card card-accent">
+        <view class="action-row-left tap-scale" bind:tap="onSwitchPerspective">
+          <view class="action-row-icon-wrap">
+            <t-icon name="user" size="36rpx" color="#2E9E8F" />
+          </view>
+          <view class="action-row-text">
+            <text class="action-row-label">当前视角</text>
+            <text class="action-row-value">{{perspectiveLabel}}</text>
+          </view>
+          <t-icon name="chevron-down" size="28rpx" color="var(--app-text-3)" />
+        </view>
+        <view class="action-row-divider"></view>
+        <view class="action-row-right tap-scale" bind:tap="onGoFamily">
+          <view class="action-row-icon-wrap">
+            <image class="action-row-family-icon" src="/assets/icons/family.png" mode="aspectFit" />
+          </view>
+          <view class="action-row-text">
+            <text class="action-row-label">家属协作</text>
+            <text class="action-row-value">成员与待办</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Medicine Management -->
+      <view class="section-head">
+        <view class="sh-ornament"></view>
+        <text class="section-label">用药管理</text>
+        <view class="sh-ornament sh-ornament--right"></view>
+      </view>
+      <view class="menu-group card">
+        <view class="menu-group-subtitle">{{menuGroupSubtitle}}</view>
+        <view
+          wx:for="{{menuItems}}"
+          wx:key="url"
+          class="menu-row tap-scale"
+          bind:tap="onNavItemTap"
+          data-url="{{item.url}}"
+        >
+          <view class="menu-row-left">
+            <view class="menu-icon-wrap">
+              <image class="menu-icon" src="{{item.icon}}" mode="aspectFit" />
+            </view>
+            <text class="menu-title">{{item.title}}</text>
+          </view>
+          <t-icon name="chevron-right" size="36rpx" color="var(--app-text-3)" />
+        </view>
+      </view>
+
+      <!-- Service Support -->
+      <view class="section-head">
+        <view class="sh-ornament"></view>
+        <text class="section-label">服务支持</text>
+        <view class="sh-ornament sh-ornament--right"></view>
+      </view>
+      <view class="menu-group card">
+        <view class="menu-group-subtitle">{{supportGroupSubtitle}}</view>
+        <view
+          wx:for="{{supportItems}}"
+          wx:key="url"
+          class="menu-row tap-scale"
+          bind:tap="onNavItemTap"
+          data-url="{{item.url}}"
+        >
+          <view class="menu-row-left">
+            <view class="menu-icon-wrap">
+              <image class="menu-icon" src="{{item.icon}}" mode="aspectFit" />
+            </view>
+            <text class="menu-title">{{item.title}}</text>
+          </view>
+          <t-icon name="chevron-right" size="36rpx" color="var(--app-text-3)" />
+        </view>
+      </view>
+
+      <!-- Safe Notice -->
+      <view class="safe-notice card-outline">
+        <view class="safe-icon">
+          <t-icon name="info-circle" size="28rpx" color="var(--app-text-3)" />
+        </view>
+        <text class="safe-text">本工具仅辅助提醒，不替代医嘱。用药请遵医嘱，如有不适及时就医。</text>
+      </view>
+
+    </view>
+  </scroll-view>
+  <t-toast id="t-toast" />
+</view>

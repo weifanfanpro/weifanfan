@@ -1,0 +1,72 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="附近药店" showBack="{true}" />
+  <view class="support-hero">
+    <view class="support-hero-glow"></view>
+    <view class="hero-title">{{heroTitle}}</view>
+    <view class="hero-sub">{{heroSubtitle}}</view>
+    <view class="hero-view-capsule">
+      <view class="hero-view-capsule__dot"></view>
+      <text class="hero-view-capsule__text">{{locationText}}</text>
+    </view>
+  </view>
+
+  <view class="notice-card card">
+    <t-notice-bar
+      visible
+      content="{{noticeText}}"
+    />
+  </view>
+
+  <view class="toolbar card">
+    <view class="toolbar-head">
+      <view class="toolbar-title">定位与搜索</view>
+      <text class="muted small">{{locationText}}</text>
+    </view>
+    <view class="toolbar-btns">
+      <t-button size="small" theme="primary" class="tap-scale" bind:tap="onRefreshLocation" loading="{{locating}}">
+        重新定位
+      </t-button>
+      <t-button size="small" variant="outline" class="tap-scale" bind:tap="onSearchAgain" loading="{{searching}}">
+        刷新列表
+      </t-button>
+    </view>
+  </view>
+
+  <view wx:if="{{(searching || locating) && list.length === 0}}" class="loading-wrap">
+    <t-loading size="48rpx" text="{{locating ? '正在定位…' : '查询附近药店…'}}" />
+  </view>
+
+  <view wx:elif="{{!userLat && !locating && !searching}}" class="empty-wrap">
+    <t-empty description="需要位置权限才能查找附近药店，可点击「重新定位」" />
+  </view>
+
+  <view wx:elif="{{!searching && list.length === 0 && hadSearch}}" class="empty-wrap">
+    <t-empty description="附近暂无检索结果，可稍后再试或去百度地图核对" />
+  </view>
+
+  <view wx:if="{{list.length > 0}}" class="card result-card">
+    <view class="result-head">
+      <view class="result-title">附近药店</view>
+      <view class="result-sub muted small">{{list.length}} 条结果</view>
+    </view>
+    <t-cell-group bordered>
+      <t-cell
+        wx:for="{{list}}"
+        wx:key="key"
+        title="{{item.name}}"
+        description="{{item.desc}}"
+        note="{{item.distText}}"
+        arrow
+        bind:tap="onOpenMap"
+        data-lat="{{item.latitude}}"
+        data-lng="{{item.longitude}}"
+        data-name="{{item.name}}"
+        data-address="{{item.address}}"
+      />
+    </t-cell-group>
+    <view wx:if="{{searching && list.length > 0}}" class="load-more">
+      <t-loading size="36rpx" text="加载更多…" />
+    </view>
+    <view wx:if="{{!hasMore && list.length > 0}}" class="end-hint muted small">没有更多了</view>
+  </view>
+</view>

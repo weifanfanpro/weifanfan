@@ -1,0 +1,262 @@
+/* ═══ Add Medicine — 暖调古典 ═══ */
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f5f2ed;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    );
+}
+
+.scrollarea {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.content {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 250rpx);
+}
+
+.add-hero {
+  position: relative;
+  border-radius: 28rpx;
+  padding: 32rpx 28rpx 24rpx;
+  overflow: hidden;
+  background: linear-gradient(148deg, #1c1917 0%, #2d2824 52%, #3a342e 100%);
+  box-shadow:
+    0 24rpx 60rpx rgba(28, 25, 23, 0.25),
+    0 4rpx 12rpx rgba(28, 25, 23, 0.08);
+}
+
+.add-hero::before {
+  content: '';
+  position: absolute;
+  top: 16rpx;
+  left: 16rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-top: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-left: 2rpx solid rgba(46, 158, 143, 0.3);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.add-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 16rpx;
+  right: 16rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-bottom: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-right: 2rpx solid rgba(46, 158, 143, 0.3);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.add-hero-glow {
+  position: absolute;
+  width: 260rpx;
+  height: 260rpx;
+  border-radius: 50%;
+  right: -80rpx;
+  top: -78rpx;
+  background: radial-gradient(circle, rgba(46, 158, 143, 0.12), rgba(46, 158, 143, 0));
+}
+
+.add-hero-top,
+.add-hero-title,
+.add-hero-sub {
+  position: relative;
+  z-index: 1;
+}
+
+.add-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-hero-chip {
+  padding: 8rpx 14rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  color: rgba(255, 254, 251, 0.7);
+  background: rgba(255, 254, 251, 0.08);
+  border: 1rpx solid rgba(255, 254, 251, 0.15);
+}
+
+.add-hero-progress {
+  font-size: 22rpx;
+  color: rgba(255, 254, 251, 0.55);
+}
+
+.add-hero-title {
+  margin-top: 16rpx;
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #fffefb;
+}
+
+.add-hero-sub {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: rgba(255, 254, 251, 0.55);
+}
+
+.step-card {
+  position: relative;
+  margin-top: 18rpx;
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+  background: #fffefb;
+  box-shadow:
+    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
+    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+  overflow: hidden;
+}
+
+.step-card::before {
+  content: '';
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  width: 18rpx;
+  height: 18rpx;
+  border-top: 1.5rpx solid rgba(46, 158, 143, 0.12);
+  border-left: 1.5rpx solid rgba(46, 158, 143, 0.12);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.step-head {
+  padding: 18rpx 22rpx 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.step-index {
+  font-size: 20rpx;
+  padding: 6rpx 12rpx;
+  border-radius: 999rpx;
+  color: #2E9E8F;
+  background: rgba(46, 158, 143, 0.08);
+  font-weight: 600;
+}
+
+.step-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.step-body {
+  padding: 0 22rpx 22rpx;
+}
+
+.sub-hint {
+  margin-bottom: 12rpx;
+  font-size: 23rpx;
+  color: #b0a99f;
+  line-height: 1.5;
+}
+
+.name-input {
+  border-radius: 16rpx;
+  background: rgba(46, 158, 143, 0.03);
+  border: 1rpx solid rgba(46, 158, 143, 0.1);
+  padding: 8rpx 14rpx;
+}
+
+.type-option-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12rpx;
+}
+
+.type-option {
+  border-radius: 16rpx;
+  border: 1rpx solid rgba(28, 25, 23, 0.06);
+  background: #fffefb;
+  padding: 14rpx 12rpx;
+}
+
+.type-option--active {
+  border-color: rgba(46, 158, 143, 0.25);
+  background: rgba(46, 158, 143, 0.04);
+  box-shadow: 0 8rpx 20rpx rgba(46, 158, 143, 0.08);
+}
+
+.type-tip-grid {
+  margin-top: 14rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.type-tip-card {
+  border-radius: 16rpx;
+  padding: 14rpx 16rpx;
+  background: rgba(91, 122, 107, 0.05);
+  border: 1rpx solid rgba(91, 122, 107, 0.1);
+}
+
+.type-tip-card--muted {
+  background: rgba(28, 25, 23, 0.02);
+  border-color: rgba(28, 25, 23, 0.06);
+}
+
+.type-tip-card-title {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.type-tip-card-text {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #6b645c;
+  line-height: 1.55;
+}
+
+.confirm-line {
+  font-size: 26rpx;
+  color: #6b645c;
+  line-height: 1.8;
+}
+
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: none;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.add-bottom-bar {
+  background: rgba(245, 242, 237, 0.88);
+  backdrop-filter: blur(14px);
+}
+
+.add-bottom-inner {
+  border-radius: 24rpx;
+  background: rgba(255, 254, 251, 0.85);
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+  box-shadow: 0 -8rpx 32rpx rgba(28, 25, 23, 0.06);
+}
+
+.add-next-btn {
+  background: linear-gradient(135deg, #2E9E8F, #d4845a) !important;
+  border-color: transparent !important;
+  box-shadow: 0 14rpx 34rpx rgba(46, 158, 143, 0.25);
+}

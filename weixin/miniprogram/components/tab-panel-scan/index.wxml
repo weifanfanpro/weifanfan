@@ -1,0 +1,59 @@
+<view class="page page-padding anim-in scan-page">
+  <view class="hero card">
+    <view class="tip">请将药盒正面/说明书放入框内</view>
+    <view class="muted tip-sub">建议在光线充足处拍摄，避免反光</view>
+    <view class="hero-view-capsule">
+      <view class="hero-view-capsule__dot"></view>
+      <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>
+    </view>
+
+    <view class="frame-wrap">
+      <view class="frame">
+      <camera
+        wx:if="{{active}}"
+        class="cam"
+        mode="normal"
+        device-position="back"
+        flash="{{flashMode}}"
+        binderror="onCameraError"
+      ></camera>
+      <view class="corner tl"></view>
+      <view class="corner tr"></view>
+      <view class="corner bl"></view>
+      <view class="corner br"></view>
+
+      <view wx:if="{{recognizing}}" class="recognizing">
+        <t-loading size="48rpx" text="AI 识别中…" />
+      </view>
+      <view wx:else class="frame-hint muted">
+        对准药盒文字，保持清晰
+      </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="actions card">
+    <t-cell-group bordered>
+      <t-cell title="闪光灯">
+        <view slot="right-icon" catchtap="noop">
+          <t-switch value="{{flashOn}}" bind:change="onToggleFlash" />
+        </view>
+      </t-cell>
+    </t-cell-group>
+    <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onStartRecognize">
+      开始识别
+    </t-button>
+    <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onChooseFromAlbum">
+      从相册选择
+    </t-button>
+  </view>
+
+  <view class="library-zone">
+    <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onOpenMedicineLibrary">
+      药品库
+    </t-button>
+  </view>
+
+  <t-toast id="t-toast" />
+</view>
+

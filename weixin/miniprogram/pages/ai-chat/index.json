@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "咨询",
+  "navigationBarBackgroundColor": "#1c1917",
+  "navigationBarTextStyle": "white",
+  "backgroundColorTop": "#1c1917",
+  "usingComponents": {
+    "custom-navbar": "../../components/custom-navbar/index"
+  }
+}

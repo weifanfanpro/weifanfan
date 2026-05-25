@@ -1,0 +1,24 @@
+<view class="page login-page page-padding safe-bottom anim-in">
+  <custom-navbar title="登录" showBack="{false}" />
+  <view class="login-hero">
+    <view class="logo-wrap" aria-hidden="true">
+      <image class="logo-img" src="/assets/logo.png" mode="aspectFill" />
+    </view>
+    <view class="app-name">智药助理</view>
+    <view class="app-subtitle">智能、轻盈的用药管理助手</view>
+  </view>
+
+  <view class="login-card">
+    <view class="login-title">请先登录</view>
+    <view class="login-desc muted">登录后即可开始使用你的个性化用药计划。</view>
+
+    <view class="btn-wrap">
+      <t-button theme="primary" size="large" block loading="{{loading}}" bind:tap="onWxLogin">
+        微信一键登录
+      </t-button>
+    </view>
+  </view>
+
+  <t-toast id="t-toast" />
+</view>
+

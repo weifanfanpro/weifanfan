@@ -1,0 +1,88 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="家属" showBack="{true}" />
+  <view class="support-hero">
+    <view class="support-hero-glow"></view>
+    <view class="hero-title">家属</view>
+    <view class="hero-sub">接收家人推送并处理，也可查看你发给家人的记录。</view>
+  </view>
+
+  <view class="mode-tabs card">
+    <view class="mode-tab {{mode === 'received' ? 'mode-tab--active' : ''}}" data-mode="received" bind:tap="onModeChange">接收</view>
+    <view class="mode-tab {{mode === 'sent' ? 'mode-tab--active' : ''}}" data-mode="sent" bind:tap="onModeChange">发送</view>
+  </view>
+
+  <block wx:if="{{mode === 'received'}}">
+    <view class="status-tabs card">
+      <view class="status-tab {{receivedFilter === 'pending' ? 'status-tab--active' : ''}}" data-value="pending" bind:tap="onReceivedFilterChange">待处理</view>
+      <view class="status-tab {{receivedFilter === 'activated' ? 'status-tab--active' : ''}}" data-value="activated" bind:tap="onReceivedFilterChange">已激活</view>
+      <view class="status-tab {{receivedFilter === 'ignored' ? 'status-tab--active' : ''}}" data-value="ignored" bind:tap="onReceivedFilterChange">已忽略</view>
+    </view>
+
+    <view wx:if="{{receivedVisibleList.length === 0}}" class="empty-wrap">
+      <t-empty description="当前分类暂无记录" />
+    </view>
+
+    <view wx:else class="card">
+      <view class="list-hint muted small">提示：仅激活后才会进入药品清单和提醒</view>
+      <t-cell-group bordered>
+        <t-cell
+          wx:for="{{receivedVisibleList}}"
+          wx:key="id"
+          title="{{item.name}}"
+          description="{{item.desc}}"
+        >
+          <view slot="left-icon" class="li">
+            <t-icon name="medicine-bottle" size="40rpx" />
+          </view>
+          <view slot="note" class="note">
+            <t-tag
+              theme="{{item.status === 'pending' ? 'warning' : (item.status === 'activated' ? 'success' : 'default')}}"
+              variant="light"
+            >
+              {{item.status === 'pending' ? '待处理' : (item.status === 'activated' ? '已激活' : '已忽略')}}
+            </t-tag>
+            <view wx:if="{{item.status === 'pending'}}" class="action-row">
+              <t-button size="small" variant="outline" shape="round" bind:tap="onIgnore" data-id="{{item.id}}" class="tap-scale">忽略</t-button>
+              <t-button size="small" theme="primary" shape="round" icon="check" bind:tap="onActivate" data-id="{{item.id}}" class="tap-scale">激活</t-button>
+            </view>
+          </view>
+        </t-cell>
+      </t-cell-group>
+    </view>
+  </block>
+
+  <block wx:elif="{{mode === 'sent'}}">
+    <view wx:if="{{sentList.length === 0}}" class="empty-wrap">
+      <t-empty description="暂无发送记录" />
+    </view>
+
+    <view wx:else class="card">
+      <view class="list-hint muted small">你发送给家人的药品会在这里显示处理状态</view>
+      <t-cell-group bordered>
+        <t-cell
+          wx:for="{{sentList}}"
+          wx:key="id"
+          title="{{item.name}}"
+          description="{{item.ownerName ? ('接收人：' + item.ownerName) : ''}} {{item.desc ? ('· ' + item.desc) : ''}}"
+        >
+          <view slot="left-icon" class="li">
+            <t-icon name="send" size="40rpx" />
+          </view>
+          <view slot="note" class="note note-col">
+            <t-tag
+              theme="{{item.status === 'pending' ? 'warning' : (item.status === 'activated' ? 'success' : 'default')}}"
+              variant="light"
+            >
+              {{item.status === 'pending' ? '待处理' : (item.status === 'activated' ? '已激活' : '已忽略')}}
+            </t-tag>
+            <view class="time-text" wx:if="{{item.createdAtText}}">发送：{{item.createdAtText}}</view>
+            <view class="time-text" wx:if="{{item.handledAtText}}">处理：{{item.handledAtText}}</view>
+          </view>
+        </t-cell>
+      </t-cell-group>
+    </view>
+  </block>
+
+  <t-toast id="t-toast" />
+</view>
+

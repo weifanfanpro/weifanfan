@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "首页",
+  "usingComponents": {
+    "t-tab-bar": "tdesign-miniprogram/tab-bar/tab-bar",
+    "t-tab-bar-item": "tdesign-miniprogram/tab-bar-item/tab-bar-item",
+    "tab-panel-home": "../../components/tab-panel-home/index",
+    "tab-panel-scan": "../../components/tab-panel-scan/index",
+    "tab-panel-chat": "../../components/tab-panel-chat/index",
+    "tab-panel-mine": "../../components/tab-panel-mine/index",
+    "custom-navbar": "../../components/custom-navbar/index"
+  }
+}

@@ -1,0 +1,346 @@
+/* ═══ Mine Panel — Medical Teal Design System ═══ */
+
+/* ── Root & Layout ── */
+.mine-root {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  position: relative;
+  background: var(--app-bg);
+}
+
+.mine-scroll {
+  flex: 1;
+  height: 0;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.page {
+  min-height: 0;
+  background: var(--app-bg);
+}
+
+.mine-content {
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+}
+
+/* ── Profile Hero ── */
+.profile-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--app-radius-xl);
+  margin-bottom: var(--app-space-6);
+  background: linear-gradient(148deg, #1c1917 0%, #2d2824 52%, #3a342e 100%);
+  box-shadow: var(--app-shadow-lg), 0 4rpx 12rpx rgba(28, 25, 23, 0.08);
+}
+
+.profile-hero-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 80%, rgba(46, 158, 143, 0.18), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.profile-hero-content {
+  position: relative;
+  z-index: 1;
+  padding: var(--app-space-7) var(--app-space-6) var(--app-space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-space-6);
+}
+
+.profile-hero-top {
+  display: flex;
+  align-items: center;
+}
+
+.profile-avatar-ring {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 3rpx solid rgba(46, 158, 143, 0.4);
+  box-shadow: 0 0 20rpx rgba(46, 158, 143, 0.15);
+}
+
+.profile-info {
+  flex: 1;
+  margin-left: var(--app-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.profile-name {
+  font-size: var(--app-font-xl);
+  font-weight: 700;
+  color: #fffefb;
+  line-height: 1.3;
+}
+
+.profile-status {
+  font-size: var(--app-font-sm);
+  color: rgba(46, 158, 143, 0.8);
+  line-height: 1.4;
+}
+
+.profile-hint {
+  font-size: var(--app-font-sm);
+  color: rgba(255, 254, 251, 0.55);
+  line-height: 1.4;
+}
+
+.profile-edit-btn {
+  padding: var(--app-space-2) var(--app-space-5);
+  border-radius: 999rpx;
+  border: 1rpx solid rgba(46, 158, 143, 0.35);
+  background: rgba(46, 158, 143, 0.12);
+  flex-shrink: 0;
+}
+
+.profile-edit-text {
+  font-size: var(--app-font-sm);
+  color: rgba(255, 254, 251, 0.85);
+}
+
+.profile-hero-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-org {
+  font-size: var(--app-font-sm);
+  color: rgba(255, 254, 251, 0.6);
+}
+
+.profile-points-pill {
+  padding: var(--app-space-1) var(--app-space-4);
+  border-radius: 999rpx;
+  border: 1rpx solid rgba(46, 158, 143, 0.35);
+  background: rgba(46, 158, 143, 0.12);
+}
+
+.profile-points-text {
+  font-size: var(--app-font-sm);
+  color: rgba(255, 254, 251, 0.85);
+}
+
+/* ── Corner Brackets ── */
+.mine-corner {
+  position: absolute;
+  width: 40rpx;
+  height: 40rpx;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.mine-corner--tl {
+  top: 16rpx;
+  left: 16rpx;
+  border-top: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-left: 2rpx solid rgba(46, 158, 143, 0.3);
+}
+
+.mine-corner--tr {
+  top: 16rpx;
+  right: 16rpx;
+  border-top: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-right: 2rpx solid rgba(46, 158, 143, 0.3);
+}
+
+.mine-corner--bl {
+  bottom: 16rpx;
+  left: 16rpx;
+  border-bottom: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-left: 2rpx solid rgba(46, 158, 143, 0.3);
+}
+
+.mine-corner--br {
+  bottom: 16rpx;
+  right: 16rpx;
+  border-bottom: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-right: 2rpx solid rgba(46, 158, 143, 0.3);
+}
+
+/* ── Action Row (Perspective & Family) ── */
+.action-row {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: var(--app-space-6);
+  border-radius: var(--app-radius-lg);
+}
+
+.action-row-left,
+.action-row-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--app-space-4);
+  padding: var(--app-space-5) var(--app-space-6);
+}
+
+.action-row-divider {
+  width: 1rpx;
+  background: var(--app-border);
+  margin: var(--app-space-4) 0;
+}
+
+.action-row-icon-wrap {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: var(--app-radius-md);
+  background: rgba(46, 158, 143, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.action-row-family-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.action-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  min-width: 0;
+}
+
+.action-row-label {
+  font-size: var(--app-font-xs);
+  color: var(--app-text-3);
+}
+
+.action-row-value {
+  font-size: var(--app-font-md);
+  font-weight: 600;
+  color: var(--app-text);
+}
+
+/* ── Section Headers ── */
+.section-head {
+  margin-bottom: var(--app-space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--app-space-3);
+}
+
+.section-label {
+  font-size: var(--app-font-xs);
+  font-weight: 600;
+  color: var(--app-text-3);
+  letter-spacing: 3rpx;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.sh-ornament {
+  width: 8rpx;
+  height: 8rpx;
+  border: 1.5rpx solid rgba(46, 158, 143, 0.18);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.sh-ornament--right {
+  margin-left: auto;
+  width: 6rpx;
+  height: 6rpx;
+  border-color: rgba(91, 122, 107, 0.15);
+}
+
+/* ── Menu Groups ── */
+.menu-group {
+  margin-bottom: var(--app-space-5);
+  padding: 0;
+  background: var(--app-card-bg);
+  border-radius: var(--app-radius-lg);
+  box-shadow: var(--app-card-shadow-sm);
+  border: 1rpx solid var(--app-border);
+  overflow: hidden;
+}
+
+.menu-group-subtitle {
+  padding: var(--app-space-3) var(--app-space-6);
+  font-size: var(--app-font-xs);
+  color: var(--app-text-3);
+}
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--app-space-5) var(--app-space-6);
+  border-bottom: 1rpx solid rgba(28, 25, 23, 0.04);
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.menu-row:last-child {
+  border-bottom: none;
+}
+
+.menu-row-left {
+  display: flex;
+  align-items: center;
+  gap: var(--app-space-4);
+  min-width: 0;
+}
+
+.menu-icon-wrap {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: var(--app-radius-md);
+  background: rgba(46, 158, 143, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.menu-icon {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.menu-title {
+  font-size: var(--app-font-md);
+  color: var(--app-text);
+  font-weight: 500;
+}
+
+/* ── Safe Notice ── */
+.safe-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--app-space-3);
+  margin-top: var(--app-space-1);
+  padding: var(--app-space-5) var(--app-space-6);
+}
+
+.safe-icon {
+  flex-shrink: 0;
+  margin-top: 2rpx;
+}
+
+.safe-text {
+  font-size: var(--app-font-sm);
+  line-height: 1.6;
+  color: var(--app-text-3);
+}
+
+/* ── Active States ── */
+.profile-hero:active,
+.action-row-right:active,
+.menu-row:active {
+  transform: translateY(1rpx) scale(0.995);
+  opacity: 0.9;
+}

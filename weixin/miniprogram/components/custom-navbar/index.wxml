@@ -1,0 +1,29 @@
+<view class="navbar" style="padding-top: {{statusBarHeight}}px;">
+  <!-- 顶部赤陶细线 -->
+  <view class="navbar__top-line"></view>
+  <view class="navbar__content">
+    <view class="navbar__left" wx:if="{{showBack}}" bind:tap="onBack">
+      <view class="navbar__back">
+        <t-icon name="chevron-left" size="44rpx" color="#1c1917" />
+      </view>
+    </view>
+    <view class="navbar__title-wrap">
+      <view class="navbar__title">{{title}}</view>
+    </view>
+    <view class="navbar__right">
+      <slot name="right"></slot>
+    </view>
+  </view>
+  <!-- 底部装饰纹 -->
+  <view class="navbar__border-deco">
+    <view class="navbar__border-line navbar__border-line--left"></view>
+    <view class="navbar__diamond-group">
+      <view class="navbar__diamond-dot"></view>
+      <view class="navbar__diamond"></view>
+      <view class="navbar__diamond-dot"></view>
+    </view>
+    <view class="navbar__border-line navbar__border-line--right"></view>
+  </view>
+</view>
+<!-- 占位：statusBar + 44px内容 + 8px装饰纹 ≈ statusBar + 52px -->
+<view class="navbar-placeholder" style="height: {{statusBarHeight + 52}}px;"></view>

@@ -1,0 +1,70 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="药品库" showBack="{true}" />
+  <view class="brand-hero">
+    <view class="hero-title">药品库</view>
+    <view class="hero-sub">用户加入药单时自动汇总的药品档案（删除个人药单不会删除此处记录）</view>
+  </view>
+
+  <view class="search-card card">
+    <t-input
+      value="{{keyword}}"
+      placeholder="搜索药品名、适应症、用法摘要…"
+      clearable
+      bind:change="onKeywordInput"
+    />
+    <view class="filter-row">
+      <picker mode="selector" range="{{usageFilterOptions}}" range-key="label" value="{{usageFilterIndex}}" bindchange="onUsageFilterPicker">
+        <view class="filter-pill tap-scale">{{usageFilterOptions[usageFilterIndex].label}}</view>
+      </picker>
+      <picker mode="selector" range="{{mealFilterOptions}}" range-key="label" value="{{mealFilterIndex}}" bindchange="onMealFilterPicker">
+        <view class="filter-pill tap-scale">{{mealFilterOptions[mealFilterIndex].label}}</view>
+      </picker>
+    </view>
+    <view class="filter-row filter-row--switch">
+      <text class="filter-label">仅有关联药品 ID</text>
+      <t-switch value="{{filterHasMedicineId}}" bind:change="onHasMedicineIdChange" />
+    </view>
+    <view wx:if="{{keyword || filterUsageMethod || filterMeal || filterHasMedicineId}}" class="filter-actions">
+      <t-button theme="light" size="small" class="tap-scale" bind:tap="onClearSearch">重置条件</t-button>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length === 0 && loading}}" class="empty-wrap">
+    <t-loading size="48rpx" text="加载中…" />
+  </view>
+
+  <view wx:elif="{{list.length === 0 && !loading && hasSearchCondition}}" class="empty-wrap">
+    <t-empty description="暂无匹配档案，试试其他关键词或筛选条件" />
+  </view>
+
+  <view wx:elif="{{list.length === 0 && !loading && !hasSearchCondition}}" class="empty-wrap">
+    <t-empty description="暂无档案，先去扫药或添加药品吧" />
+  </view>
+
+  <view wx:else class="card lib-list-card">
+    <view
+      wx:for="{{list}}"
+      wx:key="_id"
+      class="lib-row tap-scale"
+      bind:tap="onOpen"
+      data-name="{{item.name}}"
+      data-id="{{item.medicineId}}"
+    >
+      <view class="lib-row-main">
+        <view class="lib-row-title">
+          <rich-text wx:if="{{item.titleHtml}}" class="medicine-rich" type="html" nodes="{{item.titleHtml}}" />
+          <text wx:else class="lib-title-text">{{item.name}}</text>
+        </view>
+        <view wx:if="{{item.fragHtml}}" class="lib-row-sub">
+          <rich-text class="medicine-rich" type="html" nodes="{{item.fragHtml}}" />
+        </view>
+        <view wx:else class="lib-row-sub muted">{{item.subtitle}}</view>
+      </view>
+      <text class="lib-row-arrow">›</text>
+    </view>
+    <view wx:if="{{loading && list.length > 0}}" class="load-more">
+      <t-loading size="36rpx" text="加载中…" />
+    </view>
+    <view wx:if="{{!hasMore && list.length > 0}}" class="end-hint muted small">没有更多了</view>
+  </view>
+</view>

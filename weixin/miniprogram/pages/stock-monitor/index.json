@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-empty": "tdesign-miniprogram/empty/empty",
+    "t-tag": "tdesign-miniprogram/tag/tag",
+    "custom-navbar": "../../components/custom-navbar/index"
+  },
+  "navigationBarTitleText": "药品余量监控"
+}

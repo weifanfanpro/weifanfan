@@ -1,0 +1,10 @@
+<view class="page page-padding pay-page">
+  <custom-navbar title="模拟支付" showBack="{true}" />
+  <view class="card pay-card">
+    <view class="pay-title">积分支付</view>
+    <view class="pay-order">订单号：{{orderId}}</view>
+    <view class="pay-amount">{{pointsCost}} 积分</view>
+    <view class="pay-tip">本页面为模拟支付，不会产生真实费用。</view>
+  </view>
+  <t-button block theme="primary" loading="{{paying}}" bind:tap="onPay">确认支付</t-button>
+</view>

@@ -1,0 +1,6 @@
+.tab-redirect {
+  display: block;
+  min-height: 100vh;
+  background: var(--app-bg);
+  opacity: 0;
+}

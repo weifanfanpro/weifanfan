@@ -1,0 +1,90 @@
+/* ═══ Family Bind — 暖调古典 ═══ */
+.empty-wrap {
+  margin-top: 64rpx;
+}
+
+.mode-tabs {
+  display: flex;
+  padding: 8rpx;
+  margin-bottom: 14rpx;
+  border-radius: 20rpx;
+  background: #fffefb;
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+}
+
+.mode-tab {
+  flex: 1;
+  text-align: center;
+  font-size: 28rpx;
+  line-height: 64rpx;
+  border-radius: 16rpx;
+  color: #6b645c;
+}
+
+.mode-tab--active {
+  background: rgba(46, 158, 143, 0.08);
+  color: #2E9E8F;
+  font-weight: 700;
+}
+
+.status-tabs {
+  display: flex;
+  gap: 10rpx;
+  padding: 12rpx;
+  margin-bottom: 14rpx;
+  border-radius: 18rpx;
+  background: #fffefb;
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+}
+
+.status-tab {
+  flex: 1;
+  text-align: center;
+  font-size: 24rpx;
+  line-height: 52rpx;
+  border-radius: 999rpx;
+  background: rgba(28, 25, 23, 0.03);
+  color: #6b645c;
+}
+
+.status-tab--active {
+  background: rgba(46, 158, 143, 0.08);
+  color: #2E9E8F;
+  font-weight: 700;
+}
+
+.list-hint {
+  padding: 20rpx 20rpx 6rpx;
+  border-radius: 16rpx;
+  background: rgba(91, 122, 107, 0.04);
+}
+
+.li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.action-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.note-col {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6rpx;
+}
+
+.time-text {
+  font-size: 22rpx;
+  color: #b0a99f;
+  line-height: 1.4;
+}

@@ -1,0 +1,349 @@
+/* ═══ Missed Stats — 暖调古典 ═══ */
+.page {
+  min-height: 100vh;
+  background: #f5f2ed;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    );
+}
+
+.stats-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28rpx;
+  padding: 32rpx 28rpx 24rpx;
+  margin-bottom: 16rpx;
+  background: linear-gradient(148deg, #1c1917 0%, #2d2824 52%, #3a342e 100%);
+  box-shadow:
+    0 24rpx 60rpx rgba(28, 25, 23, 0.25),
+    0 4rpx 12rpx rgba(28, 25, 23, 0.08);
+}
+
+.stats-hero::before {
+  content: '';
+  position: absolute;
+  top: 16rpx;
+  left: 16rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-top: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-left: 2rpx solid rgba(46, 158, 143, 0.3);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.stats-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 16rpx;
+  right: 16rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-bottom: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-right: 2rpx solid rgba(46, 158, 143, 0.3);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.stats-hero-glow {
+  position: absolute;
+  right: -80rpx;
+  top: -78rpx;
+  width: 260rpx;
+  height: 260rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(46, 158, 143, 0.12), rgba(46, 158, 143, 0));
+}
+
+.stats-hero .hero-title,
+.stats-hero .hero-sub,
+.stats-hero .hero-view-capsule {
+  position: relative;
+  z-index: 1;
+}
+
+.stats-hero .hero-title {
+  color: #fffefb;
+  font-size: 38rpx;
+  font-weight: 800;
+}
+
+.stats-hero .hero-sub {
+  color: rgba(255, 254, 251, 0.55);
+  font-size: 24rpx;
+}
+
+.stats-hero .hero-view-capsule {
+  margin-top: 14rpx;
+  background: rgba(91, 122, 107, 0.08);
+  border: 1rpx solid rgba(91, 122, 107, 0.15);
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.stats-hero .hero-view-capsule__dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: #5b7a6b;
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+.stats-hero .hero-view-capsule__text {
+  color: #b0a99f;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.sub {
+  margin: 10rpx 0 18rpx;
+  font-size: 26rpx;
+  color: #b0a99f;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12rpx;
+}
+
+.stat {
+  flex: 1;
+  background: rgba(46, 158, 143, 0.03);
+  border-radius: 18rpx;
+  padding: 18rpx;
+  box-sizing: border-box;
+  border: 1rpx solid rgba(46, 158, 143, 0.08);
+}
+
+.num {
+  font-size: 44rpx;
+  font-weight: 900;
+  color: #1c1917;
+}
+
+.ok {
+  color: #5b7a6b;
+}
+
+.warn {
+  color: #2E9E8F;
+}
+
+.label {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #b0a99f;
+}
+
+.small {
+  font-size: 24rpx;
+  margin-top: 8rpx;
+  color: #b0a99f;
+}
+
+.today-cell {
+  background: rgba(46, 158, 143, 0.04);
+}
+
+.risk-card {
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+  border-radius: 22rpx;
+  background: #fffefb;
+}
+
+.risk-low {
+  background: rgba(91, 122, 107, 0.04);
+}
+
+.risk-mid {
+  background: rgba(180, 140, 60, 0.06);
+}
+
+.risk-high {
+  background: rgba(46, 158, 143, 0.05);
+}
+
+.risk-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.risk-title {
+  font-size: 24rpx;
+  color: #b0a99f;
+}
+
+.risk-num {
+  margin-top: 4rpx;
+  font-size: 56rpx;
+  line-height: 1.1;
+  font-weight: 800;
+  color: #1c1917;
+}
+
+.risk-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  justify-content: center;
+}
+
+.risk-meta-item {
+  font-size: 24rpx;
+  color: #6b645c;
+}
+
+.tips-wrap {
+  margin-top: 16rpx;
+  padding-top: 14rpx;
+  border-top: 1rpx solid rgba(28, 25, 23, 0.06);
+}
+
+.tips-title {
+  font-size: 24rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+  color: #1c1917;
+}
+
+.tip-line {
+  font-size: 24rpx;
+  color: #6b645c;
+  line-height: 1.7;
+}
+
+.week-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12rpx;
+}
+
+.day-pill {
+  border-radius: 16rpx;
+  padding: 14rpx 10rpx;
+  text-align: center;
+  border: 1rpx solid rgba(28, 25, 23, 0.06);
+  background: #fffefb;
+  transition: transform 140ms ease, filter 140ms ease;
+}
+
+.day-pill:active {
+  transform: translateY(1rpx) scale(0.995);
+  filter: brightness(0.98);
+}
+
+.day-pill--active {
+  box-shadow: 0 8rpx 22rpx rgba(46, 158, 143, 0.12);
+  border-color: rgba(46, 158, 143, 0.25);
+}
+
+.day-pill--future {
+  background: rgba(28, 25, 23, 0.02);
+}
+
+.day-pill--ok {
+  background: rgba(91, 122, 107, 0.08);
+}
+
+.day-pill--warn {
+  background: rgba(46, 158, 143, 0.08);
+}
+
+.day-pill--danger {
+  background: rgba(196, 77, 62, 0.1);
+}
+
+.day-pill-week {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.day-pill-date {
+  margin-top: 4rpx;
+  font-size: 22rpx;
+  color: #6b645c;
+}
+
+.day-detail {
+  margin-top: 16rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid rgba(28, 25, 23, 0.04);
+}
+
+.day-detail-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  margin-bottom: 6rpx;
+  color: #1c1917;
+}
+
+.day-detail-tag {
+  margin-top: 10rpx;
+  display: inline-block;
+  font-size: 22rpx;
+  border-radius: 999rpx;
+  padding: 8rpx 18rpx;
+}
+
+.detail-future {
+  background: rgba(28, 25, 23, 0.04);
+  color: #6b645c;
+}
+
+.detail-ok {
+  background: rgba(91, 122, 107, 0.1);
+  color: #5b7a6b;
+}
+
+.detail-missed {
+  background: rgba(46, 158, 143, 0.08);
+  color: #2E9E8F;
+}
+
+.weekly-brief-card {
+  margin-top: 16rpx;
+  border: 1rpx dashed rgba(91, 122, 107, 0.25);
+  background: rgba(255, 254, 251, 0.82);
+}
+
+.weekly-brief-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+  color: #1c1917;
+}
+
+.weekly-brief-line {
+  font-size: 24rpx;
+  color: #6b645c;
+  line-height: 1.6;
+}
+
+.weekly-brief-msg {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #1c1917;
+  line-height: 1.65;
+}
+
+.card {
+  border-radius: 22rpx;
+  background: #fffefb;
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+  box-shadow:
+    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
+    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+}

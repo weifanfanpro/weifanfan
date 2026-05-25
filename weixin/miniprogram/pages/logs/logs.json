@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "日志",
+  "usingComponents": {
+    "custom-navbar": "../../components/custom-navbar/index"
+  }
+}

@@ -1,0 +1,75 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="药品清单" showBack="{true}" />
+  <view class="list-hero">
+    <view class="list-hero-glow"></view>
+    <view class="hero-title">{{heroTitle}}</view>
+    <view class="hero-sub">{{heroSubtitle}}</view>
+    <view class="hero-view-capsule">
+      <view class="hero-view-capsule__dot"></view>
+      <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length === 0}}" class="empty-wrap card">
+    <t-empty description="{{emptyText}}" />
+    <view class="mt">
+      <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onAdd">添加药品</t-button>
+    </view>
+  </view>
+
+  <view wx:else class="list-panel card">
+    <view class="list-hint">
+      <text class="list-hint-dot"></text>
+      <text class="muted small">提示：左滑药品可删除</text>
+    </view>
+    <view class="med-list">
+      <view
+        wx:for="{{list}}"
+        wx:key="id"
+        class="swipe-row"
+        data-uid="{{item.id}}"
+        data-name="{{item.name}}"
+        data-id="{{item.medicineId}}"
+        bind:touchstart="onTouchStart"
+        bind:touchmove="onTouchMove"
+        bind:touchend="onTouchEnd"
+      >
+        <view
+          class="swipe-content {{swipedId === item.id ? 'swipe-content--open' : ''}}"
+          style="transform: translateX({{swipedId === item.id ? '-160rpx' : '0rpx'}});"
+          bind:tap="onOpen"
+          data-name="{{item.name}}"
+          data-id="{{item.medicineId}}"
+          data-uid="{{item.id}}"
+        >
+          <view class="med-main">
+            <view class="med-name">{{item.name}}</view>
+            <view class="med-rule">{{item.displayRule}}</view>
+          </view>
+          <view class="med-right">
+            <t-tag theme="{{item.active ? 'primary' : 'default'}}" class="med-status">
+              {{item.active ? activeText : inactiveText}}
+            </t-tag>
+            <t-icon name="chevron-right" size="36rpx" color="#9aa3b2" />
+          </view>
+        </view>
+        <view class="swipe-actions">
+          <view
+            class="swipe-action swipe-action--delete"
+            data-uid="{{item.id}}"
+            data-name="{{item.name}}"
+            data-id="{{item.medicineId}}"
+            bind:tap="onSwipeDelete"
+          >
+            <t-icon name="delete" size="36rpx" color="#fff" />
+            <text class="swipe-action-text">删除</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="mt">
+      <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onAdd">继续添加药品</t-button>
+    </view>
+  </view>
+</view>

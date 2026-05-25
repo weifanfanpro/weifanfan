@@ -1,0 +1,33 @@
+<view class="page page-padding mall-page">
+  <custom-navbar title="积分商城" showBack="{true}" />
+  <view class="mall-hero card-elevated anim-in">
+    <view class="mall-hero-main">
+      <view class="mall-hero-label">我的积分</view>
+      <view class="mall-hero-points">{{pointsBalance}}</view>
+      <view class="mall-hero-hint">每次按时服药可获得积分奖励</view>
+    </view>
+    <view class="mall-hero-actions">
+      <t-button size="small" theme="primary" variant="base" bind:tap="onOpenOrderList">我的订单</t-button>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <t-loading theme="spinner" />
+  </view>
+
+  <view wx:else class="goods-list">
+    <view class="section-title">可兑换商品</view>
+    <view wx:for="{{list}}" wx:key="productId" class="goods-item card tap-scale anim-in" bind:tap="onOpenProduct" data-id="{{item.productId}}">
+      <image class="goods-cover" src="{{item.cover}}" mode="aspectFill" />
+      <view class="goods-main">
+        <view class="goods-category">{{item.category}}</view>
+        <view class="goods-name">{{item.name}}</view>
+        <view class="goods-desc">{{item.desc}}</view>
+        <view class="goods-foot">
+          <view class="goods-price">{{item.pointsPrice}}<text class="goods-price-unit"> 积分</text></view>
+          <view class="goods-stock">库存 {{item.stockMock}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

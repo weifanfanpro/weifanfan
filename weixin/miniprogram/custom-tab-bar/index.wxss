@@ -1,0 +1,32 @@
+.tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 999rpx;
+  transition: transform 120ms ease, background 180ms ease;
+}
+
+.tab-icon image {
+  width: 52rpx;
+  height: 52rpx;
+}
+
+/* 保证 TabBar slot 在 display:contents 父级下仍有占位，图标不被挤没 */
+.tab-icon--ai {
+  position: relative;
+}
+
+/* 固定浅色 TabBar 风格 */
+.app-tabbar {
+  background: var(--app-blur-bg) !important;
+  backdrop-filter: blur(14px);
+  border-top: 1rpx solid var(--app-blur-border);
+  box-shadow: 0 -8rpx 30rpx rgba(28, 25, 23, 0.04);
+}
+
+.app-tabbar .t-tab-bar-item--active .tab-icon {
+  background: rgba(46, 158, 143, 0.1);
+  transform: translateY(-2rpx);
+}

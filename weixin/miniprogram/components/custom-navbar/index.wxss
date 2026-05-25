@@ -1,0 +1,173 @@
+/* ═══ Custom Navbar — 暖调古典 · 纹饰版 ═══ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #f5f2ed;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    );
+}
+
+/* 顶部赤陶细线 */
+.navbar__top-line {
+  height: 3rpx;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(168, 78, 51, 0.1) 15%,
+    rgba(46, 158, 143, 0.5) 40%,
+    #2E9E8F 50%,
+    rgba(46, 158, 143, 0.5) 60%,
+    rgba(168, 78, 51, 0.1) 85%,
+    transparent 100%
+  );
+}
+
+.navbar__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 16rpx;
+}
+
+.navbar__left {
+  flex-shrink: 0;
+  width: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.navbar__back {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(46, 158, 143, 0.06);
+  border: 1rpx solid rgba(46, 158, 143, 0.1);
+  transition: background 150ms ease;
+}
+
+.navbar__back:active {
+  background: rgba(46, 158, 143, 0.12);
+}
+
+.navbar__title-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 0 16rpx;
+}
+
+.navbar__title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1c1917;
+  letter-spacing: 0.5rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navbar__right {
+  flex-shrink: 0;
+  width: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* ═══ 底部装饰纹 — 层次分明 ═══ */
+.navbar__border-deco {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 16rpx;
+  margin-bottom: 2rpx;
+}
+
+/* 左右装饰线 */
+.navbar__border-line {
+  flex: 1;
+  height: 1rpx;
+}
+
+.navbar__border-line--left {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(46, 158, 143, 0.06) 20%,
+    rgba(46, 158, 143, 0.2) 60%,
+    rgba(46, 158, 143, 0.35) 100%
+  );
+}
+
+.navbar__border-line--right {
+  background: linear-gradient(90deg,
+    rgba(46, 158, 143, 0.35) 0%,
+    rgba(46, 158, 143, 0.2) 40%,
+    rgba(46, 158, 143, 0.06) 80%,
+    transparent 100%
+  );
+}
+
+/* 中心菱形纹饰组 — 三元素对称 */
+.navbar__diamond-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin: 0 14rpx;
+}
+
+/* 两侧小圆点 */
+.navbar__diamond-dot {
+  width: 4rpx;
+  height: 4rpx;
+  border-radius: 50%;
+  background: #2E9E8F;
+  opacity: 0.45;
+}
+
+/* 中心菱形 — 双层嵌套 */
+.navbar__diamond {
+  position: relative;
+  width: 22rpx;
+  height: 22rpx;
+}
+
+.navbar__diamond::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1.5rpx solid rgba(46, 158, 143, 0.4);
+  transform: rotate(45deg);
+}
+
+.navbar__diamond::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8rpx;
+  height: 8rpx;
+  background: rgba(46, 158, 143, 0.55);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.navbar-placeholder {
+  width: 100%;
+}

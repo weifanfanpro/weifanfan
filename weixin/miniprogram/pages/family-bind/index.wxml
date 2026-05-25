@@ -1,0 +1,141 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="家属绑定" showBack="{true}" />
+  <view class="support-hero">
+    <view class="support-hero-glow"></view>
+    <view class="hero-title">{{heroTitle}}</view>
+    <view class="hero-sub">{{heroSubtitle}}</view>
+  </view>
+
+  <view class="card mt pad current-view-card">
+    <view class="row">
+      <view class="muted small">当前视角</view>
+      <view class="view-right">
+        <view class="view-pill">
+          <t-icon name="user-circle" size="32rpx" />
+          <text class="pill-text">{{viewLabel}}</text>
+        </view>
+        <t-button
+          wx:if="{{viewOpenid && viewOpenid !== selfOpenid}}"
+          size="small"
+          theme="primary"
+          variant="outline"
+          shape="round"
+          icon="rollback"
+          bind:tap="onResetToSelf"
+          class="tap-scale"
+        >
+          切回自己
+        </t-button>
+      </view>
+    </view>
+  </view>
+
+  <view class="mt card relation-card">
+    <t-tabs value="{{tab}}" bind:change="onTabChange">
+      <t-tab-panel value="care" label="我来照护">
+        <view class="panel pad">
+          <view class="muted small">扫码家人的绑定码，或手动输入绑定码，授权你帮对方管理。</view>
+
+          <view class="mt">
+            <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onScanBind">扫码绑定</t-button>
+          </view>
+          <view class="mt">
+            <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onInputBind">手动输入绑定码</t-button>
+          </view>
+
+          <view class="section-title">我正在照护</view>
+          <view wx:if="{{asMember.length === 0}}" class="empty-wrap">
+            <t-empty description="暂无绑定的家人" />
+          </view>
+          <t-cell-group wx:else bordered>
+            <t-cell
+              wx:for="{{asMember}}"
+              wx:key="id"
+              title="{{item.owner.nickName}}"
+              arrow
+              bind:tap="onSwitchView"
+              data-openid="{{item.ownerOpenid}}"
+              data-label="{{item.owner.nickName}}"
+            >
+              <view slot="left-icon" class="li">
+                <t-avatar size="small" image="{{item.owner.avatarUrl}}"></t-avatar>
+              </view>
+              <view slot="note">
+                <view class="switch-wrap">
+                  <t-button
+                    wx:if="{{viewOpenid !== item.ownerOpenid}}"
+                    size="small"
+                    theme="primary"
+                    variant="outline"
+                    shape="round"
+                    icon="swap"
+                    bind:tap="onSwitchView"
+                    data-openid="{{item.ownerOpenid}}"
+                    data-label="{{item.owner.nickName}}"
+                    class="tap-scale"
+                  >
+                    切换视角
+                  </t-button>
+                  <t-tag wx:else theme="primary" variant="light">当前视角</t-tag>
+                </view>
+              </view>
+            </t-cell>
+          </t-cell-group>
+        </view>
+      </t-tab-panel>
+
+      <t-tab-panel value="owner" label="我被照护">
+        <view class="panel pad">
+          <view class="muted small">将绑定码或二维码给照护者，授权对方帮你管理。</view>
+
+          <view class="code-box mt">
+            <view class="code-label muted">我的绑定码</view>
+            <view class="code">{{selfOpenid}}</view>
+            <view class="mt">
+              <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onCopyCode">复制绑定码</t-button>
+            </view>
+            <view class="mt">
+              <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onShowBindQr">显示绑定二维码</t-button>
+            </view>
+          </view>
+
+          <view class="section-title">正在照护我的人</view>
+          <view wx:if="{{asOwner.length === 0}}" class="empty-wrap">
+            <t-empty description="暂无家人照护你" />
+          </view>
+          <t-cell-group wx:else bordered>
+            <t-cell
+              wx:for="{{asOwner}}"
+              wx:key="id"
+              title="{{item.member.nickName}}"
+              description="可在此解绑"
+            >
+              <view slot="left-icon" class="li">
+                <t-avatar size="small" image="{{item.member.avatarUrl}}"></t-avatar>
+              </view>
+              <view slot="note">
+                <view class="switch-wrap">
+                  <t-button
+                    size="small"
+                    theme="danger"
+                    variant="outline"
+                    shape="round"
+                    icon="close"
+                    bind:tap="onUnbind"
+                    data-id="{{item.id}}"
+                    class="tap-scale"
+                  >
+                    解绑
+                  </t-button>
+                </view>
+              </view>
+            </t-cell>
+          </t-cell-group>
+        </view>
+      </t-tab-panel>
+    </t-tabs>
+  </view>
+
+  <t-toast id="t-toast" />
+</view>
+

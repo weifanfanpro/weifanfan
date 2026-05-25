@@ -1,0 +1,104 @@
+<view class="page anim-in">
+  <custom-navbar title="识别结果" showBack="{true}" />
+  <scroll-view class="scrollarea" scroll-y enhanced="{{true}}" bounces="{{true}}">
+    <view class="page-padding content">
+      <view class="result-hero card-accent">
+        <view class="result-hero-glow"></view>
+        <view class="result-hero-head">
+          <view class="result-hero-label">AI 智能识别</view>
+          <view class="result-hero-time">{{scanTimeText}}</view>
+        </view>
+        <view class="result-hero-title">{{result.name || '未知药品'}}</view>
+        <view class="result-hero-sub">识别完成，可直接加入药单并设置提醒</view>
+        <view class="result-hero-badges">
+          <view class="hero-badge">识别成功</view>
+          <view class="hero-badge hero-badge--light">{{result.usageMethodText || '其他用法'}}</view>
+        </view>
+      </view>
+
+      <view wx:if="{{!viewIsSelf}}" class="hint-row">
+        <text class="hint-icon">i</text>
+        <text class="hint-text">你正在为「{{viewLabel}}」提交药品，需对方在【家属】页激活后才会生效。</text>
+      </view>
+
+      <view class="section-card section-card--base tap-scale">
+        <view class="section-title-row">
+          <view class="section-title-main">基础信息</view>
+          <view class="section-title-tag">核心参数</view>
+        </view>
+        <view class="info-grid">
+          <view class="info-item">
+            <view class="info-label">药品名称</view>
+            <view class="info-value">{{result.name || '—'}}</view>
+          </view>
+          <view class="info-item">
+            <view class="info-label">用法</view>
+            <view class="info-value">{{result.usageMethodText || '其他'}}</view>
+          </view>
+          <view class="info-item">
+            <view class="info-label">用量</view>
+            <view class="info-value">{{result.doseText || (result.isQuantifiable ? '每次 1 次' : '每次适量')}}</view>
+          </view>
+          <view class="info-item" wx:if="{{result.isQuantifiable && result.totalAmountText}}">
+            <view class="info-label">药品总量</view>
+            <view class="info-value">{{result.totalAmountText}}</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="section-card tap-scale">
+        <view class="section-title-row">
+          <view class="section-title-main">用药说明</view>
+          <view class="section-title-tag">场景提示</view>
+        </view>
+        <view class="detail-block">
+          <view class="detail-label">适应症</view>
+          <view class="detail-text">{{result.indication || '—'}}</view>
+        </view>
+        <view class="detail-block" wx:if="{{result.warnings && result.warnings.length > 0}}">
+          <view class="detail-label">注意事项</view>
+          <view class="warning-list">
+            <view class="warning-item" wx:for="{{result.warnings}}" wx:key="*this">
+              <text class="warning-dot"></text>
+              <text class="warning-text">{{item}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="section-card section-card--risk tap-scale" wx:if="{{hasRiskWarning}}">
+        <view class="section-title-row">
+          <view class="section-title-main">风险提示</view>
+          <view class="section-title-tag section-title-tag--risk">谨慎查看</view>
+        </view>
+        <view class="detail-block">
+          <view class="detail-label">禁忌/慎用人群</view>
+          <view class="detail-text">{{result.contraindications || '—'}}</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="bottom-bar">
+    <view class="page-padding action-wrap">
+      <t-button theme="primary" size="large" block class="action-btn action-btn--primary tap-scale" bind:tap="onAddAndSetReminder">
+        {{viewIsSelf ? '加入药单并设置提醒' : ('提交给' + viewLabel + '并填写提醒（待激活）')}}
+      </t-button>
+      <view class="action-gap"></view>
+      <t-button variant="outline" size="large" block class="action-btn action-btn--secondary tap-scale" bind:tap="onAddOnly">
+        {{viewIsSelf ? '仅加入我的药单' : ('仅提交给' + viewLabel + '（待激活）')}}
+      </t-button>
+      <view class="action-gap"></view>
+      <view class="action-row-secondary">
+        <t-button variant="outline" size="medium" class="action-btn-half tap-scale" bind:tap="onViewDetail">
+          查看药品详情
+        </t-button>
+        <t-button variant="outline" size="medium" class="action-btn-half action-btn--accent tap-scale" bind:tap="onAiConsult">
+          AI 咨询此药
+        </t-button>
+      </view>
+    </view>
+  </view>
+
+  <t-toast id="t-toast" />
+</view>

@@ -1,0 +1,85 @@
+/* ═══ Tab Shell — 暖调古典 ═══ */
+.tab-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background: #f5f2ed;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    );
+}
+
+.tab-shell-swiper {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.tab-shell-item {
+  height: 100%;
+  overflow: hidden;
+}
+
+.tab-shell-panel {
+  display: block;
+  height: 100%;
+}
+
+.tab-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 999rpx;
+  transition: transform 120ms ease, background 180ms ease;
+}
+
+.tab-icon image {
+  width: 52rpx;
+  height: 52rpx;
+}
+
+.tab-icon--ai {
+  position: relative;
+}
+
+.tab-badge {
+  position: absolute;
+  top: -8rpx;
+  right: -16rpx;
+  min-width: 26rpx;
+  height: 26rpx;
+  padding: 0 8rpx;
+  border-radius: 999rpx;
+  background: #2E9E8F;
+  color: #fff;
+  font-size: 18rpx;
+  font-weight: 700;
+  line-height: 26rpx;
+  text-align: center;
+  box-shadow: 0 0 0 2rpx rgba(255, 254, 251, 0.9);
+  box-sizing: border-box;
+}
+
+.app-tabbar {
+  flex-shrink: 0;
+  width: 100%;
+  background: rgba(245, 242, 237, 0.88) !important;
+  backdrop-filter: blur(14px);
+  border-top: 1rpx solid rgba(28, 25, 23, 0.06);
+  box-shadow: 0 -8rpx 30rpx rgba(28, 25, 23, 0.04);
+}
+
+.app-tabbar .t-tab-bar-item--active .tab-icon {
+  background: rgba(46, 158, 143, 0.1);
+  transform: translateY(-2rpx);
+}

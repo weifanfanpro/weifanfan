@@ -1,0 +1,187 @@
+/* ═══ Points Mall — 暖调古典 ═══ */
+.mall-page {
+  background: #f5f2ed;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 79rpx,
+      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
+    );
+}
+
+.mall-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 26rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  background: linear-gradient(148deg, #1c1917 0%, #2d2824 52%, #3a342e 100%);
+  border: 0;
+}
+
+.mall-hero::before {
+  content: '';
+  position: absolute;
+  top: 16rpx;
+  left: 16rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-top: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-left: 2rpx solid rgba(46, 158, 143, 0.3);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.mall-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 16rpx;
+  right: 16rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-bottom: 2rpx solid rgba(46, 158, 143, 0.3);
+  border-right: 2rpx solid rgba(46, 158, 143, 0.3);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.mall-hero-label {
+  position: relative;
+  z-index: 1;
+  font-size: 24rpx;
+  color: rgba(255, 254, 251, 0.55);
+}
+
+.mall-hero-points {
+  position: relative;
+  z-index: 1;
+  margin-top: 8rpx;
+  font-size: 58rpx;
+  font-weight: 800;
+  color: #fffefb;
+  line-height: 1;
+}
+
+.mall-hero-hint {
+  position: relative;
+  z-index: 1;
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: rgba(255, 254, 251, 0.45);
+}
+
+.mall-hero-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.loading-wrap {
+  padding: 80rpx 0;
+  display: flex;
+  justify-content: center;
+}
+
+.goods-list {
+  margin-top: 16rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.section-title {
+  margin-top: 8rpx;
+  margin-bottom: 2rpx;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.goods-item {
+  position: relative;
+  display: flex;
+  gap: 16rpx;
+  padding: 14rpx;
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(28, 25, 23, 0.05);
+  background: #fffefb;
+  box-shadow:
+    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
+    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+  overflow: hidden;
+}
+
+.goods-item::before {
+  content: '';
+  position: absolute;
+  top: 10rpx;
+  right: 10rpx;
+  width: 18rpx;
+  height: 18rpx;
+  border-top: 1.5rpx solid rgba(28, 25, 23, 0.06);
+  border-right: 1.5rpx solid rgba(28, 25, 23, 0.06);
+  pointer-events: none;
+}
+
+.goods-cover {
+  width: 188rpx;
+  height: 188rpx;
+  border-radius: 16rpx;
+  background: #f5f2ed;
+}
+
+.goods-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.goods-category {
+  display: inline-flex;
+  padding: 4rpx 12rpx;
+  border-radius: 999rpx;
+  font-size: 20rpx;
+  color: #2E9E8F;
+  background: rgba(46, 158, 143, 0.08);
+  border: 1rpx solid rgba(46, 158, 143, 0.15);
+}
+
+.goods-name {
+  margin-top: 6rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1c1917;
+}
+
+.goods-desc {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #6b645c;
+  line-height: 1.5;
+}
+
+.goods-foot {
+  margin-top: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.goods-price {
+  font-size: 36rpx;
+  color: #2E9E8F;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.goods-price-unit {
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.goods-stock {
+  font-size: 22rpx;
+  color: #b0a99f;
+}

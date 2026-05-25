@@ -1,0 +1,26 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="关于" showBack="{true}" />
+  <view class="brand-hero">
+    <view class="hero-title">关于 / 反馈</view>
+    <view class="hero-sub">欢迎反馈问题与建议。</view>
+  </view>
+
+  <view class="card">
+    <t-cell-group bordered>
+      <t-cell title="产品名称" note="智药助理（小程序）" />
+      <t-cell title="版本" note="0.1.0（UI 原型）" />
+      <t-cell title="隐私与安全" note="不采集敏感信息（后端接入后会补充说明）" />
+    </t-cell-group>
+  </view>
+
+  <view class="section-title">意见反馈</view>
+  <view class="card pad">
+    <t-textarea value="{{feedback}}" placeholder="例如：希望增加更大的按钮、增加漏服提醒…" bind:change="onChange" />
+    <view class="mt">
+      <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onSubmit">提交反馈</t-button>
+    </view>
+  </view>
+
+  <t-toast id="t-toast" />
+</view>
+

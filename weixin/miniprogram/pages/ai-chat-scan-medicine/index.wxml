@@ -1,0 +1,46 @@
+<view class="page page-padding safe-bottom anim-in">
+  <custom-navbar title="咨询 · 识别药品" showBack="{true}" />
+  <view class="hero card">
+    <view class="tip">为本次咨询识别药品</view>
+    <view class="muted tip-sub">与底部「扫药」Tab 无关；识别为阿里云 OCR + 通义千问整理（云函数 recognizeMedicine），返回咨询后随问题发给 AI</view>
+    <view class="hero-view-capsule">
+      <view class="hero-view-capsule__dot"></view>
+      <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>
+    </view>
+
+    <view class="frame-wrap">
+      <view class="frame">
+        <camera
+          class="cam"
+          mode="normal"
+          device-position="back"
+          flash="{{flashMode}}"
+          binderror="onCameraError"
+        ></camera>
+        <view class="corner tl"></view>
+        <view class="corner tr"></view>
+        <view class="corner bl"></view>
+        <view class="corner br"></view>
+
+        <view wx:if="{{recognizing}}" class="recognizing">
+          <t-loading size="48rpx" text="识别中…" />
+        </view>
+        <view wx:else class="frame-hint muted">拍摄药盒或说明书</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="actions card">
+    <t-cell-group bordered>
+      <t-cell title="闪光灯">
+        <view slot="right-icon" catchtap="noop">
+          <t-switch value="{{flashOn}}" bind:change="onToggleFlash" />
+        </view>
+      </t-cell>
+    </t-cell-group>
+    <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onStartRecognize">拍照识别</t-button>
+    <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onChooseFromAlbum">从相册选择</t-button>
+  </view>
+
+  <t-toast id="t-toast" />
+</view>

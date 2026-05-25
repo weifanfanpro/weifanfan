@@ -1,0 +1,2 @@
+<view class="tab-redirect" />
+  <custom-navbar title="咨询" showBack="{true}" />
