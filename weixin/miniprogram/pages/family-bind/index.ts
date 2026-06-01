@@ -1,5 +1,5 @@
 import Toast from "tdesign-miniprogram/toast/index";
-import { getOpenId } from "../../utils/user";
+import { getOpenId, getUserProfile } from "../../utils/user";
 import { getViewInfo, resetViewToSelf, setViewInfo } from "../../utils/view";
 import { getRelations, bindFamily, unbind } from "../../api/family";
 
@@ -23,14 +23,24 @@ Component({
     selfOpenid: "",
     viewOpenid: "",
     viewLabel: "我自己",
+    selfAvatarUrl: "",
+    viewAvatarUrl: "",
     asMember: [] as AsMemberItem[],
     asOwner: [] as AsOwnerItem[],
   },
   lifetimes: {
     attached() {
       const selfOpenid = getOpenId();
+      const profile = getUserProfile();
       const v = getViewInfo();
-      this.setData({ selfOpenid, viewOpenid: v.viewOpenid, viewLabel: v.label });
+      const selfAvatarUrl = profile?.avatarUrl || "";
+      this.setData({
+        selfOpenid,
+        selfAvatarUrl,
+        viewOpenid: v.viewOpenid,
+        viewLabel: v.label,
+        viewAvatarUrl: v.isSelf ? selfAvatarUrl : "",
+      });
       (this as any).refresh?.();
     },
   },
@@ -39,17 +49,35 @@ Component({
       try {
         const relations = await getRelations();
         const selfOpenid = (this.data as any).selfOpenid as string;
+        const viewOpenid = (this.data as any).viewOpenid as string;
+        const selfAvatarUrl = (this.data as any).selfAvatarUrl as string;
         const list = Array.isArray(relations) ? relations : [];
         const asMember = list.filter((r: any) => r.memberOpenid === selfOpenid || r.role === "member");
         const asOwner = list.filter((r: any) => r.ownerOpenid === selfOpenid || r.role === "owner");
-        this.setData({ asMember, asOwner });
+
+        // 查找当前视角用户的头像
+        let viewAvatarUrl = selfAvatarUrl;
+        if (viewOpenid && viewOpenid !== selfOpenid) {
+          const found = list.find((r: any) => {
+            if (r.ownerOpenid === viewOpenid && r.owner) return true;
+            if (r.memberOpenid === viewOpenid && r.member) return true;
+            return false;
+          });
+          if (found) {
+            const brief = found.ownerOpenid === viewOpenid ? found.owner : found.member;
+            if (brief?.avatarUrl) viewAvatarUrl = brief.avatarUrl;
+          }
+        }
+
+        this.setData({ asMember, asOwner, viewAvatarUrl });
       } catch (e) {
         console.error("family-bind refresh error", e);
         Toast({ context: this, message: "加载失败，请稍后重试" });
       }
     },
-    onTabChange(e: WechatMiniprogram.CustomEvent<{ value: string }>) {
-      this.setData({ tab: e.detail.value });
+    onTabChange(e: WechatMiniprogram.BaseEvent) {
+      const val = String((e.currentTarget as any)?.dataset?.value || "care");
+      this.setData({ tab: val });
     },
     onCopyCode() {
       const code = String((this.data as any).selfOpenid || "");
@@ -109,7 +137,22 @@ Component({
       if (!openid) return;
       setViewInfo(String(openid), String(label || "家人"));
       const v = getViewInfo();
-      this.setData({ viewOpenid: v.viewOpenid, viewLabel: v.label });
+      const selfAvatarUrl = (this.data as any).selfAvatarUrl as string;
+
+      // 查找被切换用户的头像
+      let viewAvatarUrl = selfAvatarUrl;
+      const list = [...(this.data as any).asMember, ...(this.data as any).asOwner];
+      const found = list.find((r: any) => {
+        if (r.ownerOpenid === openid && r.owner) return true;
+        if (r.memberOpenid === openid && r.member) return true;
+        return false;
+      });
+      if (found) {
+        const brief = found.ownerOpenid === openid ? found.owner : found.member;
+        if (brief?.avatarUrl) viewAvatarUrl = brief.avatarUrl;
+      }
+
+      this.setData({ viewOpenid: v.viewOpenid, viewLabel: v.label, viewAvatarUrl });
       Toast({ context: this, message: `已切换为「${v.label}」视角` });
     },
     onResetToSelf() {
@@ -119,7 +162,8 @@ Component({
       }
       resetViewToSelf();
       const nv = getViewInfo();
-      this.setData({ viewOpenid: nv.viewOpenid, viewLabel: nv.label });
+      const selfAvatarUrl = (this.data as any).selfAvatarUrl as string;
+      this.setData({ viewOpenid: nv.viewOpenid, viewLabel: nv.label, viewAvatarUrl: selfAvatarUrl });
       Toast({ context: this, message: "已切回「我自己」视角" });
     },
     onUnbind(e: WechatMiniprogram.BaseEvent) {

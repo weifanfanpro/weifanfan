@@ -268,12 +268,8 @@ Component({
   },
   methods: {
     noop() {},
-    onPhoneNotifyFakeChange(e: WechatMiniprogram.CustomEvent<{ value: boolean }>) {
-      const next = Boolean(e.detail?.value);
-      if (next) {
-        Toast({ context: this, message: "电话提醒正在接入中，敬请期待" });
-      }
-      // 假按钮：永远保持关闭
+    onPhoneNotifyFakeTap() {
+      Toast({ context: this, message: "电话提醒正在接入中，敬请期待" });
       this.setData({ phoneNotifyFake: false });
     },
     getUnitOptions(method: UsageMethod) {
@@ -453,8 +449,7 @@ Component({
 
         // Not found — create via API
         try {
-          const ret = await addMedicine({
-            medicineId: medicineId || "",
+          const addPayload: any = {
             name: drugName || "",
             rule: "待设置",
             targetOpenid: ownerOpenid,
@@ -463,9 +458,12 @@ Component({
             totalAmountText: (this.data as any).isQuantifiable
               ? String((this.data as any).totalAmountText || "")
               : null,
-          });
-          if (ret?.userMedicineId) {
-            applyUid(String(ret.userMedicineId));
+          };
+          if (medicineId) addPayload.medicineId = medicineId;
+          const ret = await addMedicine(addPayload);
+          const uid = ret?.id || ret?.userMedicineId;
+          if (uid) {
+            applyUid(String(uid));
             return;
           }
         } catch {}
@@ -495,7 +493,8 @@ Component({
       const userMedicineId = uid || (this.data as any).userMedicineId;
       if (!userMedicineId) return;
       try {
-        const rawList = await listReminders(userMedicineId);
+        const v = getViewInfo();
+        const rawList = await listReminders(v.viewOpenid);
         const list = (rawList || []) as any[];
         if (!list.length) return;
 
@@ -599,9 +598,8 @@ Component({
       );
     },
 
-    onDailyFrequencyChange(e: WechatMiniprogram.CustomEvent<{ value: string | number }>) {
-      // t-radio-group 会回传字符串，这里统一存为字符串，保证和 wxml 中的 value="1" 等完全匹配
-      const v = String(e.detail.value || "1");
+    onDailyFreqSelect(e: WechatMiniprogram.BaseEvent) {
+      const v = String((e.currentTarget as any)?.dataset?.value || "1");
       const n = parseInt(v, 10);
       const clamped = !Number.isFinite(n) || n < 1 ? "1" : n > 4 ? "4" : String(n);
       this.setData({ dailyFrequency: clamped }, () => this.refreshSummary());
@@ -630,8 +628,8 @@ Component({
       this.setData({ usageMethodText: String(e.detail.value || "") }, () => this.refreshSummary());
     },
 
-    onRepeatModeChange(e: WechatMiniprogram.CustomEvent<{ value: RepeatMode }>) {
-      const mode = e.detail.value;
+    onRepeatModeChange(e: WechatMiniprogram.BaseEvent) {
+      const mode = String((e.currentTarget as any)?.dataset?.value || "everyday") as RepeatMode;
       this.setData({ repeatMode: mode }, () => this.refreshSummary());
     },
 
@@ -649,11 +647,12 @@ Component({
       this.setData({ customWeekdays: sorted, weekdaySelected: buildWeekdaySelectedMap(sorted) }, () => this.refreshSummary());
     },
 
-    onNotifyChange(e: WechatMiniprogram.CustomEvent<{ value: boolean }>) {
-      const { key } = e.currentTarget.dataset as { key?: NotifyKey };
+    onNotifyToggle(e: WechatMiniprogram.BaseEvent) {
+      const { key } = (e.currentTarget as any)?.dataset as { key?: NotifyKey };
       if (!key) return;
+      const current = Boolean((this.data as any).notify?.[key]);
       const path = `notify.${key}` as const;
-      this.setData({ [path]: Boolean(e.detail.value) }, () => this.refreshSummary());
+      this.setData({ [path]: !current }, () => this.refreshSummary());
     },
 
     async onSyncToPhoneCalendar() {
@@ -733,8 +732,8 @@ Component({
       }
     },
 
-    onMealTimingChange(e: WechatMiniprogram.CustomEvent<{ value: string }>) {
-      const v = String(e.detail.value || "none");
+    onMealTimingSelect(e: WechatMiniprogram.BaseEvent) {
+      const v = String((e.currentTarget as any)?.dataset?.value || "none");
       let label = "参考说明书或医生建议";
       if (v === "before") label = "饭前";
       else if (v === "after") label = "饭后";
@@ -946,17 +945,13 @@ Component({
 
         await createPlan({
           userMedicineId: uid,
-          medicineId: (this.data as any).medicineId || "",
-          medicineName: drugName,
-          targetOpenid: getViewInfo().viewOpenid,
-          dailyFrequency: finalTimes.length,
-          perDoseAmount: doseValue || "1",
-          perDoseUnit: doseUnit || "片",
+          frequency: finalTimes.length,
+          doseValue: doseValue || "1",
+          doseUnit: doseUnit || "片",
           doseText,
           times: finalTimes,
           repeatMode: repeatMode || "everyday",
           customWeekdays: Array.isArray(customWeekdays) ? customWeekdays : [],
-          notify: notify || { wechat: true, ring: false, vibrate: true },
           mealTiming: mealTiming || "none",
         });
         Toast({ context: this, message: "已保存提醒" });

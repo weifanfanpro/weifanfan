@@ -1,5 +1,5 @@
 <template>
-  <div class="app-layout">
+  <div class="app-layout" v-if="appStore.isLoggedIn">
     <Sidebar />
     <div class="app-main" :class="{ collapsed: appStore.sidebarCollapsed }">
       <Header />
@@ -12,6 +12,7 @@
       </main>
     </div>
   </div>
+  <router-view v-else />
 </template>
 
 <script setup>
@@ -20,6 +21,7 @@ import Header from './components/Header.vue'
 import { useAppStore } from './stores/app'
 
 const appStore = useAppStore()
+appStore.restoreSession()
 </script>
 
 <style scoped>

@@ -171,7 +171,7 @@ Component({
     viewLabel: "本人",
     pendingCount: 0,
     sections: [] as Section[],
-    dayProgress: 0, // 0~100，模拟电量：今天已过去的比例
+    dayProgress: 0,
     riskScore: 100,
     riskLevel: "low",
     riskHint: "",
@@ -179,9 +179,12 @@ Component({
     lowStockTop: [] as { name: string; daysLeft: number; alreadyNotifiedToday?: boolean }[],
     heroTimeText: "",
     riskLevelText: "风险较低",
-    heroTiltStyle: "",
-    emptyTiltStyle: "",
-    metricSwiperIndex: 0,
+    dayDoneCount: 0,
+    dayTotalCount: 0,
+    dayPercent: 0,
+    nextMed: null as MedItem | null,
+    hasDue: false,
+    showConfetti: false,
   },
   // 组件挂载时启动一个定时器，定期刷新当天用药状态
   lifetimes: {
@@ -235,61 +238,6 @@ Component({
       }
       (this as any).refresh?.();
     },
-    setTiltStyle(tiltKey: string, style: string, sectionKey?: string) {
-      if (tiltKey === "hero") {
-        this.setData({ heroTiltStyle: style });
-        return;
-      }
-      if (tiltKey === "empty") {
-        this.setData({ emptyTiltStyle: style });
-        return;
-      }
-    },
-    onTiltTouchStart(e: WechatMiniprogram.TouchEvent) {
-      (this as any).onTiltTouchMove?.(e);
-    },
-    onTiltTouchMove(e: WechatMiniprogram.TouchEvent) {
-      const touch = e.touches && e.touches[0];
-      if (!touch) return;
-      const dataset = e.currentTarget.dataset as { tiltId?: string; tiltKey?: string; sectionKey?: string };
-      const { tiltId, tiltKey, sectionKey } = dataset;
-      if (!tiltId || !tiltKey) return;
-      const now = Date.now();
-      const that = this as any;
-      that._tiltTick = that._tiltTick || {};
-      if (that._tiltTick[tiltId] && now - that._tiltTick[tiltId] < 16) return;
-      that._tiltTick[tiltId] = now;
-      const selector = `#${tiltId}`;
-      wx.createSelectorQuery()
-        .in(this)
-        .select(selector)
-        .boundingClientRect((rect) => {
-          if (!rect) return;
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
-          const nx = Math.max(-1, Math.min(1, (touch.clientX - cx) / (rect.width / 2)));
-          const ny = Math.max(-1, Math.min(1, (touch.clientY - cy) / (rect.height / 2)));
-          const rx = Number((-ny * 7).toFixed(2));
-          const ry = Number((nx * 8).toFixed(2));
-          const sx = Number((50 + nx * 16).toFixed(2));
-          const sy = Number((50 + ny * 16).toFixed(2));
-          const style = `--tilt-rx:${rx}deg;--tilt-ry:${ry}deg;--shine-x:${sx}%;--shine-y:${sy}%;--tilt-scale:1.01;`;
-          (this as any).setTiltStyle?.(tiltKey, style, sectionKey);
-        })
-        .exec();
-    },
-    onTiltTouchEnd(e: WechatMiniprogram.TouchEvent) {
-      const dataset = e.currentTarget.dataset as { tiltKey?: string; sectionKey?: string };
-      const { tiltKey, sectionKey } = dataset;
-      if (!tiltKey) return;
-      (this as any).setTiltStyle?.(tiltKey, "", sectionKey);
-    },
-    onMetricSwiperChange(e: WechatMiniprogram.SwiperChange) {
-      const cur = e.detail?.current;
-      if (typeof cur === "number") {
-        this.setData({ metricSwiperIndex: cur });
-      }
-    },
     async refresh() {
       const now = new Date();
       const todayStr = `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())}`;
@@ -321,7 +269,7 @@ Component({
               ? `本周漏服风险中等（${riskScore}分），建议重点关注易漏服时段。`
               : "";
         const reminders = (dashboardData?.reminders || []) as any[];
-        const takenSet = new Set<string>(((dashboardData?.logs || []) as any[]).map((log) => log.reminderId));
+        const takenSet = new Set<string>(((dashboardData?.logs || []) as any[]).map((log: any) => String(log.reminderId)));
 
         const items: MedItem[] = [];
         for (const r of reminders) {
@@ -355,6 +303,11 @@ Component({
         const pendingCount = items.filter((m) => m.status !== "taken").length;
         const lowStockCount = Number(stockData?.count || 0);
         const lowStockTop = Array.isArray(stockData?.top) ? stockData.top : [];
+        const dayDoneCount = items.filter((m) => m.status === "taken").length;
+        const dayTotalCount = items.length;
+        const dayPercent = dayTotalCount > 0 ? Math.round((dayDoneCount / dayTotalCount) * 100) : 0;
+        const nextMed = items.find((m) => m.status !== "taken") || null;
+        const hasDue = items.some((m) => m.status === "due" || m.status === "overdue");
 
         this.setData({
           dateText: formatTodayCN(now),
@@ -369,6 +322,11 @@ Component({
           lowStockCount,
           lowStockTop,
           heroTimeText: `${hh}:${mm}`,
+          dayDoneCount,
+          dayTotalCount,
+          dayPercent,
+          nextMed,
+          hasDue,
         });
       } catch (err) {
         console.error("index refresh error", err);
@@ -385,6 +343,11 @@ Component({
           lowStockCount: 0,
           lowStockTop: [],
           heroTimeText: `${hh}:${mm}`,
+          dayDoneCount: 0,
+          dayTotalCount: 0,
+          dayPercent: 0,
+          nextMed: null,
+          hasDue: false,
         });
       }
     },
@@ -423,7 +386,12 @@ Component({
           wx.showToast({ icon: "none", title: "当前不是本人，不能代替服用" });
           return;
         }
-        const ret = await takeMedicine({ reminderId: id, date: todayStr, targetOpenid: v.viewOpenid });
+        const ret = await takeMedicine(Number(id), todayStr);
+
+        // 触发庆祝彩条
+        this.setData({ showConfetti: true });
+        setTimeout(() => this.setData({ showConfetti: false }), 2000);
+
         if (Number.isFinite(Number(ret?.pointsBalance))) {
           try {
             wx.setStorageSync("points_balance_cache", Number(ret.pointsBalance));

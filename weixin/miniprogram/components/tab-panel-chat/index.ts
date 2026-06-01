@@ -113,6 +113,7 @@ Component({
     drawerOpen: false,
     sessions: [] as SessionRow[],
     sessionListLoading: false,
+    delTargetId: "" as string,
 
     // Layout measurements
     toolbarH: 0,
@@ -375,7 +376,7 @@ Component({
     },
 
     onCloseDrawer() {
-      this.setData({ drawerOpen: false });
+      this.setData({ drawerOpen: false, delTargetId: "" });
     },
 
     onNewChat() {
@@ -392,10 +393,13 @@ Component({
         consultPayload: null,
         sheetVisible: false,
         toolStatusText: "",
+        delTargetId: "",
       });
     },
 
     async onPickSession(e: WechatMiniprogram.TouchEvent) {
+      // 如果有删除目标，忽略这次 tap（说明刚长按过）
+      if (this.data.delTargetId) return;
       const id = String(e.currentTarget.dataset.id || "");
       if (!id) return;
       wx.showLoading({ title: "加载中", mask: true });
@@ -421,6 +425,7 @@ Component({
           sessionTitle: session.title || "对话",
           messages,
           drawerOpen: false,
+          delTargetId: "",
           reasoningOpen: {},
         });
         this.scrollToBottom();
@@ -431,9 +436,16 @@ Component({
       }
     },
 
+    onLongPressSession(e: WechatMiniprogram.TouchEvent) {
+      const id = String(e.currentTarget.dataset.id || "");
+      if (!id) return;
+      this.setData({ delTargetId: id });
+    },
+
     onDeleteSession(e: WechatMiniprogram.TouchEvent) {
       const id = String(e.currentTarget.dataset.id || "");
       if (!id) return;
+      this.setData({ delTargetId: "" });
       wx.showModal({
         title: "删除对话",
         content: "确定删除这条历史记录吗？",

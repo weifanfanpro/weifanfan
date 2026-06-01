@@ -1,58 +1,57 @@
-/* ═══ Points Order Confirm — 暖调古典 ═══ */
-.confirm-page {
-  background: #f5f2ed;
-  background-image:
-    repeating-linear-gradient(
-      0deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    ),
-    repeating-linear-gradient(
-      90deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    );
+/* ═══ Points Order Confirm — 蓝白卡通风格 ═══ */
+
+.page {
   min-height: 100vh;
+  background: #F0F7FF;
   padding-bottom: calc(134rpx + env(safe-area-inset-bottom));
 }
 
 .confirm-content {
   display: flex;
   flex-direction: column;
-  gap: 12rpx;
+  gap: 16rpx;
 }
 
-.mt {
-  margin-top: 0;
-}
-
+/* ═══ Shared ═══ */
 .title {
   font-size: 30rpx;
   font-weight: 700;
-  color: #1c1917;
+  color: #1A3A5C;
 }
 
+/* 装饰角 */
+.card-corner {
+  position: absolute;
+  width: 16rpx;
+  height: 16rpx;
+  pointer-events: none;
+}
+
+.card-corner--tl {
+  top: 10rpx;
+  left: 10rpx;
+  border-top: 2rpx solid rgba(74, 157, 255, 0.15);
+  border-left: 2rpx solid rgba(74, 157, 255, 0.15);
+  border-radius: 4rpx 0 0 0;
+}
+
+.card-corner--br {
+  bottom: 10rpx;
+  right: 10rpx;
+  border-bottom: 2rpx solid rgba(74, 157, 255, 0.15);
+  border-right: 2rpx solid rgba(74, 157, 255, 0.15);
+  border-radius: 0 0 4rpx 0;
+}
+
+/* ═══ Order Hero ═══ */
 .order-hero {
   position: relative;
   overflow: hidden;
   border-radius: 24rpx;
-  border: 1rpx solid rgba(46, 158, 143, 0.12);
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
   padding: 20rpx;
-  background: #fffefb;
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
-}
-
-.order-hero::before {
-  content: '';
-  position: absolute;
-  top: 10rpx;
-  left: 10rpx;
-  width: 18rpx;
-  height: 18rpx;
-  border-top: 1.5rpx solid rgba(46, 158, 143, 0.12);
-  border-left: 1.5rpx solid rgba(46, 158, 143, 0.12);
-  pointer-events: none;
-  z-index: 1;
+  background: #FFFFFF;
+  box-shadow: 0 6rpx 24rpx rgba(43, 94, 167, 0.06);
 }
 
 .order-head {
@@ -62,16 +61,17 @@
 }
 
 .order-head-tag {
-  padding: 4rpx 12rpx;
+  padding: 4rpx 14rpx;
   border-radius: 999rpx;
   font-size: 20rpx;
-  color: #2E9E8F;
-  background: rgba(46, 158, 143, 0.08);
-  border: 1rpx solid rgba(46, 158, 143, 0.15);
+  font-weight: 600;
+  color: #4A9DFF;
+  background: rgba(74, 157, 255, 0.08);
+  border: 1rpx solid rgba(74, 157, 255, 0.12);
 }
 
 .summary-grid {
-  margin-top: 10rpx;
+  margin-top: 14rpx;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12rpx;
@@ -79,81 +79,53 @@
 
 .summary-item {
   border-radius: 14rpx;
-  background: rgba(46, 158, 143, 0.03);
-  border: 1rpx solid rgba(46, 158, 143, 0.08);
-  padding: 10rpx 12rpx;
+  background: rgba(74, 157, 255, 0.03);
+  border: 1rpx solid rgba(74, 157, 255, 0.06);
+  padding: 12rpx 14rpx;
 }
 
 .summary-label {
   font-size: 22rpx;
-  color: #b0a99f;
+  color: #8BA4C7;
 }
 
 .summary-value {
   margin-top: 4rpx;
   font-size: 28rpx;
-  color: #1c1917;
+  color: #1A3A5C;
   font-weight: 700;
 }
 
 .summary-value--main {
-  color: #2E9E8F;
+  color: #4A9DFF;
   font-size: 32rpx;
-}
-
-.meta {
-  margin-top: 8rpx;
-  color: #6b645c;
-  font-size: 25rpx;
-}
-
-.cost {
-  margin-top: 12rpx;
-  color: #2E9E8F;
-  font-size: 32rpx;
-  font-weight: 800;
 }
 
 .balance {
-  margin-top: 10rpx;
+  margin-top: 12rpx;
   font-size: 24rpx;
-  color: #5b7a6b;
-  background: rgba(91, 122, 107, 0.06);
-  border: 1rpx solid rgba(91, 122, 107, 0.12);
+  color: #52D9A0;
+  background: rgba(82, 217, 160, 0.06);
+  border: 1rpx solid rgba(82, 217, 160, 0.12);
   padding: 10rpx 14rpx;
   border-radius: 12rpx;
 }
 
 .balance--warn {
-  color: #b45309;
-  background: rgba(180, 140, 60, 0.06);
-  border-color: rgba(180, 140, 60, 0.12);
+  color: #FFB366;
+  background: rgba(255, 179, 102, 0.06);
+  border-color: rgba(255, 179, 102, 0.12);
 }
 
-.addr-item {
-  margin-top: 12rpx;
-  padding: 16rpx;
-  border-radius: 14rpx;
-  background: rgba(28, 25, 23, 0.02);
-  border: 1rpx solid rgba(28, 25, 23, 0.06);
-  transition: all 160ms ease;
-}
-
-.addr-item--active {
-  border-color: rgba(46, 158, 143, 0.25);
-  background: rgba(46, 158, 143, 0.04);
-  box-shadow: 0 10rpx 20rpx rgba(46, 158, 143, 0.08);
-}
-
+/* ═══ Address Card ═══ */
 .address-card {
-  padding-top: 18rpx;
-  padding-bottom: 18rpx;
-  padding-left: 20rpx;
-  padding-right: 20rpx;
-  border: 1rpx solid rgba(28, 25, 23, 0.06);
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+  position: relative;
+  overflow: hidden;
+  padding: 20rpx;
+  border-radius: 24rpx;
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
+  box-shadow: 0 6rpx 24rpx rgba(43, 94, 167, 0.06);
 }
 
 .address-head {
@@ -164,9 +136,9 @@
 }
 
 .address-head-sub {
-  margin-top: 10rpx;
+  margin-top: 8rpx;
   font-size: 22rpx;
-  color: #b0a99f;
+  color: #8BA4C7;
   line-height: 1.45;
 }
 
@@ -175,11 +147,13 @@
   align-items: center;
   gap: 8rpx;
   font-size: 22rpx;
-  color: #2E9E8F;
-  border: 1rpx solid rgba(46, 158, 143, 0.2);
-  background: rgba(46, 158, 143, 0.06);
+  font-weight: 600;
+  color: #4A9DFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.2);
+  background: rgba(74, 157, 255, 0.06);
   border-radius: 999rpx;
   padding: 8rpx 16rpx;
+  flex-shrink: 0;
 }
 
 .address-head-arrow {
@@ -206,14 +180,14 @@
 .addr-name {
   font-size: 38rpx;
   line-height: 1;
-  color: #1c1917;
+  color: #1A3A5C;
   font-weight: 800;
 }
 
 .addr-phone {
   font-size: 34rpx;
   line-height: 1;
-  color: #1c1917;
+  color: #1A3A5C;
   font-weight: 700;
 }
 
@@ -221,9 +195,10 @@
   margin-top: 4rpx;
   flex-shrink: 0;
   font-size: 20rpx;
-  color: #2E9E8F;
-  background: rgba(46, 158, 143, 0.08);
-  border: 1rpx solid rgba(46, 158, 143, 0.15);
+  font-weight: 600;
+  color: #4A9DFF;
+  background: rgba(74, 157, 255, 0.08);
+  border: 1rpx solid rgba(74, 157, 255, 0.12);
   border-radius: 999rpx;
   padding: 4rpx 12rpx;
 }
@@ -232,42 +207,44 @@
   margin-top: 12rpx;
   font-size: 27rpx;
   line-height: 1.65;
-  color: #6b645c;
+  color: #8BA4C7;
 }
 
 .address-empty {
   margin-top: 12rpx;
   border-radius: 16rpx;
-  border: 1rpx dashed rgba(46, 158, 143, 0.2);
-  background: rgba(46, 158, 143, 0.03);
+  border: 1rpx dashed rgba(74, 157, 255, 0.2);
+  background: rgba(74, 157, 255, 0.03);
   padding: 16rpx 18rpx;
-  color: #b0a99f;
+  color: #8BA4C7;
   font-size: 24rpx;
 }
 
 .address-add-btn {
-  margin-top: 10rpx;
+  margin-top: 12rpx;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  height: 52rpx;
-  border-radius: 999rpx;
-  padding: 0 20rpx;
-  color: #fff;
-  font-size: 22rpx;
-  font-weight: 700;
-  background: linear-gradient(135deg, #2E9E8F, #d4845a);
+  gap: 6rpx;
+  height: 56rpx;
+  border-radius: 14rpx;
+  padding: 0 28rpx;
+  color: #4A9DFF;
+  font-size: 24rpx;
+  font-weight: 600;
+  background: rgba(74, 157, 255, 0.06);
+  border: 1rpx solid rgba(74, 157, 255, 0.18);
 }
 
+/* ═══ Bottom Bar ═══ */
 .bottom {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(245, 242, 237, 0.88);
+  background: rgba(240, 247, 255, 0.92);
   backdrop-filter: blur(14px);
   border-top: none;
-  box-shadow: 0 -8rpx 18rpx rgba(28, 25, 23, 0.04);
+  box-shadow: 0 -4rpx 16rpx rgba(43, 94, 167, 0.04);
   padding: 12rpx 22rpx calc(12rpx + env(safe-area-inset-bottom));
 }
 
@@ -275,9 +252,38 @@
   margin-bottom: 8rpx;
   text-align: center;
   font-size: 22rpx;
-  color: #b0a99f;
+  color: #8BA4C7;
 }
 
 .bottom-hint--warn {
-  color: #b45309;
+  color: #FFB366;
+}
+
+/* ═══ Button ═══ */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 999rpx;
+  transition: transform 150ms ease;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  background: linear-gradient(135deg, #4A9DFF, #6DB8FF);
+  box-shadow: 0 8rpx 24rpx rgba(74, 157, 255, 0.25);
+}
+
+.btn--disabled {
+  background: #D0E3FF;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.btn-text {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #FFFFFF;
 }

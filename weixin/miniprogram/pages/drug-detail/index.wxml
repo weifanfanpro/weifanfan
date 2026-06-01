@@ -2,8 +2,10 @@
   <custom-navbar title="药品信息" showBack="{true}" />
   <scroll-view class="scrollarea" scroll-y type="list" enhanced="{{true}}" bounces="{{true}}">
     <view class="page-padding safe-bottom content">
+      <!-- 蓝色渐变 Header -->
       <view class="header card">
-        <view class="header-glow"></view>
+        <view class="hero-cloud hero-cloud--1"></view>
+        <view class="hero-star hero-star--1"></view>
         <view class="drug-name">{{drug.name}}</view>
         <view class="hero-sub">{{heroSubtitle}}</view>
         <view class="hero-view-capsule">
@@ -11,12 +13,13 @@
           <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>
         </view>
         <view class="header-tags">
-          <t-tag theme="primary" variant="light">{{drug.rule.timesPerDay}}</t-tag>
-          <t-tag theme="default" variant="light">{{drug.rule.doseEach}}</t-tag>
-          <t-tag theme="default" variant="light">{{drug.rule.when}}</t-tag>
+          <view class="tag tag--primary">{{drug.rule.timesPerDay}}</view>
+          <view class="tag tag--default">{{drug.rule.doseEach}}</view>
+          <view class="tag tag--default">{{drug.rule.when}}</view>
         </view>
       </view>
 
+      <!-- 关键摘要 -->
       <view class="summary-card card">
         <view class="summary-title">关键摘要</view>
         <view class="summary-grid">
@@ -35,43 +38,80 @@
         </view>
       </view>
 
+      <!-- 折叠面板 -->
       <view class="card collapse-card">
-        <t-collapse value="{{opened}}" bind:change="onCollapseChange">
-          <t-collapse-panel value="dose" header="用法用量（最重要）">
-            <view class="panel">
-              <t-cell title="每日几次" note="{{drug.rule.timesPerDay}}" />
-              <t-cell title="每次几片/单位" note="{{drug.rule.doseEach}}" />
-              <t-cell title="饭前/饭后/空腹" note="{{drug.rule.when}}" />
-              <t-cell
-                wx:if="{{drug.rule.isQuantifiable && drug.rule.totalAmountText}}"
-                title="药品总量"
-                note="{{drug.rule.totalAmountText}}"
-              />
+        <!-- 用法用量 -->
+        <view class="accordion-item">
+          <view class="accordion-header" bindtap="onTogglePanel" data-value="dose">
+            <text class="accordion-title">用法用量（最重要）</text>
+            <view class="accordion-arrow {{opened === 'dose' ? 'accordion-arrow--open' : ''}}"></view>
+          </view>
+          <view wx:if="{{opened === 'dose'}}" class="accordion-body">
+            <view class="app-cell-group">
+              <view class="app-cell">
+                <text class="app-cell-title">每日几次</text>
+                <text class="app-cell-note">{{drug.rule.timesPerDay}}</text>
+              </view>
+              <view class="app-cell">
+                <text class="app-cell-title">每次几片/单位</text>
+                <text class="app-cell-note">{{drug.rule.doseEach}}</text>
+              </view>
+              <view class="app-cell">
+                <text class="app-cell-title">饭前/饭后/空腹</text>
+                <text class="app-cell-note">{{drug.rule.when}}</text>
+              </view>
+              <view wx:if="{{drug.rule.isQuantifiable && drug.rule.totalAmountText}}" class="app-cell">
+                <text class="app-cell-title">药品总量</text>
+                <text class="app-cell-note">{{drug.rule.totalAmountText}}</text>
+              </view>
             </view>
-          </t-collapse-panel>
-          <t-collapse-panel value="func" header="主治功能">
+          </view>
+        </view>
+
+        <!-- 主治功能 -->
+        <view class="accordion-item">
+          <view class="accordion-header" bindtap="onTogglePanel" data-value="func">
+            <text class="accordion-title">主治功能</text>
+            <view class="accordion-arrow {{opened === 'func' ? 'accordion-arrow--open' : ''}}"></view>
+          </view>
+          <view wx:if="{{opened === 'func'}}" class="accordion-body">
             <view class="panel-text">{{drug.function || fallbackFunctionText}}</view>
-          </t-collapse-panel>
-          <t-collapse-panel value="notice" header="注意事项（精简）">
+          </view>
+        </view>
+
+        <!-- 注意事项 -->
+        <view class="accordion-item">
+          <view class="accordion-header" bindtap="onTogglePanel" data-value="notice">
+            <text class="accordion-title">注意事项（精简）</text>
+            <view class="accordion-arrow {{opened === 'notice' ? 'accordion-arrow--open' : ''}}"></view>
+          </view>
+          <view wx:if="{{opened === 'notice'}}" class="accordion-body">
             <view class="panel-list">
               <view wx:if="{{drug.notices.length === 0}}" class="li">{{fallbackNoticeText}}</view>
               <view wx:if="{{drug.notices.length > 0}}" wx:for="{{drug.notices}}" wx:for-index="idx" wx:key="idx" class="li">- {{item}}</view>
             </view>
-          </t-collapse-panel>
-          <t-collapse-panel value="contra" header="禁忌/慎用人群">
+          </view>
+        </view>
+
+        <!-- 禁忌 -->
+        <view class="accordion-item">
+          <view class="accordion-header" bindtap="onTogglePanel" data-value="contra">
+            <text class="accordion-title">禁忌/慎用人群</text>
+            <view class="accordion-arrow {{opened === 'contra' ? 'accordion-arrow--open' : ''}}"></view>
+          </view>
+          <view wx:if="{{opened === 'contra'}}" class="accordion-body">
             <view class="panel-text">{{drug.contraindications || fallbackContraText}}</view>
-          </t-collapse-panel>
-        </t-collapse>
+          </view>
+        </view>
       </view>
     </view>
   </scroll-view>
 
   <view class="bottom-bar">
     <view class="page-padding safe-bottom bottom-action-card">
-      <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onSetReminder">
-        设置服药提醒
-      </t-button>
+      <view class="btn btn--primary tap-scale" bindtap="onSetReminder">
+        <text class="btn-text">设置服药提醒</text>
+      </view>
     </view>
   </view>
 </view>
-

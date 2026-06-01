@@ -1,9 +1,6 @@
 {
   "navigationBarTitleText": "帮助中心",
   "usingComponents": {
-    "t-collapse": "tdesign-miniprogram/collapse/collapse",
-    "t-collapse-panel": "tdesign-miniprogram/collapse-panel/collapse-panel",
-    "t-button": "tdesign-miniprogram/button/button",
     "custom-navbar": "../../components/custom-navbar/index"
   }
 }

@@ -12,42 +12,28 @@
       subtitle="管理积分商城商品"
       :columns="columns"
       :data="filteredProducts"
-      :current-page="currentPage"
-      :page-size="10"
+      :show-pagination="false"
     >
       <template #actions>
-        <button class="btn btn-primary" @click="showModal = true">
+        <button class="btn btn-primary" @click="openAdd">
           <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"/></svg>
           添加商品
         </button>
-        <button class="btn btn-outline">导出数据</button>
       </template>
 
       <template #filters>
         <input v-model="searchQuery" type="text" placeholder="搜索商品名称..." class="filter-input" />
-        <select v-model="categoryFilter" class="filter-select">
-          <option value="">全部分类</option>
-          <option v-for="c in categories" :key="c" :value="c">{{ c }}</option>
-        </select>
         <select v-model="statusFilter" class="filter-select">
           <option value="">全部状态</option>
-          <option value="在售">在售</option>
-          <option value="下架">下架</option>
-          <option value="预售">预售</option>
+          <option value="on">上架</option>
+          <option value="off">下架</option>
         </select>
       </template>
 
       <template #cell-name="{ row }">
         <div class="product-cell">
-          <div class="product-avatar" :style="{ background: getAvatarColor(row.name) }">{{ row.name[0] }}</div>
+          <div class="product-avatar" :style="{ background: getAvatarColor(row.name) }">{{ (row.name || '?')[0] }}</div>
           <span class="product-name">{{ row.name }}</span>
-        </div>
-      </template>
-
-      <template #cell-price="{ row }">
-        <div class="price-col">
-          <span class="price-current">¥{{ row.price }}</span>
-          <span class="price-original">¥{{ row.originalPrice }}</span>
         </div>
       </template>
 
@@ -55,24 +41,13 @@
         <span class="points-tag">{{ row.pointsPrice }} 积分</span>
       </template>
 
-      <template #cell-sales="{ row }">
-        <span class="sales-num">{{ row.sales.toLocaleString() }}</span>
-      </template>
-
-      <template #cell-rating="{ row }">
-        <div class="rating-cell">
-          <svg viewBox="0 0 20 20" fill="#E8A838" width="14" height="14"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          <span>{{ row.rating }}</span>
-        </div>
-      </template>
-
       <template #cell-status="{ row }">
-        <span class="status-badge" :class="statusClass(row.status)">{{ row.status }}</span>
+        <span class="status-badge" :class="row.status === 'on' ? 'active' : 'inactive'">{{ row.status === 'on' ? '上架' : '下架' }}</span>
       </template>
 
       <template #cell-actions="{ row }">
         <div class="action-btns">
-          <button class="icon-btn" title="编辑" @click="editProduct(row)">
+          <button class="icon-btn" title="编辑" @click="openEdit(row)">
             <svg viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
           </button>
           <button class="icon-btn danger" title="删除" @click="deleteProduct(row)">
@@ -82,7 +57,6 @@
       </template>
     </DataTable>
 
-    <!-- Modal -->
     <Teleport to="body">
       <transition name="modal">
         <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
@@ -97,27 +71,32 @@
                   <label>商品名称</label>
                   <input v-model="form.name" type="text" placeholder="请输入商品名称" class="form-input" />
                 </div>
+                <div class="form-group full">
+                  <label>商品描述</label>
+                  <input v-model="form.description" type="text" placeholder="请输入商品描述" class="form-input" />
+                </div>
                 <div class="form-group">
                   <label>分类</label>
-                  <select v-model="form.category" class="form-input">
-                    <option v-for="c in categories" :key="c" :value="c">{{ c }}</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>售价 (¥)</label>
-                  <input v-model="form.price" type="number" step="0.01" class="form-input" />
-                </div>
-                <div class="form-group">
-                  <label>原价 (¥)</label>
-                  <input v-model="form.originalPrice" type="number" step="0.01" class="form-input" />
+                  <input v-model="form.category" type="text" placeholder="如：保健品" class="form-input" />
                 </div>
                 <div class="form-group">
                   <label>积分价</label>
-                  <input v-model="form.pointsPrice" type="number" class="form-input" />
+                  <input v-model.number="form.pointsPrice" type="number" class="form-input" />
                 </div>
                 <div class="form-group">
                   <label>库存</label>
-                  <input v-model="form.stock" type="number" class="form-input" />
+                  <input v-model.number="form.stock" type="number" class="form-input" />
+                </div>
+                <div class="form-group">
+                  <label>状态</label>
+                  <select v-model="form.status" class="form-input">
+                    <option value="on">上架</option>
+                    <option value="off">下架</option>
+                  </select>
+                </div>
+                <div class="form-group full">
+                  <label>封面图URL</label>
+                  <input v-model="form.coverUrl" type="text" placeholder="图片链接" class="form-input" />
                 </div>
               </div>
             </div>
@@ -133,73 +112,91 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import DataTable from '../components/DataTable.vue'
-import { generateProducts } from '../utils/mock'
+import { get, post, del } from '@/utils/request'
 
-const products = ref(generateProducts())
+const products = ref([])
 const searchQuery = ref('')
-const categoryFilter = ref('')
 const statusFilter = ref('')
-const currentPage = ref(1)
 const showModal = ref(false)
 const editingProduct = ref(null)
-
-const categories = ['西药', '中成药', '保健品', '医疗器械', '营养补充', '个人护理']
-const form = ref({ name: '', category: '西药', price: '', originalPrice: '', pointsPrice: '', stock: '' })
+const form = ref({ name: '', description: '', category: '', pointsPrice: 0, stock: 0, status: 'on', coverUrl: '' })
 
 const summary = computed(() => [
   { label: '商品总数', value: products.value.length, color: '#0A6E5D' },
-  { label: '在售商品', value: products.value.filter(p => p.status === '在售').length, color: '#10B981' },
-  { label: '总销量', value: products.value.reduce((s, p) => s + p.sales, 0).toLocaleString(), color: '#E8A838' },
-  { label: '低库存', value: products.value.filter(p => p.stock < 100).length, color: '#EF4444' }
+  { label: '上架商品', value: products.value.filter(p => p.status === 'on').length, color: '#10B981' },
+  { label: '下架商品', value: products.value.filter(p => p.status === 'off').length, color: '#EF4444' },
+  { label: '低库存', value: products.value.filter(p => p.stock < 10).length, color: '#F59E0B' }
 ])
 
 const columns = [
-  { key: 'id', label: '编号', width: '110px' },
+  { key: 'productId', label: '编号', width: '120px' },
   { key: 'name', label: '商品名称' },
   { key: 'category', label: '分类', width: '100px' },
-  { key: 'price', label: '价格', width: '120px' },
   { key: 'pointsPrice', label: '积分价', width: '110px' },
-  { key: 'sales', label: '销量', width: '90px' },
-  { key: 'rating', label: '评分', width: '80px' },
+  { key: 'stock', label: '库存', width: '80px' },
   { key: 'status', label: '状态', width: '80px' },
   { key: 'actions', label: '操作', width: '100px' }
 ]
 
 const filteredProducts = computed(() =>
   products.value.filter(p => {
-    if (searchQuery.value && !p.name.includes(searchQuery.value)) return false
-    if (categoryFilter.value && p.category !== categoryFilter.value) return false
+    if (searchQuery.value && !(p.name || '').includes(searchQuery.value)) return false
     if (statusFilter.value && p.status !== statusFilter.value) return false
     return true
   })
 )
 
-function statusClass(s) { return { '在售': 'active', '下架': 'inactive', '预售': 'presale' }[s] || '' }
 function getAvatarColor(name) {
   const colors = ['#0A6E5D', '#3B82F6', '#E8A838', '#8B5CF6', '#EF4444', '#10B981']
-  return colors[name.charCodeAt(0) % colors.length] + '18'
+  return colors[(name || '').charCodeAt(0) % colors.length] + '18'
 }
 
-function editProduct(p) {
-  editingProduct.value = p
-  form.value = { ...p }
+function openAdd() {
+  editingProduct.value = null
+  form.value = { name: '', description: '', category: '', pointsPrice: 0, stock: 0, status: 'on', coverUrl: '' }
   showModal.value = true
 }
-function deleteProduct(p) {
-  if (confirm(`确定删除「${p.name}」？`)) products.value = products.value.filter(x => x.id !== p.id)
+function openEdit(row) {
+  editingProduct.value = row
+  form.value = { ...row }
+  showModal.value = true
 }
-function saveProduct() {
-  if (editingProduct.value) {
-    const idx = products.value.findIndex(p => p.id === editingProduct.value.id)
-    if (idx !== -1) products.value[idx] = { ...products.value[idx], ...form.value }
-  } else {
-    products.value.unshift({ ...form.value, id: `PRD-${String(products.value.length + 1).padStart(4, '0')}`, sales: 0, rating: '5.0', status: '在售', createdAt: new Date().toISOString().slice(0, 10) })
+
+async function loadProducts() {
+  try {
+    products.value = await get('/admin/products')
+  } catch (e) {
+    console.error('加载商品失败:', e)
   }
-  showModal.value = false; editingProduct.value = null
-  form.value = { name: '', category: '西药', price: '', originalPrice: '', pointsPrice: '', stock: '' }
 }
+
+async function saveProduct() {
+  try {
+    const body = { ...form.value }
+    if (editingProduct.value) {
+      body.productId = editingProduct.value.productId
+    }
+    await post('/admin/products', body)
+    showModal.value = false
+    await loadProducts()
+  } catch (e) {
+    alert('保存失败: ' + (e.message || '未知错误'))
+  }
+}
+
+async function deleteProduct(row) {
+  if (!confirm(`确定删除「${row.name}」？`)) return
+  try {
+    await del(`/admin/products/${row.productId}`)
+    await loadProducts()
+  } catch (e) {
+    alert('删除失败: ' + (e.message || '未知错误'))
+  }
+}
+
+onMounted(loadProducts)
 </script>
 
 <style scoped>
@@ -212,18 +209,11 @@ function saveProduct() {
 .product-cell { display: flex; align-items: center; gap: 10px; }
 .product-avatar { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.88rem; color: var(--text-primary); flex-shrink: 0; }
 .product-name { font-weight: 600; color: var(--text-primary); }
-
-.price-col { display: flex; flex-direction: column; gap: 2px; }
-.price-current { font-weight: 600; color: var(--primary); }
-.price-original { font-size: 0.78rem; color: var(--text-tertiary); text-decoration: line-through; }
 .points-tag { display: inline-block; padding: 2px 8px; background: rgba(232,168,56,0.1); color: #D97706; border-radius: var(--radius-full); font-size: 0.78rem; font-weight: 500; }
-.sales-num { font-weight: 500; color: var(--text-primary); }
-.rating-cell { display: flex; align-items: center; gap: 4px; font-size: 0.88rem; font-weight: 500; color: var(--text-primary); }
 
 .status-badge { display: inline-block; padding: 3px 10px; border-radius: var(--radius-full); font-size: 0.78rem; font-weight: 500; }
 .status-badge.active { background: rgba(16,185,129,0.1); color: #059669; }
 .status-badge.inactive { background: rgba(239,68,68,0.1); color: #DC2626; }
-.status-badge.presale { background: rgba(59,130,246,0.1); color: #2563EB; }
 
 .action-btns { display: flex; gap: 6px; }
 .icon-btn { width: 30px; height: 30px; border: none; border-radius: 6px; background: transparent; color: var(--text-tertiary); display: flex; align-items: center; justify-content: center; transition: all var(--duration-fast); }
@@ -231,11 +221,9 @@ function saveProduct() {
 .icon-btn.danger:hover { background: rgba(239,68,68,0.08); color: var(--danger); }
 .icon-btn svg { width: 16px; height: 16px; }
 
-.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 500; border: none; transition: all var(--duration-fast); }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 500; border: none; transition: all var(--duration-fast); cursor: pointer; }
 .btn-primary { background: var(--primary); color: #fff; }
 .btn-primary:hover { background: var(--primary-dark); box-shadow: 0 4px 12px rgba(10,110,93,0.25); }
-.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
-.btn-outline:hover { border-color: var(--primary); color: var(--primary); }
 .btn-ghost { background: transparent; color: var(--text-secondary); }
 .btn-ghost:hover { background: var(--bg-root); }
 

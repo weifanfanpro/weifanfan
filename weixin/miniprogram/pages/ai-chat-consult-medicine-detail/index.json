@@ -1,13 +1,9 @@
 {
   "navigationBarTitleText": "关联药品信息",
-  "navigationBarBackgroundColor": "#1c1917",
+  "navigationBarBackgroundColor": "#4A9DFF",
   "navigationBarTextStyle": "white",
   "renderer": "webview",
   "usingComponents": {
-    "t-collapse": "tdesign-miniprogram/collapse/collapse",
-    "t-collapse-panel": "tdesign-miniprogram/collapse-panel/collapse-panel",
-    "t-tag": "tdesign-miniprogram/tag/tag",
-    "t-cell": "tdesign-miniprogram/cell/cell",
     "custom-navbar": "../../components/custom-navbar/index"
   }
 }

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.dingdong.medicine.common.exception.BizException;
 import com.dingdong.medicine.common.util.RedisUtil;
 import com.dingdong.medicine.dto.request.AiChatSendRequest;
+import com.dingdong.medicine.dto.request.CheckReminderPlanRequest;
 import com.dingdong.medicine.dto.response.AiChatResponse;
 import com.dingdong.medicine.entity.AiChatSession;
 import com.dingdong.medicine.entity.Medicine;
@@ -132,17 +133,44 @@ public class AiChatServiceImpl implements AiChatService {
             body.set("enable_search", true);
         }
 
-        String result = HttpUtil.createPost("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions")
-                .header("Authorization", "Bearer " + apiKey)
-                .header("Content-Type", "application/json")
-                .body(body.toString())
-                .execute()
-                .body();
+        String result;
+        try {
+            result = HttpUtil.createPost("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions")
+                    .header("Authorization", "Bearer " + apiKey)
+                    .header("Content-Type", "application/json")
+                    .body(body.toString())
+                    .timeout(300000)
+                    .execute()
+                    .body();
+        } catch (Exception e) {
+            log.error("调用DashScope API网络异常: {}", e.getMessage(), e);
+            throw new BizException("AI服务网络异常，请检查网络后重试");
+        }
 
         JSONObject json = JSONUtil.parseObj(result);
-        JSONObject choice = json.getJSONArray("choices").getJSONObject(0);
-        String content = choice.getJSONObject("message").getStr("content");
-        String reasoning = choice.getJSONObject("message").getStr("reasoning_content");
+
+        // 检查 API 是否返回错误
+        if (json.containsKey("error")) {
+            String errMsg = json.getJSONObject("error").getStr("message");
+            log.error("DashScope API返回错误: {}", errMsg);
+            throw new BizException("AI服务异常：" + (errMsg != null ? errMsg : "未知错误"));
+        }
+
+        JSONArray choices = json.getJSONArray("choices");
+        if (choices == null || choices.isEmpty()) {
+            log.error("DashScope API返回空choices，原始响应: {}", result);
+            throw new BizException("AI服务返回数据异常，请稍后重试");
+        }
+
+        JSONObject choice = choices.getJSONObject(0);
+        JSONObject message = choice.getJSONObject("message");
+        if (message == null) {
+            log.error("DashScope API返回空message，原始响应: {}", result);
+            throw new BizException("AI服务返回数据异常，请稍后重试");
+        }
+
+        String content = message.getStr("content");
+        String reasoning = message.getStr("reasoning_content");
 
         messages.add(userMsg);
         JSONObject assistantMsg = JSONUtil.createObj().set("role", "assistant").set("content", content);
@@ -205,6 +233,62 @@ public class AiChatServiceImpl implements AiChatService {
         AiChatSendRequest request = new AiChatSendRequest();
         request.setMessage(prompt);
         AiChatResponse response = send(openid, request);
+
+        AiChatResponse.Suggestion suggestion = parseSuggestion(response.getContent());
+        return AiChatResponse.builder()
+                .sessionId(response.getSessionId())
+                .title(response.getTitle())
+                .content(response.getContent())
+                .reasoning(response.getReasoning())
+                .deepThinking(response.getDeepThinking())
+                .suggestion(suggestion)
+                .build();
+    }
+
+    @Override
+    public AiChatResponse checkReminderPlan(String openid, CheckReminderPlanRequest req) {
+        CheckReminderPlanRequest.PlanInfo plan = req.getPlan();
+        if (plan == null) {
+            throw new BizException("计划信息不能为空");
+        }
+
+        String timesStr = plan.getTimes() != null ? String.join(", ", plan.getTimes()) : "未设置";
+
+        String prompt = String.format("""
+                请评估以下用药提醒计划的合理性，并返回JSON格式的建议。
+
+                药品：%s
+                用药方式：%s
+                每日次数：%s 次
+                提醒时间：%s
+                用量：%s
+                用药与进食关系：%s
+                重复规则：%s
+
+                请严格按以下JSON格式返回（不要包含其他文字）：
+                {
+                  "reasonable": true或false,
+                  "summary": "一句话总结",
+                  "suggestedDailyFrequency": 数字,
+                  "suggestedTimes": ["HH:mm", ...],
+                  "suggestedDoseText": "建议剂量文本",
+                  "suggestedMealTiming": "none/before/after/empty",
+                  "notes": "补充说明"
+                }
+                """,
+                plan.getDrugName() != null ? plan.getDrugName() : "未命名药品",
+                plan.getUsageMethodLabel() != null ? plan.getUsageMethodLabel() : "其他",
+                plan.getDailyFrequency() != null ? plan.getDailyFrequency() : "1",
+                timesStr,
+                plan.getDoseText() != null ? plan.getDoseText() : "未设置",
+                plan.getMealTimingLabel() != null ? plan.getMealTimingLabel() : "未指定",
+                plan.getRepeatWeekdaysText() != null ? plan.getRepeatWeekdaysText() : "每天");
+
+        AiChatSendRequest sendReq = new AiChatSendRequest();
+        sendReq.setMessage(prompt);
+        sendReq.setDeepThinking(Boolean.TRUE.equals(req.getEnableThinking()));
+        sendReq.setWebSearch(Boolean.TRUE.equals(req.getEnableSearch()));
+        AiChatResponse response = send(openid, sendReq);
 
         AiChatResponse.Suggestion suggestion = parseSuggestion(response.getContent());
         return AiChatResponse.builder()

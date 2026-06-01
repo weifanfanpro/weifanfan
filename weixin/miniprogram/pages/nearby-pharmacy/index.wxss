@@ -1,129 +1,159 @@
-/* ═══ Nearby Pharmacy — 暖调古典 ═══ */
+/* ═══ Nearby Pharmacy — 蓝白卡通「药丸伙伴」风格 ═══ */
+
 .page {
   min-height: 100vh;
-  background: #f5f2ed;
-  background-image:
-    repeating-linear-gradient(
-      0deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    ),
-    repeating-linear-gradient(
-      90deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    );
+  background: #F0F7FF;
 }
 
-.support-hero {
+/* ═══ Hero ═══ */
+.pharmacy-hero {
   position: relative;
   overflow: hidden;
   border-radius: 28rpx;
-  padding: 28rpx 24rpx;
+  padding: 28rpx 28rpx 22rpx;
   margin-bottom: 16rpx;
-  background: linear-gradient(148deg, #1c1917 0%, #2d2824 52%, #3a342e 100%);
-  box-shadow:
-    0 24rpx 60rpx rgba(28, 25, 23, 0.25),
-    0 4rpx 12rpx rgba(28, 25, 23, 0.08);
+  background: linear-gradient(170deg, #4A9DFF 0%, #6DB8FF 40%, #A8DAFF 100%);
+  box-shadow: 0 16rpx 48rpx rgba(74, 157, 255, 0.2);
 }
 
-.support-hero::before {
-  content: '';
+.hero-cloud {
   position: absolute;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+}
+
+.hero-cloud--1 {
+  width: 100rpx;
+  height: 34rpx;
   top: 16rpx;
-  left: 16rpx;
-  width: 32rpx;
-  height: 32rpx;
-  border-top: 2rpx solid rgba(46, 158, 143, 0.3);
-  border-left: 2rpx solid rgba(46, 158, 143, 0.3);
-  z-index: 3;
-  pointer-events: none;
+  right: 24rpx;
+  animation: cloudFloat 8s ease-in-out infinite;
 }
 
-.support-hero::after {
+.hero-cloud--1::before {
   content: '';
   position: absolute;
-  bottom: 16rpx;
-  right: 16rpx;
-  width: 32rpx;
-  height: 32rpx;
-  border-bottom: 2rpx solid rgba(46, 158, 143, 0.3);
-  border-right: 2rpx solid rgba(46, 158, 143, 0.3);
-  z-index: 3;
-  pointer-events: none;
-}
-
-.support-hero-glow {
-  position: absolute;
-  right: -80rpx;
-  top: -78rpx;
-  width: 260rpx;
-  height: 260rpx;
+  width: 44rpx;
+  height: 44rpx;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(46, 158, 143, 0.12), rgba(46, 158, 143, 0));
+  background: rgba(255, 255, 255, 0.18);
+  top: -24rpx;
+  left: 16rpx;
 }
 
-.support-hero .hero-title,
-.support-hero .hero-sub,
-.support-hero .hero-view-capsule {
-  position: relative;
-  z-index: 1;
-}
-
-.support-hero .hero-title {
-  color: #fffefb;
-}
-
-.support-hero .hero-sub {
-  color: rgba(255, 254, 251, 0.55);
-}
-
-.support-hero .hero-view-capsule {
-  margin-top: 14rpx;
-  background: rgba(91, 122, 107, 0.08);
-  border: 1rpx solid rgba(91, 122, 107, 0.15);
-}
-
-.support-hero .hero-view-capsule__dot {
-  background: #5b7a6b;
-  box-shadow: none;
-}
-
-.support-hero .hero-view-capsule__text {
-  color: #b0a99f;
-}
-
-.notice-card {
-  margin-top: 10rpx;
-  margin-bottom: 14rpx;
-}
-
-.toolbar {
-  position: relative;
-  overflow: hidden;
-  padding: 20rpx;
-  border-radius: 24rpx;
-  background: #fffefb;
-  border: 1rpx solid rgba(28, 25, 23, 0.05);
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
-}
-
-.toolbar::before {
-  content: '';
+.hero-star {
   position: absolute;
-  top: 10rpx;
-  left: 10rpx;
-  width: 18rpx;
-  height: 18rpx;
-  border-top: 1.5rpx solid rgba(46, 158, 143, 0.12);
-  border-left: 1.5rpx solid rgba(46, 158, 143, 0.12);
+  width: 8rpx;
+  height: 8rpx;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
   pointer-events: none;
-  z-index: 1;
+  animation: starTwinkle 2s ease-in-out infinite;
+}
+
+.hero-star--1 { bottom: 20rpx; left: 50rpx; }
+
+@keyframes cloudFloat {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(12rpx); }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+.pharmacy-hero .hero-title,
+.pharmacy-hero .hero-sub,
+.pharmacy-hero .hero-view-capsule {
+  position: relative;
+  z-index: 2;
+}
+
+.pharmacy-hero .hero-title {
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+  text-shadow: 0 2rpx 8rpx rgba(43, 94, 167, 0.2);
+}
+
+.pharmacy-hero .hero-sub {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.hero-view-capsule {
+  margin-top: 14rpx;
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
+  font-size: 22rpx;
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+.view-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* ═══ Notice Bar ═══ */
+.notice-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+  padding: 18rpx 20rpx;
+  margin-bottom: 14rpx;
+  border-radius: 18rpx;
+  background: rgba(74, 157, 255, 0.06);
+  border: 1rpx solid rgba(74, 157, 255, 0.1);
+}
+
+.notice-icon {
+  flex-shrink: 0;
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: #4A9DFF;
+  color: #FFFFFF;
+  font-size: 22rpx;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rpx;
+}
+
+.notice-text {
+  font-size: 24rpx;
+  color: #3D5A80;
+  line-height: 1.6;
+}
+
+/* ═══ Card ═══ */
+.card {
+  border-radius: 22rpx;
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
+  box-shadow: 0 4rpx 20rpx rgba(43, 94, 167, 0.06);
+}
+
+/* ═══ Toolbar ═══ */
+.toolbar-card {
+  padding: 20rpx;
+  margin-bottom: 16rpx;
 }
 
 .toolbar-head {
-  position: relative;
-  z-index: 1;
   margin-bottom: 14rpx;
   display: flex;
   align-items: baseline;
@@ -133,7 +163,12 @@
 .toolbar-title {
   font-size: 28rpx;
   font-weight: 700;
-  color: #1c1917;
+  color: #1A3A5C;
+}
+
+.toolbar-sub {
+  font-size: 24rpx;
+  color: #8BA4C7;
 }
 
 .toolbar-btns {
@@ -142,32 +177,137 @@
   gap: 16rpx;
 }
 
-.loading-wrap,
-.empty-wrap {
+/* ═══ Loading ═══ */
+.loading-wrap {
   margin-top: 28rpx;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
 }
 
-.empty-wrap.card {
+.loading-dots {
+  display: flex;
+  gap: 10rpx;
+}
+
+.dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: #4A9DFF;
+  animation: dotBounce 1.2s ease-in-out infinite;
+}
+
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+.loading-dots--small .dot {
+  width: 10rpx;
+  height: 10rpx;
+}
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.loading-text {
+  font-size: 24rpx;
+  color: #8BA4C7;
+}
+
+/* ═══ Empty State ═══ */
+.empty-wrap {
+  margin-top: 28rpx;
+  padding: 48rpx 24rpx 40rpx;
   border-radius: 24rpx;
-  padding: 24rpx;
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
+  box-shadow: 0 4rpx 20rpx rgba(43, 94, 167, 0.06);
 }
 
-.result-card {
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty-buddy { margin-bottom: 16rpx; }
+
+.empty-pill-body {
   position: relative;
-  margin-top: 12rpx;
-  border-radius: 24rpx;
+  width: 64rpx;
+  height: 84rpx;
+  border-radius: 32rpx;
   overflow: hidden;
-  background: #fffefb;
-  border: 1rpx solid rgba(28, 25, 23, 0.05);
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+  box-shadow: 0 6rpx 18rpx rgba(74, 157, 255, 0.18);
+  animation: pillBounce 3s ease-in-out infinite;
+}
+
+@keyframes pillBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8rpx); }
+}
+
+.empty-pill-left {
+  position: absolute; left: 0; top: 0; width: 50%; height: 100%;
+  background: #FFFFFF;
+}
+
+.empty-pill-right {
+  position: absolute; right: 0; top: 0; width: 50%; height: 100%;
+  background: #4A9DFF;
+}
+
+.empty-pill-eye {
+  position: absolute;
+  width: 16rpx; height: 18rpx;
+  background: #FFFFFF;
+  border-radius: 50%;
+  top: 24rpx;
+  box-shadow: inset 0 1rpx 3rpx rgba(0,0,0,0.06);
+}
+
+.empty-pill-left .empty-pill-eye { left: 8rpx; }
+.empty-pill-right .empty-pill-eye { right: 8rpx; }
+
+.empty-pill-pupil {
+  position: absolute;
+  width: 8rpx; height: 10rpx;
+  background: #2B5EA7;
+  border-radius: 50%;
+  bottom: 3rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.empty-pill-mouth {
+  position: absolute;
+  bottom: 22rpx; left: 50%;
+  transform: translateX(-50%);
+  width: 14rpx; height: 6rpx;
+  border-bottom: 2rpx solid #2B5EA7;
+  border-radius: 0 0 50% 50%;
+  z-index: 3;
+}
+
+.empty-title {
+  font-size: 26rpx;
+  color: #8BA4C7;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ═══ Result Card ═══ */
+.result-card {
+  margin-top: 12rpx;
+  overflow: hidden;
 }
 
 .result-head {
-  padding: 16rpx 20rpx 6rpx;
+  padding: 16rpx 24rpx 6rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -176,16 +316,126 @@
 .result-title {
   font-size: 30rpx;
   font-weight: 700;
-  color: #1c1917;
+  color: #1A3A5C;
+}
+
+.result-sub {
+  font-size: 24rpx;
+  color: #8BA4C7;
+}
+
+/* ═══ Pharmacy Row ═══ */
+.pharmacy-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid rgba(74, 157, 255, 0.06);
+}
+
+.pharmacy-row:last-child { border-bottom: none; }
+
+.pharmacy-row:active { background: rgba(74, 157, 255, 0.03); }
+
+.pharmacy-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pharmacy-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A3A5C;
+  line-height: 1.4;
+}
+
+.pharmacy-desc {
+  margin-top: 4rpx;
+  font-size: 24rpx;
+  color: #8BA4C7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pharmacy-dist {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 24rpx;
+  color: #4A9DFF;
+  font-weight: 500;
+  margin-left: 16rpx;
+}
+
+.pharmacy-arrow {
+  width: 0;
+  height: 0;
+  border-top: 8rpx solid transparent;
+  border-bottom: 8rpx solid transparent;
+  border-left: 10rpx solid #8BA4C7;
 }
 
 .load-more {
   display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 10rpx;
   padding: 28rpx 0 12rpx;
 }
 
 .end-hint {
   text-align: center;
   padding: 16rpx 0 8rpx;
+  font-size: 24rpx;
+  color: #8BA4C7;
+}
+
+/* ═══ Buttons ═══ */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 999rpx;
+  transition: transform 150ms ease;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  background: linear-gradient(135deg, #4A9DFF, #6DB8FF);
+  box-shadow: 0 8rpx 24rpx rgba(74, 157, 255, 0.25);
+}
+
+.btn--ghost {
+  background: transparent;
+  border: 1rpx solid rgba(74, 157, 255, 0.15);
+}
+
+.btn--small {
+  height: 60rpx;
+  padding: 0 28rpx;
+}
+
+.btn--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.btn-text {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.btn-text--ghost { color: #4A9DFF; }
+
+/* ═══ Reduced Motion ═══ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-cloud { animation: none; }
+  .hero-star { animation: none; }
+  .empty-pill-body { animation: none; }
+  .dot { animation: none; }
 }

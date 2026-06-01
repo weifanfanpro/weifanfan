@@ -1,8 +1,10 @@
 <view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="选择咨询药品" showBack="{true}" />
   <view class="brand-hero mb">
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-star hero-star--1"></view>
     <view class="hero-title">选择药品</view>
-    <view class="hero-sub muted">以下为当前视角下的药单，点选后将带入咨询上下文（与首页/清单一致）。</view>
+    <view class="hero-sub">以下为当前视角下的药单，点选后将带入咨询上下文（与首页/清单一致）。</view>
     <view class="hero-view-capsule">
       <view class="hero-view-capsule__dot"></view>
       <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>
@@ -10,15 +12,32 @@
   </view>
 
   <view wx:if="{{loading}}" class="loading-wrap">
-    <t-loading theme="dots" size="40rpx" />
-    <text class="muted small">加载药单中…</text>
+    <view class="loading-dots">
+      <view class="loading-dot"></view>
+      <view class="loading-dot"></view>
+      <view class="loading-dot"></view>
+    </view>
+    <text class="loading-hint">加载药单中…</text>
   </view>
 
-  <view wx:elif="{{list.length === 0}}" class="card pad">
-    <t-empty description="当前视角下暂无药单药品，可先添加药品后再来咨询" />
+  <view wx:elif="{{list.length === 0}}" class="empty-wrap">
+    <view class="empty-state">
+      <view class="empty-buddy">
+        <view class="empty-pill-body">
+          <view class="empty-pill-left">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-right">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-mouth"></view>
+        </view>
+      </view>
+      <text class="empty-title">当前视角下暂无药单药品，可先添加药品后再来咨询</text>
+    </view>
   </view>
 
-  <view wx:else class="card">
+  <view wx:else class="card med-card">
     <view
       wx:for="{{list}}"
       wx:key="id"
@@ -33,7 +52,7 @@
         <text class="med-name">{{item.name}}</text>
         <text class="med-rule muted small">{{item.rule}}</text>
       </view>
-      <text class="med-chev">›</text>
+      <view class="css-chevron"></view>
     </view>
   </view>
 </view>

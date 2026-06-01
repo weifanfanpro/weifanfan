@@ -2,8 +2,6 @@
   "component": true,
   "styleIsolation": "apply-shared",
   "usingComponents": {
-    "t-icon": "tdesign-miniprogram/icon/icon",
-    "t-toast": "tdesign-miniprogram/toast/toast",
-    "t-loading": "tdesign-miniprogram/loading/loading"
+    "t-toast": "tdesign-miniprogram/toast/toast"
   }
 }

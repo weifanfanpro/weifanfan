@@ -1,10 +1,23 @@
-<view class="page page-padding pay-page">
+<view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="模拟支付" showBack="{true}" />
-  <view class="card pay-card">
+
+  <view class="pay-card">
+    <view class="card-corner card-corner--tl"></view>
+    <view class="card-corner card-corner--br"></view>
+    <!-- 药丸图标 -->
+    <view class="pay-icon">
+      <view class="pay-pill-body">
+        <view class="pay-pill-left"></view>
+        <view class="pay-pill-right"></view>
+      </view>
+    </view>
     <view class="pay-title">积分支付</view>
     <view class="pay-order">订单号：{{orderId}}</view>
-    <view class="pay-amount">{{pointsCost}} 积分</view>
+    <view class="pay-amount">{{pointsCost}} <text class="pay-amount-unit">积分</text></view>
     <view class="pay-tip">本页面为模拟支付，不会产生真实费用。</view>
   </view>
-  <t-button block theme="primary" loading="{{paying}}" bind:tap="onPay">确认支付</t-button>
+
+  <view class="btn btn--primary tap-scale" bindtap="onPay">
+    <text class="btn-text">{{paying ? '支付中...' : '确认支付'}}</text>
+  </view>
 </view>

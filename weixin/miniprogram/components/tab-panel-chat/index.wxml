@@ -3,59 +3,106 @@
   <view class="toolbar" id="toolbar">
     <view class="toolbar-side toolbar-side--left">
       <view class="toolbar-btn tap-scale" bindtap="onOpenDrawer" hover-class="toolbar-btn--hover">
-        <t-icon name="view-list" size="44rpx" />
+        <!-- CSS 药箱图标 -->
+        <view class="css-icon css-icon--cabinet">
+          <view class="ccb-body"></view>
+          <view class="ccb-lid"></view>
+          <view class="ccb-cross"></view>
+        </view>
       </view>
     </view>
     <view class="toolbar-center">
+      <view class="toolbar-pill"></view>
       <text class="toolbar-title">{{sessionTitle}}</text>
     </view>
     <view class="toolbar-side toolbar-side--right">
       <view class="toolbar-btn tap-scale" bindtap="onNewChat" hover-class="toolbar-btn--hover">
-        <t-icon name="add" size="44rpx" />
+        <view class="css-icon css-icon--plus">
+          <view class="cp-h"></view>
+          <view class="cp-v"></view>
+        </view>
       </view>
     </view>
   </view>
 
-  <!-- ═══ Session drawer (slide from left) ═══ -->
-  <view
-    class="drawer-mask {{drawerOpen ? 'drawer-mask--show' : ''}}"
-    style="top: {{toolbarH}}px; bottom: {{inputH}}px"
-    catchtap="onCloseDrawer"
-  />
-  <view
-    class="drawer {{drawerOpen ? 'drawer--open' : ''}}"
-    style="top: {{toolbarH}}px; bottom: {{inputH}}px"
-  >
-    <view class="drawer-head">
-      <text class="drawer-head-title">历史对话</text>
-      <view class="drawer-head-close" bindtap="onCloseDrawer">
-        <t-icon name="close" size="40rpx" />
+  <!-- ═══ 记忆药丸墙 (全屏遮罩) ═══ -->
+  <view class="pill-wall-mask {{drawerOpen ? 'pill-wall-mask--show' : ''}}" catchtap="onCloseDrawer" />
+  <view class="pill-wall {{drawerOpen ? 'pill-wall--open' : ''}}">
+    <!-- 顶部标题栏 -->
+    <view class="pw-header">
+      <view class="pw-title-row">
+        <view class="pw-pill-deco"></view>
+        <text class="pw-title">记忆药丸</text>
+        <text class="pw-count">{{sessions.length}} 颗</text>
+      </view>
+      <view class="pw-close" bindtap="onCloseDrawer">
+        <view class="css-icon css-icon--close">
+          <view class="ccl-line ccl-line--1"></view>
+          <view class="ccl-line ccl-line--2"></view>
+        </view>
       </view>
     </view>
-    <scroll-view scroll-y class="drawer-scroll" enhanced show-scrollbar="{{false}}">
-      <block wx:if="{{sessionListLoading}}">
-        <view class="drawer-state">
-          <t-loading theme="dots" size="40rpx" />
+
+    <!-- 药丸网格 -->
+    <scroll-view scroll-y class="pw-scroll" enhanced show-scrollbar="{{false}}">
+      <!-- 加载态 -->
+      <view wx:if="{{sessionListLoading}}" class="pw-loading">
+        <view class="loading-dots">
+          <view class="ld-dot ld-dot--1"></view>
+          <view class="ld-dot ld-dot--2"></view>
+          <view class="ld-dot ld-dot--3"></view>
         </view>
-      </block>
-      <block wx:elif="{{sessions.length === 0}}">
-        <view class="drawer-state drawer-state--empty">暂无历史记录</view>
-      </block>
-      <block wx:else>
+        <text class="pw-loading-text">正在回忆...</text>
+      </view>
+
+      <!-- 空态 -->
+      <view wx:elif="{{sessions.length === 0}}" class="pw-empty">
+        <view class="pwe-buddy">
+          <view class="pwe-body">
+            <view class="pwe-eye pwe-eye--l"></view>
+            <view class="pwe-eye pwe-eye--r"></view>
+            <view class="pwe-mouth"></view>
+          </view>
+        </view>
+        <text class="pwe-text">还没有对话记录</text>
+        <text class="pwe-sub">开始你的第一次咨询吧～</text>
+      </view>
+
+      <!-- 药丸网格 -->
+      <view wx:else class="pw-grid">
+        <!-- 新对话药丸 -->
+        <view class="pill-card pill-card--new tap-scale" bindtap="onNewChat">
+          <view class="pc-body pc-body--new">
+            <view class="pc-plus-h"></view>
+            <view class="pc-plus-v"></view>
+          </view>
+          <text class="pc-title pc-title--new">新对话</text>
+        </view>
+
+        <!-- 历史对话药丸 -->
         <view
           wx:for="{{sessions}}"
           wx:key="sessionId"
-          class="session-item {{sessionId === item.sessionId ? 'session-item--active' : ''}}"
+          class="pill-card {{sessionId == item.sessionId ? 'pill-card--active' : ''}} {{delTargetId == item.sessionId ? 'pill-card--del-show' : ''}}"
+          data-id="{{item.sessionId}}"
+          bindtap="onPickSession"
+          bindlongpress="onLongPressSession"
         >
-          <view class="session-item-body" data-id="{{item.sessionId}}" bindtap="onPickSession">
-            <text class="session-item-title">{{item.title}}</text>
-            <text class="session-item-time">{{item.timeText}}</text>
+          <view class="pc-body">
+            <view class="pc-eye pc-eye--l"></view>
+            <view class="pc-eye pc-eye--r"></view>
+            <view class="pc-mouth"></view>
           </view>
-          <view class="session-item-del" data-id="{{item.sessionId}}" catchtap="onDeleteSession">
-            <t-icon name="delete" size="36rpx" />
+          <text class="pc-title">{{item.title}}</text>
+          <text class="pc-time">{{item.timeText}}</text>
+          <view class="pc-del" data-id="{{item.sessionId}}" catchtap="onDeleteSession">
+            <view class="css-icon css-icon--close">
+              <view class="ccl-line ccl-line--1"></view>
+              <view class="ccl-line ccl-line--2"></view>
+            </view>
           </view>
         </view>
-      </block>
+      </view>
     </scroll-view>
   </view>
 
@@ -70,18 +117,29 @@
     <!-- Welcome state -->
     <block wx:if="{{messages.length === 0 && !sending}}">
       <view class="welcome">
-        <view class="welcome-icon-wrap">
-          <view class="welcome-icon">
-            <text class="welcome-icon-text">AI</text>
+        <!-- 药丸伙伴头像 -->
+        <view class="welcome-buddy">
+          <view class="wb-body">
+            <view class="wb-eye wb-eye--l"></view>
+            <view class="wb-eye wb-eye--r"></view>
+            <view class="wb-cheek wb-cheek--l"></view>
+            <view class="wb-cheek wb-cheek--r"></view>
+            <view class="wb-mouth"></view>
           </view>
         </view>
-        <text class="welcome-heading">嗨！我是智药助理</text>
+        <text class="welcome-heading">嗨！我是药丸伙伴</text>
         <text class="welcome-desc">我可以帮你了解用药常识、提醒与健康管理，请把你的问题交给我~</text>
         <view class="welcome-hints">
           <view class="welcome-hint tap-scale" bindtap="onQuickQuestion" data-q="感冒了可以吃什么药？">
+            <view class="wh-icon">
+              <view class="wh-pill"></view>
+            </view>
             <text>感冒了可以吃什么药？</text>
           </view>
           <view class="welcome-hint tap-scale" bindtap="onQuickQuestion" data-q="降压药漏服了怎么办？">
+            <view class="wh-icon">
+              <view class="wh-clock"></view>
+            </view>
             <text>降压药漏服了怎么办？</text>
           </view>
         </view>
@@ -116,13 +174,16 @@
         <!-- AI message -->
         <view wx:else class="msg-row msg-row--ai">
           <view class="ai-avatar">
-            <text class="ai-avatar-text">AI</text>
+            <view class="aa-pill">
+              <view class="aa-pill-left"></view>
+              <view class="aa-pill-right"></view>
+            </view>
           </view>
           <view class="msg-ai-body">
             <!-- Reasoning toggle -->
             <view wx:if="{{item.reasoning}}" class="reasoning-block">
               <view class="reasoning-toggle" data-index="{{index}}" bindtap="onToggleReasoning">
-                <t-icon name="{{reasoningOpen[index] ? 'chevron-up' : 'chevron-down'}}" size="28rpx" />
+                <view class="rt-arrow {{reasoningOpen[index] ? 'rt-arrow--up' : ''}}"></view>
                 <text>思考过程</text>
               </view>
               <view wx:if="{{reasoningOpen[index]}}" class="reasoning-content">
@@ -140,10 +201,17 @@
       <!-- Typing indicator -->
       <view wx:if="{{sending}}" class="msg-row msg-row--ai">
         <view class="ai-avatar">
-          <text class="ai-avatar-text">AI</text>
+          <view class="aa-pill">
+            <view class="aa-pill-left"></view>
+            <view class="aa-pill-right"></view>
+          </view>
         </view>
         <view class="typing-indicator">
-          <t-loading theme="dots" size="32rpx" />
+          <view class="loading-dots">
+            <view class="ld-dot ld-dot--1"></view>
+            <view class="ld-dot ld-dot--2"></view>
+            <view class="ld-dot ld-dot--3"></view>
+          </view>
           <text class="typing-label">正在回复...</text>
         </view>
       </view>
@@ -156,15 +224,23 @@
     <scroll-view scroll-x class="option-scroll" enhanced show-scrollbar="{{false}}" enable-flex>
       <view class="option-inner">
         <view class="option-pill {{deepThinking ? 'option-pill--on' : ''}} tap-scale" bindtap="toggleDeepThinking">
-          <t-icon name="layers" size="28rpx" />
+          <view class="op-icon">
+            <view class="opi-layer opi-layer--1"></view>
+            <view class="opi-layer opi-layer--2"></view>
+          </view>
           <text>深度思考</text>
         </view>
         <view class="option-pill {{webSearch ? 'option-pill--on' : ''}} tap-scale" bindtap="toggleWebSearch">
-          <t-icon name="internet" size="28rpx" />
+          <view class="op-icon">
+            <view class="opi-globe"></view>
+            <view class="opi-globe-line"></view>
+          </view>
           <text>联网搜索</text>
         </view>
         <view class="option-pill option-pill--accent tap-scale" bindtap="onOpenMedicineSheet">
-          <t-icon name="medicine-bottle" size="28rpx" />
+          <view class="op-icon">
+            <view class="opi-bottle"></view>
+          </view>
           <text>选择咨询药品</text>
         </view>
       </view>
@@ -174,11 +250,22 @@
   <!-- ═══ Medicine pick sheet ═══ -->
   <view class="sheet-mask {{sheetVisible ? 'sheet-mask--show' : ''}}" catchtap="onCloseSheet" />
   <view class="sheet {{sheetVisible ? 'sheet--open' : ''}}">
+    <view class="sheet-handle"></view>
     <view class="sheet-title">选择咨询方式</view>
     <view class="sheet-item tap-scale" bindtap="onSheetScan">
+      <view class="si-icon">
+        <view class="sii-lens"></view>
+        <view class="sii-handle"></view>
+      </view>
       <text class="sheet-item-label">扫描药品</text>
     </view>
     <view class="sheet-item tap-scale" bindtap="onSheetPickList">
+      <view class="si-icon">
+        <view class="sii-list"></view>
+        <view class="sii-dot sii-dot--1"></view>
+        <view class="sii-dot sii-dot--2"></view>
+        <view class="sii-dot sii-dot--3"></view>
+      </view>
       <text class="sheet-item-label">从药单选择</text>
     </view>
     <view class="sheet-cancel tap-scale" bindtap="onCloseSheet">取消</view>
@@ -196,7 +283,12 @@
             <text class="consult-chip-hint">点击查看详情</text>
           </view>
         </view>
-        <view class="consult-chip-x" catchtap="onClearConsult">x</view>
+        <view class="consult-chip-x" catchtap="onClearConsult">
+          <view class="ccx-icon">
+            <view class="ccx-line ccx-line--1"></view>
+            <view class="ccx-line ccx-line--2"></view>
+          </view>
+        </view>
       </view>
       <!-- Textarea -->
       <view class="input-row">
@@ -215,7 +307,7 @@
         />
         <view class="send-area {{canSend ? '' : 'send-area--off'}}" bindtap="onSend">
           <view class="send-circle">
-            <t-icon name="arrow-up" size="36rpx" color="#ffffff" />
+            <view class="send-arrow"></view>
           </view>
         </view>
       </view>

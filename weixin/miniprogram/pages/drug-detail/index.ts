@@ -19,7 +19,7 @@ type DrugDetail = {
 
 Page({
   data: {
-    opened: ["dose"] as string[],
+    opened: "dose",
     viewLabel: "本人",
     heroSubtitle: "核心用药信息已整理，展开下方可查看完整说明。",
     fallbackFunctionText: "暂无主治功能信息，请参考药品说明书或咨询医生。",
@@ -180,8 +180,9 @@ Page({
       this.setData({ drug: { ...this.data.drug, name } });
     }
   },
-  onCollapseChange(e: WechatMiniprogram.CustomEvent<{ value: string[] }>) {
-    this.setData({ opened: e.detail.value });
+  onTogglePanel(e: WechatMiniprogram.BaseEvent) {
+    const val = String((e.currentTarget as any)?.dataset?.value || "");
+    this.setData({ opened: this.data.opened === val ? "" : val });
   },
   onSetReminder() {
     const name = encodeURIComponent(this.data.drug.name);

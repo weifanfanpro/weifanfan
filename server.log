@@ -1,0 +1,19 @@
+{"level":30,"time":1780212812745,"pid":16200,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780212812745,"pid":16200,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780213675841,"pid":37296,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780213675841,"pid":37296,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780213742093,"pid":39116,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780213742093,"pid":39116,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780213744478,"pid":24288,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780213744478,"pid":24288,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":50,"time":1780213907972,"pid":24288,"hostname":"weifanfan","msg":"Execute execution failed","sql":"INSERT INTO admin_accounts (username, display_name, password_hash, role, status, created_by) VALUES (?, ?, ?, ?, ?, ?)","params":["admin","超级管理员","240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9","admin","enabled","system"],"error":"Duplicate entry 'admin' for key 'admin_accounts.uk_username'"}
+{"level":30,"time":1780215251041,"pid":30664,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780215251042,"pid":30664,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780215251081,"pid":36700,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780215251082,"pid":36700,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780217160527,"pid":29304,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780217160527,"pid":29304,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780223209674,"pid":38160,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780223209674,"pid":33456,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780223209675,"pid":38160,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780223209675,"pid":33456,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}

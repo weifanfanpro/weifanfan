@@ -1,59 +1,145 @@
-<view class="page page-padding anim-in scan-page">
-  <view class="hero card">
-    <view class="tip">请将药盒正面/说明书放入框内</view>
-    <view class="muted tip-sub">建议在光线充足处拍摄，避免反光</view>
-    <view class="hero-view-capsule">
-      <view class="hero-view-capsule__dot"></view>
-      <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>
-    </view>
+<view class="scan-page anim-in">
+  <scroll-view class="scrollarea" scroll-y type="list">
+    <view class="safe-shell">
 
-    <view class="frame-wrap">
-      <view class="frame">
-      <camera
-        wx:if="{{active}}"
-        class="cam"
-        mode="normal"
-        device-position="back"
-        flash="{{flashMode}}"
-        binderror="onCameraError"
-      ></camera>
-      <view class="corner tl"></view>
-      <view class="corner tr"></view>
-      <view class="corner bl"></view>
-      <view class="corner br"></view>
+      <!-- ═══════════════════════════════
+           HERO — 药丸放大镜
+           ═══════════════════════════════ -->
+      <view class="scan-hero">
+        <!-- 背景装饰 -->
+        <view class="sh-cloud sh-cloud--1"></view>
+        <view class="sh-cloud sh-cloud--2"></view>
+        <view class="sh-star sh-star--1"></view>
+        <view class="sh-star sh-star--2"></view>
+        <view class="sh-cross sh-cross--1"></view>
 
-      <view wx:if="{{recognizing}}" class="recognizing">
-        <t-loading size="48rpx" text="AI 识别中…" />
-      </view>
-      <view wx:else class="frame-hint muted">
-        对准药盒文字，保持清晰
-      </view>
-      </view>
-    </view>
-  </view>
-
-  <view class="actions card">
-    <t-cell-group bordered>
-      <t-cell title="闪光灯">
-        <view slot="right-icon" catchtap="noop">
-          <t-switch value="{{flashOn}}" bind:change="onToggleFlash" />
+        <!-- 标题 -->
+        <view class="sh-title-row">
+          <view class="sh-pill-icon"></view>
+          <text class="sh-title">AI 识药</text>
         </view>
-      </t-cell>
-    </t-cell-group>
-    <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onStartRecognize">
-      开始识别
-    </t-button>
-    <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onChooseFromAlbum">
-      从相册选择
-    </t-button>
-  </view>
+        <text class="sh-sub">对准药盒文字，让药丸伙伴帮你识别</text>
 
-  <view class="library-zone">
-    <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onOpenMedicineLibrary">
-      药品库
-    </t-button>
-  </view>
+        <!-- 视角标签 -->
+        <view wx:if="{{viewLabel !== '本人'}}" class="sh-view-tag">
+          <view class="sh-view-dot"></view>
+          <text class="sh-view-text">当前视角：{{viewLabel}}</text>
+        </view>
+      </view>
+
+      <!-- ═══════════════════════════════
+           取景框 — 放大镜镜头
+           ═══════════════════════════════ -->
+      <view class="frame-section">
+        <!-- 放大镜手柄装饰 -->
+        <view class="mag-handle"></view>
+
+        <view class="frame-wrap">
+          <view class="frame">
+            <camera
+              wx:if="{{active}}"
+              class="cam"
+              mode="normal"
+              device-position="back"
+              flash="{{flashMode}}"
+              binderror="onCameraError"
+            ></camera>
+
+            <!-- 卡通四角标记 -->
+            <view class="scan-corner scan-corner--tl">
+              <view class="sc-dot"></view>
+            </view>
+            <view class="scan-corner scan-corner--tr">
+              <view class="sc-dot"></view>
+            </view>
+            <view class="scan-corner scan-corner--bl">
+              <view class="sc-dot"></view>
+            </view>
+            <view class="scan-corner scan-corner--br">
+              <view class="sc-dot"></view>
+            </view>
+
+            <!-- 扫描线动画 -->
+            <view wx:if="{{!recognizing}}" class="scan-line"></view>
+
+            <!-- 识别中遮罩 -->
+            <view wx:if="{{recognizing}}" class="recognizing-mask">
+              <view class="rm-buddy">
+                <view class="rm-body">
+                  <view class="rm-eye rm-eye--l"></view>
+                  <view class="rm-eye rm-eye--r"></view>
+                  <view class="rm-mouth"></view>
+                </view>
+              </view>
+              <text class="rm-text">AI 识别中…</text>
+              <view class="rm-dots">
+                <view class="rm-dot rm-dot--1"></view>
+                <view class="rm-dot rm-dot--2"></view>
+                <view class="rm-dot rm-dot--3"></view>
+              </view>
+            </view>
+
+            <!-- 提示文字 -->
+            <view wx:else class="frame-hint">
+              <text class="fh-text">将药盒放入框内</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- ═══════════════════════════════
+           操作区
+           ═══════════════════════════════ -->
+      <view class="actions-card">
+        <!-- 闪光灯开关 -->
+        <view class="flash-row" bind:tap="noop">
+          <view class="flash-left">
+            <view class="flash-icon {{flashOn ? 'flash-icon--on' : ''}}">
+              <view class="fi-bolt"></view>
+            </view>
+            <text class="flash-label">闪光灯</text>
+          </view>
+          <view class="flash-switch {{flashOn ? 'flash-switch--on' : ''}}" bind:tap="onToggleFlash">
+            <view class="fs-dot"></view>
+          </view>
+        </view>
+
+        <!-- 主按钮 -->
+        <view class="action-btn action-btn--primary tap-scale" bind:tap="onStartRecognize">
+          <view class="ab-icon">
+            <view class="ab-lens"></view>
+            <view class="ab-handle"></view>
+          </view>
+          <text class="ab-text">开始识别</text>
+        </view>
+
+        <!-- 次按钮行 -->
+        <view class="action-row">
+          <view class="action-btn action-btn--secondary tap-scale" bind:tap="onChooseFromAlbum">
+            <view class="ab-icon ab-icon--small">
+              <view class="ab-album"></view>
+            </view>
+            <text class="ab-text ab-text--small">从相册选择</text>
+          </view>
+          <view class="action-btn action-btn--ghost tap-scale" bind:tap="onOpenMedicineLibrary">
+            <view class="ab-icon ab-icon--small">
+              <view class="ab-box"></view>
+              <view class="ab-box-lid"></view>
+            </view>
+            <text class="ab-text ab-text--small">药品库</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 底部提示 -->
+      <view class="scan-tips">
+        <view class="st-pill"></view>
+        <text class="st-text">建议在光线充足处拍摄，避免反光效果更佳</text>
+      </view>
+
+      <view class="bottom-spacer"></view>
+    </view>
+  </scroll-view>
 
   <t-toast id="t-toast" />
 </view>
-

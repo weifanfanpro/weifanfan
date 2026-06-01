@@ -11,6 +11,10 @@ Component({
       type: Boolean,
       value: true,
     },
+    showPlaceholder: {
+      type: Boolean,
+      value: true,
+    },
   },
   data: {
     statusBarHeight: 20,

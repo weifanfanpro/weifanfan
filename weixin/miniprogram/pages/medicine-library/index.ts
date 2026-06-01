@@ -123,7 +123,7 @@ Page({
     return this.fetchPage(true);
   },
 
-  onKeywordInput(e: WechatMiniprogram.CustomEvent<{ value: string }>) {
+  onKeywordInput(e: WechatMiniprogram.Input) {
     const v = String(e.detail.value || "");
     this.setData({ keyword: v });
     if (this._kwTimer) clearTimeout(this._kwTimer);
@@ -161,8 +161,8 @@ Page({
     this.setData({ mealFilterIndex: idx, filterMeal: opt.value }, () => void this.loadFirst());
   },
 
-  onHasMedicineIdChange(e: WechatMiniprogram.CustomEvent<{ value: boolean }>) {
-    this.setData({ filterHasMedicineId: Boolean(e.detail.value) }, () => void this.loadFirst());
+  onHasMedicineIdToggle() {
+    this.setData({ filterHasMedicineId: !this.data.filterHasMedicineId }, () => void this.loadFirst());
   },
 
   async fetchPage(reset: boolean) {

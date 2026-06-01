@@ -1,24 +1,79 @@
-<view class="page login-page page-padding safe-bottom anim-in">
+<view class="login-page">
+  <!-- 背景装饰 -->
+  <view class="bg-cloud bg-cloud--1"></view>
+  <view class="bg-cloud bg-cloud--2"></view>
+  <view class="bg-cloud bg-cloud--3"></view>
+  <view class="bg-star bg-star--1"></view>
+  <view class="bg-star bg-star--2"></view>
+  <view class="bg-star bg-star--3"></view>
+  <view class="bg-star bg-star--4"></view>
+  <view class="bg-cross bg-cross--1"></view>
+  <view class="bg-cross bg-cross--2"></view>
+  <view class="bg-cross bg-cross--3"></view>
+
   <custom-navbar title="登录" showBack="{false}" />
-  <view class="login-hero">
-    <view class="logo-wrap" aria-hidden="true">
-      <image class="logo-img" src="/assets/logo.png" mode="aspectFill" />
+
+  <view class="login-body">
+    <!-- 药丸角色 -->
+    <view class="pill-buddy">
+      <view class="pill-body">
+        <view class="pill-left">
+          <view class="pill-eye pill-eye--l">
+            <view class="pill-pupil"></view>
+          </view>
+        </view>
+        <view class="pill-right">
+          <view class="pill-eye pill-eye--r">
+            <view class="pill-pupil"></view>
+          </view>
+        </view>
+        <view class="pill-cheek pill-cheek--l"></view>
+        <view class="pill-cheek pill-cheek--r"></view>
+        <view class="pill-mouth"></view>
+      </view>
+      <!-- 小药丸装饰 -->
+      <view class="pill-mini pill-mini--1"></view>
+      <view class="pill-mini pill-mini--2"></view>
     </view>
-    <view class="app-name">智药助理</view>
-    <view class="app-subtitle">智能、轻盈的用药管理助手</view>
-  </view>
 
-  <view class="login-card">
-    <view class="login-title">请先登录</view>
-    <view class="login-desc muted">登录后即可开始使用你的个性化用药计划。</view>
+    <!-- 标题 -->
+    <text class="login-title">智药助理</text>
+    <text class="login-subtitle">你的用药管理好伙伴</text>
 
-    <view class="btn-wrap">
-      <t-button theme="primary" size="large" block loading="{{loading}}" bind:tap="onWxLogin">
-        微信一键登录
-      </t-button>
+    <!-- 信息气泡 -->
+    <view class="info-bubble">
+      <view class="ib-icon">
+        <view class="ib-chat"></view>
+      </view>
+      <view class="ib-text-wrap">
+        <text class="ib-text">登录后即可使用</text>
+        <text class="ib-text ib-text--sub">个性化用药计划管理</text>
+      </view>
+    </view>
+
+    <!-- 微信登录按钮 -->
+    <view class="wx-btn {{loading ? 'wx-btn--loading' : ''}} tap-scale" bind:tap="onWxLogin">
+      <view wx:if="{{!loading}}" class="wx-icon">
+        <view class="wx-bubble">
+          <view class="wx-dot wx-dot--1"></view>
+          <view class="wx-dot wx-dot--2"></view>
+        </view>
+      </view>
+      <view wx:else class="wx-spinner">
+        <view class="wx-spinner-pill"></view>
+      </view>
+      <text class="wx-btn-text">{{loading ? '登录中...' : '微信一键登录'}}</text>
+    </view>
+
+    <!-- 安全提示 -->
+    <view class="safe-hint">
+      <view class="sh-lock">
+        <view class="sh-lock-body"></view>
+        <view class="sh-lock-shackle"></view>
+      </view>
+      <text class="sh-text">安全登录 · 数据加密保护</text>
     </view>
   </view>
 
   <t-toast id="t-toast" />
 </view>
-

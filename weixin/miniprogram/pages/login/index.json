@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "登录",
   "usingComponents": {
-    "t-button": "tdesign-miniprogram/button/button",
     "t-toast": "tdesign-miniprogram/toast/toast",
     "custom-navbar": "../../components/custom-navbar/index"
   }

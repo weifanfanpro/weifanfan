@@ -1,88 +1,129 @@
 <view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="家属" showBack="{true}" />
+
+  <!-- 蓝色渐变 Hero -->
   <view class="support-hero">
-    <view class="support-hero-glow"></view>
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-star hero-star--1"></view>
     <view class="hero-title">家属</view>
     <view class="hero-sub">接收家人推送并处理，也可查看你发给家人的记录。</view>
   </view>
 
-  <view class="mode-tabs card">
-    <view class="mode-tab {{mode === 'received' ? 'mode-tab--active' : ''}}" data-mode="received" bind:tap="onModeChange">接收</view>
-    <view class="mode-tab {{mode === 'sent' ? 'mode-tab--active' : ''}}" data-mode="sent" bind:tap="onModeChange">发送</view>
+  <!-- 模式切换 Tab -->
+  <view class="mode-tabs">
+    <view class="mode-tab {{mode === 'received' ? 'mode-tab--active' : ''}}" data-mode="received" bindtap="onModeChange">接收</view>
+    <view class="mode-tab {{mode === 'sent' ? 'mode-tab--active' : ''}}" data-mode="sent" bindtap="onModeChange">发送</view>
   </view>
 
+  <!-- ═══ 接收模式 ═══ -->
   <block wx:if="{{mode === 'received'}}">
-    <view class="status-tabs card">
-      <view class="status-tab {{receivedFilter === 'pending' ? 'status-tab--active' : ''}}" data-value="pending" bind:tap="onReceivedFilterChange">待处理</view>
-      <view class="status-tab {{receivedFilter === 'activated' ? 'status-tab--active' : ''}}" data-value="activated" bind:tap="onReceivedFilterChange">已激活</view>
-      <view class="status-tab {{receivedFilter === 'ignored' ? 'status-tab--active' : ''}}" data-value="ignored" bind:tap="onReceivedFilterChange">已忽略</view>
+    <view class="status-tabs">
+      <view class="status-tab {{receivedFilter === 'pending' ? 'status-tab--active' : ''}}" data-value="pending" bindtap="onReceivedFilterChange">待处理</view>
+      <view class="status-tab {{receivedFilter === 'activated' ? 'status-tab--active' : ''}}" data-value="activated" bindtap="onReceivedFilterChange">已激活</view>
+      <view class="status-tab {{receivedFilter === 'ignored' ? 'status-tab--active' : ''}}" data-value="ignored" bindtap="onReceivedFilterChange">已忽略</view>
     </view>
 
+    <!-- 空状态 -->
     <view wx:if="{{receivedVisibleList.length === 0}}" class="empty-wrap">
-      <t-empty description="当前分类暂无记录" />
+      <view class="empty-state">
+        <view class="empty-buddy">
+          <view class="empty-pill-body">
+            <view class="empty-pill-left">
+              <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+            </view>
+            <view class="empty-pill-right">
+              <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+            </view>
+            <view class="empty-pill-mouth"></view>
+          </view>
+        </view>
+        <text class="empty-title">当前分类暂无记录</text>
+      </view>
     </view>
 
-    <view wx:else class="card">
-      <view class="list-hint muted small">提示：仅激活后才会进入药品清单和提醒</view>
-      <t-cell-group bordered>
-        <t-cell
+    <!-- 列表 -->
+    <view wx:else class="list-wrap">
+      <view class="list-hint">提示：仅激活后才会进入药品清单和提醒</view>
+      <view class="family-list">
+        <view
           wx:for="{{receivedVisibleList}}"
           wx:key="id"
-          title="{{item.name}}"
-          description="{{item.desc}}"
+          class="family-card"
         >
-          <view slot="left-icon" class="li">
-            <t-icon name="medicine-bottle" size="40rpx" />
-          </view>
-          <view slot="note" class="note">
-            <t-tag
-              theme="{{item.status === 'pending' ? 'warning' : (item.status === 'activated' ? 'success' : 'default')}}"
-              variant="light"
-            >
+          <view class="family-card-top">
+            <view class="family-card-left">
+              <view class="icon-pill"></view>
+              <view class="family-card-info">
+                <view class="family-card-name">{{item.name}}</view>
+                <view class="family-card-desc">{{item.desc}}</view>
+              </view>
+            </view>
+            <view class="tag {{item.status === 'pending' ? 'tag--warning' : (item.status === 'activated' ? 'tag--success' : 'tag--default')}}">
               {{item.status === 'pending' ? '待处理' : (item.status === 'activated' ? '已激活' : '已忽略')}}
-            </t-tag>
-            <view wx:if="{{item.status === 'pending'}}" class="action-row">
-              <t-button size="small" variant="outline" shape="round" bind:tap="onIgnore" data-id="{{item.id}}" class="tap-scale">忽略</t-button>
-              <t-button size="small" theme="primary" shape="round" icon="check" bind:tap="onActivate" data-id="{{item.id}}" class="tap-scale">激活</t-button>
             </view>
           </view>
-        </t-cell>
-      </t-cell-group>
+          <view wx:if="{{item.status === 'pending'}}" class="family-card-actions">
+            <view class="btn btn--ghost btn--small tap-scale" catchtap="noop" bindtap="onIgnore" data-id="{{item.id}}">
+              <text class="btn-text btn-text--ghost">忽略</text>
+            </view>
+            <view class="btn btn--primary btn--small tap-scale" catchtap="noop" bindtap="onActivate" data-id="{{item.id}}">
+              <text class="btn-text">激活</text>
+            </view>
+          </view>
+        </view>
+      </view>
     </view>
   </block>
 
+  <!-- ═══ 发送模式 ═══ -->
   <block wx:elif="{{mode === 'sent'}}">
+    <!-- 空状态 -->
     <view wx:if="{{sentList.length === 0}}" class="empty-wrap">
-      <t-empty description="暂无发送记录" />
+      <view class="empty-state">
+        <view class="empty-buddy">
+          <view class="empty-pill-body">
+            <view class="empty-pill-left">
+              <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+            </view>
+            <view class="empty-pill-right">
+              <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+            </view>
+            <view class="empty-pill-mouth"></view>
+          </view>
+        </view>
+        <text class="empty-title">暂无发送记录</text>
+      </view>
     </view>
 
-    <view wx:else class="card">
-      <view class="list-hint muted small">你发送给家人的药品会在这里显示处理状态</view>
-      <t-cell-group bordered>
-        <t-cell
+    <!-- 列表 -->
+    <view wx:else class="list-wrap">
+      <view class="list-hint">你发送给家人的药品会在这里显示处理状态</view>
+      <view class="family-list">
+        <view
           wx:for="{{sentList}}"
           wx:key="id"
-          title="{{item.name}}"
-          description="{{item.ownerName ? ('接收人：' + item.ownerName) : ''}} {{item.desc ? ('· ' + item.desc) : ''}}"
+          class="family-card"
         >
-          <view slot="left-icon" class="li">
-            <t-icon name="send" size="40rpx" />
-          </view>
-          <view slot="note" class="note note-col">
-            <t-tag
-              theme="{{item.status === 'pending' ? 'warning' : (item.status === 'activated' ? 'success' : 'default')}}"
-              variant="light"
-            >
+          <view class="family-card-top">
+            <view class="family-card-left">
+              <view class="icon-send"></view>
+              <view class="family-card-info">
+                <view class="family-card-name">{{item.name}}</view>
+                <view class="family-card-desc">{{item.ownerName ? ('接收人：' + item.ownerName) : ''}} {{item.desc ? ('· ' + item.desc) : ''}}</view>
+              </view>
+            </view>
+            <view class="tag {{item.status === 'pending' ? 'tag--warning' : (item.status === 'activated' ? 'tag--success' : 'tag--default')}}">
               {{item.status === 'pending' ? '待处理' : (item.status === 'activated' ? '已激活' : '已忽略')}}
-            </t-tag>
-            <view class="time-text" wx:if="{{item.createdAtText}}">发送：{{item.createdAtText}}</view>
-            <view class="time-text" wx:if="{{item.handledAtText}}">处理：{{item.handledAtText}}</view>
+            </view>
           </view>
-        </t-cell>
-      </t-cell-group>
+          <view class="family-card-meta">
+            <view wx:if="{{item.createdAtText}}" class="meta-text">发送：{{item.createdAtText}}</view>
+            <view wx:if="{{item.handledAtText}}" class="meta-text">处理：{{item.handledAtText}}</view>
+          </view>
+        </view>
+      </view>
     </view>
   </block>
 
   <t-toast id="t-toast" />
 </view>
-

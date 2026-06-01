@@ -1,18 +1,10 @@
-/* ═══ Drug Detail — 暖调古典 ═══ */
+/* ═══ Drug Detail — 蓝白卡通「药丸伙伴」风格 ═══ */
+
 .page {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f5f2ed;
-  background-image:
-    repeating-linear-gradient(
-      0deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    ),
-    repeating-linear-gradient(
-      90deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    );
+  background: #F0F7FF;
 }
 
 .scrollarea {
@@ -21,92 +13,96 @@
 }
 
 .content {
-  padding-bottom: calc(env(safe-area-inset-bottom) + 240rpx);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 140rpx);
 }
 
+/* ═══ Header ═══ */
 .header {
   position: relative;
   overflow: hidden;
+  border-radius: 28rpx;
   padding: 32rpx 28rpx 24rpx;
-  box-sizing: border-box;
   margin-top: 8rpx;
   margin-bottom: 18rpx;
-  border-radius: 28rpx;
-  background: linear-gradient(148deg, #1c1917 0%, #2d2824 52%, #3a342e 100%);
-  box-shadow:
-    0 24rpx 60rpx rgba(28, 25, 23, 0.25),
-    0 4rpx 12rpx rgba(28, 25, 23, 0.08);
+  background: linear-gradient(170deg, #4A9DFF 0%, #6DB8FF 40%, #A8DAFF 100%);
+  box-shadow: 0 16rpx 48rpx rgba(74, 157, 255, 0.2);
 }
 
-.header::before {
-  content: '';
+/* 云朵 */
+.hero-cloud {
   position: absolute;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+}
+
+.hero-cloud--1 {
+  width: 100rpx;
+  height: 34rpx;
   top: 16rpx;
-  left: 16rpx;
-  width: 32rpx;
-  height: 32rpx;
-  border-top: 2rpx solid rgba(46, 158, 143, 0.3);
-  border-left: 2rpx solid rgba(46, 158, 143, 0.3);
-  z-index: 3;
-  pointer-events: none;
+  right: 20rpx;
+  animation: cloudFloat 8s ease-in-out infinite;
 }
 
-.header::after {
+.hero-cloud--1::before {
   content: '';
   position: absolute;
-  bottom: 16rpx;
-  right: 16rpx;
-  width: 32rpx;
-  height: 32rpx;
-  border-bottom: 2rpx solid rgba(46, 158, 143, 0.3);
-  border-right: 2rpx solid rgba(46, 158, 143, 0.3);
-  z-index: 3;
-  pointer-events: none;
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  top: -24rpx;
+  left: 16rpx;
 }
 
-.header-glow {
+/* 星星 */
+.hero-star {
   position: absolute;
-  right: -80rpx;
-  top: -78rpx;
-  width: 260rpx;
-  height: 260rpx;
+  width: 8rpx;
+  height: 8rpx;
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(46, 158, 143, 0.12), rgba(46, 158, 143, 0));
+  pointer-events: none;
+  animation: starTwinkle 2s ease-in-out infinite;
+}
+
+.hero-star--1 { bottom: 20rpx; left: 40rpx; }
+
+@keyframes cloudFloat {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(12rpx); }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
 }
 
 .drug-name {
+  position: relative;
+  z-index: 2;
   font-size: 44rpx;
   font-weight: 800;
   line-height: 1.2;
-  color: #fffefb;
-  position: relative;
-  z-index: 1;
+  color: #FFFFFF;
+  text-shadow: 0 2rpx 8rpx rgba(43, 94, 167, 0.2);
 }
 
 .hero-sub {
+  position: relative;
+  z-index: 2;
   margin-top: 12rpx;
   font-size: 24rpx;
   line-height: 1.5;
-  color: rgba(255, 254, 251, 0.55);
-  position: relative;
-  z-index: 1;
+  color: rgba(255, 255, 255, 0.75);
 }
 
-.header-tags {
-  margin-top: 18rpx;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12rpx;
+.hero-view-capsule {
   position: relative;
-  z-index: 1;
-}
-
-.header .hero-view-capsule {
+  z-index: 2;
   margin-top: 14rpx;
-  position: relative;
-  z-index: 1;
-  background: rgba(91, 122, 107, 0.08);
-  border: 1rpx solid rgba(91, 122, 107, 0.15);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
   padding: 6rpx 16rpx;
   border-radius: 999rpx;
   display: inline-flex;
@@ -114,50 +110,60 @@
   gap: 8rpx;
 }
 
-.header .hero-view-capsule__dot {
+.hero-view-capsule__dot {
   width: 10rpx;
   height: 10rpx;
   border-radius: 50%;
-  background: #5b7a6b;
-  opacity: 0.5;
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.6);
 }
 
-.header .hero-view-capsule__text {
-  color: #b0a99f;
+.hero-view-capsule__text {
+  color: rgba(255, 255, 255, 0.8);
   font-size: 22rpx;
   font-weight: 500;
 }
 
+/* ═══ Tags ═══ */
+.header-tags {
+  position: relative;
+  z-index: 2;
+  margin-top: 18rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.tag {
+  font-size: 22rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 999rpx;
+  font-weight: 600;
+}
+
+.tag--primary {
+  color: #4A9DFF;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.tag--default {
+  color: #3D5A80;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* ═══ Summary Card ═══ */
 .summary-card {
   border-radius: 22rpx;
   padding: 22rpx;
   margin-bottom: 16rpx;
-  background: #fffefb;
-  border: 1rpx solid rgba(28, 25, 23, 0.05);
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
-  position: relative;
-  overflow: hidden;
-}
-
-.summary-card::before {
-  content: '';
-  position: absolute;
-  top: 10rpx;
-  right: 10rpx;
-  width: 18rpx;
-  height: 18rpx;
-  border-top: 1.5rpx solid rgba(28, 25, 23, 0.06);
-  border-right: 1.5rpx solid rgba(28, 25, 23, 0.06);
-  pointer-events: none;
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
+  box-shadow: 0 4rpx 20rpx rgba(43, 94, 167, 0.06);
 }
 
 .summary-title {
   font-size: 22rpx;
   font-weight: 600;
-  color: #b0a99f;
+  color: #8BA4C7;
   letter-spacing: 1rpx;
   text-transform: uppercase;
   margin-bottom: 14rpx;
@@ -172,43 +178,113 @@
 .summary-item {
   border-radius: 16rpx;
   padding: 16rpx 14rpx;
-  background: rgba(46, 158, 143, 0.03);
-  border: 1rpx solid rgba(46, 158, 143, 0.08);
+  background: rgba(74, 157, 255, 0.03);
+  border: 1rpx solid rgba(74, 157, 255, 0.06);
 }
 
 .summary-label {
   font-size: 20rpx;
-  color: #b0a99f;
+  color: #8BA4C7;
   font-weight: 500;
 }
 
 .summary-value {
   margin-top: 8rpx;
   font-size: 26rpx;
-  color: #1c1917;
+  color: #4A9DFF;
   font-weight: 700;
   line-height: 1.35;
 }
 
+/* ═══ Collapse / Accordion ═══ */
 .collapse-card {
   overflow: hidden;
   border-radius: 22rpx;
-  background: #fffefb;
-  border: 1rpx solid rgba(28, 25, 23, 0.05);
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
+  box-shadow: 0 4rpx 20rpx rgba(43, 94, 167, 0.06);
 }
 
-.panel {
-  border-radius: 16rpx;
+.accordion-item {
+  border-bottom: 1rpx solid rgba(74, 157, 255, 0.06);
+}
+
+.accordion-item:last-child {
+  border-bottom: none;
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+}
+
+.accordion-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A3A5C;
+}
+
+.accordion-arrow {
+  width: 14rpx;
+  height: 14rpx;
+  border-top: 2rpx solid #B0C4DE;
+  border-right: 2rpx solid #B0C4DE;
+  transform: rotate(45deg);
+  transition: transform 200ms;
+  flex-shrink: 0;
+}
+
+.accordion-arrow--open {
+  transform: rotate(-135deg);
+}
+
+.accordion-body {
+  padding: 0 24rpx 24rpx;
+  animation: accordionOpen 200ms ease-out;
+}
+
+@keyframes accordionOpen {
+  from { opacity: 0; transform: translateY(-8rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cell group inside accordion */
+.app-cell-group {
+  border-radius: 14rpx;
+  background: rgba(74, 157, 255, 0.02);
+  border: 1rpx solid rgba(74, 157, 255, 0.06);
   overflow: hidden;
+}
+
+.app-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18rpx 20rpx;
+  border-bottom: 1rpx solid rgba(74, 157, 255, 0.04);
+}
+
+.app-cell:last-child {
+  border-bottom: none;
+}
+
+.app-cell-title {
+  font-size: 26rpx;
+  color: #3D5A80;
+}
+
+.app-cell-note {
+  font-size: 26rpx;
+  color: #1A3A5C;
+  font-weight: 600;
 }
 
 .panel-text {
   padding: 18rpx 12rpx;
   font-size: 28rpx;
-  color: #6b645c;
+  color: #3D5A80;
   line-height: 1.6;
 }
 
@@ -218,26 +294,55 @@
 
 .li {
   font-size: 28rpx;
-  color: #6b645c;
+  color: #3D5A80;
   line-height: 1.7;
   margin: 10rpx 0;
 }
 
+/* ═══ Bottom Bar ═══ */
 .bottom-bar {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  border-top: none;
-  padding-bottom: env(safe-area-inset-bottom);
+  background: rgba(240, 247, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-top: 1rpx solid rgba(74, 157, 255, 0.08);
 }
 
 .bottom-action-card {
   padding-top: 12rpx;
-  padding-bottom: 16rpx;
-  background: rgba(255, 254, 251, 0.92);
-  backdrop-filter: blur(12px);
-  border-top-left-radius: 24rpx;
-  border-top-right-radius: 24rpx;
-  box-shadow: 0 -10rpx 30rpx rgba(28, 25, 23, 0.06);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 16rpx);
+}
+
+/* ═══ Button ═══ */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 999rpx;
+  transition: transform 150ms ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, #4A9DFF, #6DB8FF);
+  box-shadow: 0 8rpx 24rpx rgba(74, 157, 255, 0.25);
+}
+
+.btn-text {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+/* ═══ Reduced Motion ═══ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-cloud { animation: none; }
+  .hero-star { animation: none; }
+  .accordion-body { animation: none; }
 }

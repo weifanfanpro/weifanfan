@@ -1,10 +1,8 @@
 {
   "navigationBarTitleText": "选择咨询药品",
-  "navigationBarBackgroundColor": "#1c1917",
+  "navigationBarBackgroundColor": "#4A9DFF",
   "navigationBarTextStyle": "white",
   "usingComponents": {
-    "t-empty": "tdesign-miniprogram/empty/empty",
-    "t-loading": "tdesign-miniprogram/loading/loading",
     "custom-navbar": "../../components/custom-navbar/index"
   }
 }

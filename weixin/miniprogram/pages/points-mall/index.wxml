@@ -1,33 +1,104 @@
-<view class="page page-padding mall-page">
+<view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="积分商城" showBack="{true}" />
-  <view class="mall-hero card-elevated anim-in">
-    <view class="mall-hero-main">
-      <view class="mall-hero-label">我的积分</view>
-      <view class="mall-hero-points">{{pointsBalance}}</view>
-      <view class="mall-hero-hint">每次按时服药可获得积分奖励</view>
+
+  <!-- 蓝色渐变 Hero -->
+  <view class="mall-hero">
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-cloud hero-cloud--2"></view>
+    <view class="hero-star hero-star--1"></view>
+    <view class="hero-star hero-star--2"></view>
+    <view class="hero-main">
+      <view class="hero-label">我的积分</view>
+      <view class="hero-points">
+        <text class="points-num">{{pointsBalance}}</text>
+        <text class="points-unit">分</text>
+      </view>
+      <view class="hero-hint">每次按时服药可获得积分奖励</view>
     </view>
-    <view class="mall-hero-actions">
-      <t-button size="small" theme="primary" variant="base" bind:tap="onOpenOrderList">我的订单</t-button>
+    <view class="btn btn--small btn--hero tap-scale" bindtap="onOpenOrderList">
+      <text class="btn-text btn-text--hero">我的订单</text>
     </view>
   </view>
 
+  <!-- 积分获取提示 -->
+  <view class="earn-card">
+    <view class="earn-icon">
+      <view class="earn-pill-body">
+        <view class="earn-pill-left"></view>
+        <view class="earn-pill-right"></view>
+      </view>
+    </view>
+    <view class="earn-text">坚持按时服药，积分越多，可兑换的商品越丰富！</view>
+  </view>
+
+  <!-- 分类 Tab -->
+  <scroll-view class="cat-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="cat-tabs">
+      <view
+        wx:for="{{categories}}"
+        wx:key="*this"
+        class="cat-tab {{category === item ? 'cat-tab--active' : ''}}"
+        data-value="{{item}}"
+        bindtap="onTabCategory"
+      >{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 加载中 -->
   <view wx:if="{{loading}}" class="loading-wrap">
-    <t-loading theme="spinner" />
+    <view class="loading-pill">
+      <view class="loading-pill-left"></view>
+      <view class="loading-pill-right"></view>
+    </view>
+    <view class="loading-text">加载中...</view>
+  </view>
+
+  <!-- 商品列表 -->
+  <view wx:elif="{{list.length === 0}}" class="empty-wrap">
+    <view class="empty-state">
+      <view class="empty-buddy">
+        <view class="empty-pill-body">
+          <view class="empty-pill-left">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-right">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-mouth"></view>
+        </view>
+      </view>
+      <text class="empty-title">暂无可兑换商品</text>
+    </view>
   </view>
 
   <view wx:else class="goods-list">
-    <view class="section-title">可兑换商品</view>
-    <view wx:for="{{list}}" wx:key="productId" class="goods-item card tap-scale anim-in" bind:tap="onOpenProduct" data-id="{{item.productId}}">
+    <view
+      wx:for="{{list}}"
+      wx:key="productId"
+      wx:if="{{item.category === category || category === '全部'}}"
+      class="goods-card"
+      data-id="{{item.productId}}"
+      bindtap="onOpenProduct"
+    >
+      <view class="card-corner card-corner--tl"></view>
+      <view class="card-corner card-corner--br"></view>
       <image class="goods-cover" src="{{item.cover}}" mode="aspectFill" />
       <view class="goods-main">
         <view class="goods-category">{{item.category}}</view>
         <view class="goods-name">{{item.name}}</view>
         <view class="goods-desc">{{item.desc}}</view>
         <view class="goods-foot">
-          <view class="goods-price">{{item.pointsPrice}}<text class="goods-price-unit"> 积分</text></view>
+          <view class="goods-price">
+            <text class="price-num">{{item.pointsPrice}}</text>
+            <text class="price-unit"> 积分</text>
+          </view>
           <view class="goods-stock">库存 {{item.stockMock}}</view>
         </view>
       </view>
+    </view>
+
+    <view wx:if="{{filteredEmpty}}" class="empty-mini">
+      <text class="empty-mini-text">该分类暂无商品</text>
     </view>
   </view>
 </view>

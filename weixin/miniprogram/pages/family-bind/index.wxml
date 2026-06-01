@@ -1,141 +1,160 @@
 <view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="家属绑定" showBack="{true}" />
-  <view class="support-hero">
-    <view class="support-hero-glow"></view>
+
+  <!-- 蓝色渐变 Hero -->
+  <view class="bind-hero">
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-star hero-star--1"></view>
     <view class="hero-title">{{heroTitle}}</view>
     <view class="hero-sub">{{heroSubtitle}}</view>
   </view>
 
-  <view class="card mt pad current-view-card">
-    <view class="row">
-      <view class="muted small">当前视角</view>
-      <view class="view-right">
-        <view class="view-pill">
-          <t-icon name="user-circle" size="32rpx" />
-          <text class="pill-text">{{viewLabel}}</text>
+  <!-- 当前视角卡片 -->
+  <view class="card view-card">
+    <view class="view-label">当前视角</view>
+    <view class="view-row">
+      <view class="view-user">
+        <view class="view-avatar">
+          <image wx:if="{{viewAvatarUrl}}" class="avatar-img" src="{{viewAvatarUrl}}" mode="aspectFill" />
+          <view wx:else class="avatar-placeholder"></view>
         </view>
-        <t-button
-          wx:if="{{viewOpenid && viewOpenid !== selfOpenid}}"
-          size="small"
-          theme="primary"
-          variant="outline"
-          shape="round"
-          icon="rollback"
-          bind:tap="onResetToSelf"
-          class="tap-scale"
-        >
-          切回自己
-        </t-button>
+        <text class="view-name">{{viewLabel}}</text>
+      </view>
+      <view
+        wx:if="{{viewOpenid && viewOpenid !== selfOpenid}}"
+        class="btn btn--ghost btn--small tap-scale"
+        bindtap="onResetToSelf"
+      >
+        <text class="btn-text btn-text--ghost">切回自己</text>
       </view>
     </view>
   </view>
 
-  <view class="mt card relation-card">
-    <t-tabs value="{{tab}}" bind:change="onTabChange">
-      <t-tab-panel value="care" label="我来照护">
-        <view class="panel pad">
-          <view class="muted small">扫码家人的绑定码，或手动输入绑定码，授权你帮对方管理。</view>
+  <!-- Tab 切换 -->
+  <view class="tabs">
+    <view class="tab {{tab === 'care' ? 'tab--active' : ''}}" data-value="care" bindtap="onTabChange">我来照护</view>
+    <view class="tab {{tab === 'owner' ? 'tab--active' : ''}}" data-value="owner" bindtap="onTabChange">我被照护</view>
+  </view>
 
-          <view class="mt">
-            <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onScanBind">扫码绑定</t-button>
-          </view>
-          <view class="mt">
-            <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onInputBind">手动输入绑定码</t-button>
-          </view>
+  <!-- ═══ 我来照护 ═══ -->
+  <view wx:if="{{tab === 'care'}}" class="tab-panel">
+    <view class="panel-hint">扫码家人的绑定码，或手动输入绑定码，授权你帮对方管理。</view>
 
-          <view class="section-title">我正在照护</view>
-          <view wx:if="{{asMember.length === 0}}" class="empty-wrap">
-            <t-empty description="暂无绑定的家人" />
-          </view>
-          <t-cell-group wx:else bordered>
-            <t-cell
-              wx:for="{{asMember}}"
-              wx:key="id"
-              title="{{item.owner.nickName}}"
-              arrow
-              bind:tap="onSwitchView"
-              data-openid="{{item.ownerOpenid}}"
-              data-label="{{item.owner.nickName}}"
-            >
-              <view slot="left-icon" class="li">
-                <t-avatar size="small" image="{{item.owner.avatarUrl}}"></t-avatar>
-              </view>
-              <view slot="note">
-                <view class="switch-wrap">
-                  <t-button
-                    wx:if="{{viewOpenid !== item.ownerOpenid}}"
-                    size="small"
-                    theme="primary"
-                    variant="outline"
-                    shape="round"
-                    icon="swap"
-                    bind:tap="onSwitchView"
-                    data-openid="{{item.ownerOpenid}}"
-                    data-label="{{item.owner.nickName}}"
-                    class="tap-scale"
-                  >
-                    切换视角
-                  </t-button>
-                  <t-tag wx:else theme="primary" variant="light">当前视角</t-tag>
-                </view>
-              </view>
-            </t-cell>
-          </t-cell-group>
-        </view>
-      </t-tab-panel>
+    <view class="btn btn--primary tap-scale" bindtap="onScanBind">
+      <text class="btn-text">扫码绑定</text>
+    </view>
+    <view class="btn btn--ghost tap-scale" bindtap="onInputBind">
+      <text class="btn-text btn-text--ghost">手动输入绑定码</text>
+    </view>
 
-      <t-tab-panel value="owner" label="我被照护">
-        <view class="panel pad">
-          <view class="muted small">将绑定码或二维码给照护者，授权对方帮你管理。</view>
+    <view class="section-title">我正在照护</view>
 
-          <view class="code-box mt">
-            <view class="code-label muted">我的绑定码</view>
-            <view class="code">{{selfOpenid}}</view>
-            <view class="mt">
-              <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onCopyCode">复制绑定码</t-button>
+    <!-- 空状态 -->
+    <view wx:if="{{asMember.length === 0}}" class="empty-wrap">
+      <view class="empty-state">
+        <view class="empty-buddy">
+          <view class="empty-pill-body">
+            <view class="empty-pill-left">
+              <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
             </view>
-            <view class="mt">
-              <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onShowBindQr">显示绑定二维码</t-button>
+            <view class="empty-pill-right">
+              <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
             </view>
+            <view class="empty-pill-mouth"></view>
           </view>
-
-          <view class="section-title">正在照护我的人</view>
-          <view wx:if="{{asOwner.length === 0}}" class="empty-wrap">
-            <t-empty description="暂无家人照护你" />
-          </view>
-          <t-cell-group wx:else bordered>
-            <t-cell
-              wx:for="{{asOwner}}"
-              wx:key="id"
-              title="{{item.member.nickName}}"
-              description="可在此解绑"
-            >
-              <view slot="left-icon" class="li">
-                <t-avatar size="small" image="{{item.member.avatarUrl}}"></t-avatar>
-              </view>
-              <view slot="note">
-                <view class="switch-wrap">
-                  <t-button
-                    size="small"
-                    theme="danger"
-                    variant="outline"
-                    shape="round"
-                    icon="close"
-                    bind:tap="onUnbind"
-                    data-id="{{item.id}}"
-                    class="tap-scale"
-                  >
-                    解绑
-                  </t-button>
-                </view>
-              </view>
-            </t-cell>
-          </t-cell-group>
         </view>
-      </t-tab-panel>
-    </t-tabs>
+        <text class="empty-title">暂无绑定的家人</text>
+      </view>
+    </view>
+
+    <!-- 成员列表 -->
+    <view wx:else class="member-list">
+      <view
+        wx:for="{{asMember}}"
+        wx:key="id"
+        class="member-row"
+        data-openid="{{item.ownerOpenid}}"
+        data-label="{{item.owner.nickName}}"
+        bindtap="onSwitchView"
+      >
+        <view class="member-left">
+          <image class="member-avatar" src="{{item.owner.avatarUrl}}" mode="aspectFill" />
+          <text class="member-name">{{item.owner.nickName}}</text>
+        </view>
+        <view
+          wx:if="{{viewOpenid !== item.ownerOpenid}}"
+          class="btn btn--ghost btn--tiny tap-scale"
+          catchtap="onSwitchView"
+          data-openid="{{item.ownerOpenid}}"
+          data-label="{{item.owner.nickName}}"
+        >
+          <text class="btn-text btn-text--ghost">切换视角</text>
+        </view>
+        <view wx:else class="tag tag--active">当前视角</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ═══ 我被照护 ═══ -->
+  <view wx:if="{{tab === 'owner'}}" class="tab-panel">
+    <view class="panel-hint">将绑定码或二维码给照护者，授权对方帮你管理。</view>
+
+    <!-- 绑定码卡片 -->
+    <view class="code-card">
+      <view class="code-label">我的绑定码</view>
+      <view class="code-value">{{selfOpenid}}</view>
+      <view class="btn btn--ghost tap-scale" bindtap="onCopyCode">
+        <text class="btn-text btn-text--ghost">复制绑定码</text>
+      </view>
+      <view class="btn btn--primary tap-scale" bindtap="onShowBindQr">
+        <text class="btn-text">显示绑定二维码</text>
+      </view>
+    </view>
+
+    <view class="section-title">正在照护我的人</view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{asOwner.length === 0}}" class="empty-wrap">
+      <view class="empty-state">
+        <view class="empty-buddy">
+          <view class="empty-pill-body">
+            <view class="empty-pill-left">
+              <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+            </view>
+            <view class="empty-pill-right">
+              <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+            </view>
+            <view class="empty-pill-mouth"></view>
+          </view>
+        </view>
+        <text class="empty-title">暂无家人照护你</text>
+      </view>
+    </view>
+
+    <!-- 照护者列表 -->
+    <view wx:else class="member-list">
+      <view
+        wx:for="{{asOwner}}"
+        wx:key="id"
+        class="member-row"
+      >
+        <view class="member-left">
+          <image class="member-avatar" src="{{item.member.avatarUrl}}" mode="aspectFill" />
+          <view class="member-info">
+            <text class="member-name">{{item.member.nickName}}</text>
+            <text class="member-sub">可在此解绑</text>
+          </view>
+        </view>
+        <view
+          class="btn btn--danger btn--tiny tap-scale"
+          catchtap="onUnbind"
+          data-id="{{item.id}}"
+        >
+          <text class="btn-text btn-text--danger">解绑</text>
+        </view>
+      </view>
+    </view>
   </view>
 
   <t-toast id="t-toast" />
 </view>
-

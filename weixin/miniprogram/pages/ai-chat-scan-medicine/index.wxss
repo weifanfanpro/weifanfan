@@ -1,73 +1,152 @@
-/* ═══ AI Chat Scan Medicine — 暖调古典 ═══ */
+/* ═══ AI Chat Scan Medicine — 蓝白卡通「药丸伙伴」风格 ═══ */
+
 .page {
   min-height: 100vh;
-  background: #f5f2ed;
-  background-image:
-    repeating-linear-gradient(
-      0deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    ),
-    repeating-linear-gradient(
-      90deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    );
+  background: #F0F7FF;
 }
 
+/* ═══ Hero ═══ */
 .hero {
   position: relative;
   overflow: hidden;
   padding: 28rpx;
   margin-top: 8rpx;
   border-radius: 28rpx;
-  background: linear-gradient(148deg, #1c1917 0%, #2d2824 52%, #3a342e 100%);
-  box-shadow:
-    0 24rpx 60rpx rgba(28, 25, 23, 0.25),
-    0 4rpx 12rpx rgba(28, 25, 23, 0.08);
+  background: linear-gradient(170deg, #4A9DFF 0%, #6DB8FF 40%, #A8DAFF 100%);
+  box-shadow: 0 16rpx 48rpx rgba(74, 157, 255, 0.2);
 }
 
-.hero::before {
-  content: '';
+/* 云朵 */
+.hero-cloud {
   position: absolute;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+}
+
+.hero-cloud--1 {
+  width: 100rpx;
+  height: 34rpx;
   top: 16rpx;
+  right: 24rpx;
+  animation: cloudFloat 8s ease-in-out infinite;
+}
+
+.hero-cloud--1::before {
+  content: '';
+  position: absolute;
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  top: -24rpx;
   left: 16rpx;
-  width: 32rpx;
-  height: 32rpx;
-  border-top: 2rpx solid rgba(46, 158, 143, 0.3);
-  border-left: 2rpx solid rgba(46, 158, 143, 0.3);
-  z-index: 3;
+}
+
+/* 星星 */
+.hero-star {
+  position: absolute;
+  width: 8rpx;
+  height: 8rpx;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: starTwinkle 2s ease-in-out infinite;
+}
+
+.hero-star--1 { bottom: 20rpx; left: 40rpx; }
+
+/* 十字 */
+.hero-cross {
+  position: absolute;
+  opacity: 0.15;
   pointer-events: none;
 }
 
-.hero::after {
+.hero-cross::before,
+.hero-cross::after {
   content: '';
   position: absolute;
-  bottom: 16rpx;
-  right: 16rpx;
-  width: 32rpx;
-  height: 32rpx;
-  border-bottom: 2rpx solid rgba(46, 158, 143, 0.3);
-  border-right: 2rpx solid rgba(46, 158, 143, 0.3);
-  z-index: 3;
-  pointer-events: none;
+  background: #FFFFFF;
+  border-radius: 2rpx;
+}
+
+.hero-cross--1 {
+  top: 20rpx;
+  left: 30rpx;
+  width: 14rpx;
+  height: 14rpx;
+}
+
+.hero-cross--1::before {
+  width: 100%;
+  height: 30%;
+  top: 35%;
+  left: 0;
+}
+
+.hero-cross--1::after {
+  width: 30%;
+  height: 100%;
+  top: 0;
+  left: 35%;
+}
+
+@keyframes cloudFloat {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(12rpx); }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
 }
 
 .tip {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   font-size: 34rpx;
   font-weight: 700;
-  color: #fffefb;
+  color: #FFFFFF;
+  text-shadow: 0 2rpx 8rpx rgba(43, 94, 167, 0.2);
 }
 
 .tip-sub {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   margin-top: 10rpx;
   font-size: 26rpx;
   line-height: 1.45;
-  color: rgba(255, 254, 251, 0.55);
+  color: rgba(255, 255, 255, 0.7);
 }
 
+.hero-view-capsule {
+  position: relative;
+  z-index: 2;
+  margin-top: 14rpx;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.hero-view-capsule__dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.hero-view-capsule__text {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+/* ═══ Frame ═══ */
 .frame-wrap {
   display: flex;
   justify-content: center;
@@ -79,13 +158,11 @@
   height: 72vw;
   max-width: 560rpx;
   max-height: 560rpx;
-  background: #fffefb;
+  background: #FFFFFF;
   border-radius: 24rpx;
   position: relative;
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
-  border: 1rpx solid rgba(28, 25, 23, 0.05);
+  box-shadow: 0 4rpx 20rpx rgba(43, 94, 167, 0.06);
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
   overflow: hidden;
 }
 
@@ -94,7 +171,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 20%, rgba(46, 158, 143, 0.06), rgba(46, 158, 143, 0));
+  background: radial-gradient(circle at 50% 20%, rgba(74, 157, 255, 0.04), rgba(74, 157, 255, 0));
 }
 
 .cam {
@@ -108,7 +185,7 @@
   position: absolute;
   width: 44rpx;
   height: 44rpx;
-  border: 8rpx solid #2E9E8F;
+  border: 8rpx solid #4A9DFF;
 }
 .tl { left: 12rpx; top: 12rpx; border-right: 0; border-bottom: 0; border-radius: 16rpx 0 0 0; }
 .tr { right: 12rpx; top: 12rpx; border-left: 0; border-bottom: 0; border-radius: 0 16rpx 0 0; }
@@ -122,19 +199,52 @@
   bottom: 24rpx;
   text-align: center;
   font-size: 30rpx;
-  color: #6b645c;
+  color: #8BA4C7;
 }
 
 .recognizing {
   position: absolute;
   inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 254, 251, 0.86);
+  background: rgba(255, 255, 255, 0.86);
   backdrop-filter: blur(10px);
 }
 
+.recognizing-text {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #4A9DFF;
+  font-weight: 500;
+}
+
+/* ═══ Loading Dots ═══ */
+.loading-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+}
+
+.loading-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: #4A9DFF;
+  animation: dotBounce 1.2s ease-in-out infinite;
+}
+
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ═══ Actions ═══ */
 .actions {
   margin-top: 20rpx;
   padding: 16rpx;
@@ -142,9 +252,98 @@
   flex-direction: column;
   gap: 18rpx;
   border-radius: 20rpx;
-  background: #fffefb;
-  border: 1rpx solid rgba(28, 25, 23, 0.05);
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
+  box-shadow: 0 4rpx 20rpx rgba(43, 94, 167, 0.06);
+}
+
+/* ═══ Cell Group ═══ */
+.app-cell-group {
+  border-radius: 14rpx;
+  background: rgba(74, 157, 255, 0.02);
+  border: 1rpx solid rgba(74, 157, 255, 0.06);
+  overflow: hidden;
+}
+
+.app-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18rpx 20rpx;
+}
+
+.app-cell-title {
+  font-size: 28rpx;
+  color: #1A3A5C;
+  font-weight: 500;
+}
+
+/* ═══ Toggle ═══ */
+.toggle {
+  position: relative;
+  width: 88rpx;
+  height: 48rpx;
+  border-radius: 999rpx;
+  background: #D1E5FF;
+  transition: background 200ms ease;
+  flex-shrink: 0;
+}
+
+.toggle--on {
+  background: #4A9DFF;
+}
+
+.toggle-dot {
+  position: absolute;
+  top: 4rpx;
+  left: 4rpx;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 2rpx 8rpx rgba(43, 94, 167, 0.15);
+  transition: transform 200ms ease;
+}
+
+.toggle--on .toggle-dot {
+  transform: translateX(40rpx);
+}
+
+/* ═══ Button ═══ */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 999rpx;
+  transition: transform 150ms ease;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  background: linear-gradient(135deg, #4A9DFF, #6DB8FF);
+  box-shadow: 0 8rpx 24rpx rgba(74, 157, 255, 0.25);
+}
+
+.btn--secondary {
+  background: #E8F2FF;
+  border: 1rpx solid rgba(74, 157, 255, 0.12);
+}
+
+.btn-text {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.btn-text--secondary {
+  color: #4A9DFF;
+}
+
+/* ═══ Reduced Motion ═══ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-cloud { animation: none; }
+  .hero-star { animation: none; }
+  .loading-dot { animation: none; }
 }

@@ -28,8 +28,8 @@ Component({
     onRuleChange(e: WechatMiniprogram.CustomEvent<{ value: string }>) {
       this.setData({ rule: String(e.detail.value || "") });
     },
-    onQuantifiableChange(e: WechatMiniprogram.CustomEvent<{ value: string | number }>) {
-      const v = String(e.detail.value || "1");
+    onQuantifiableChange(e: WechatMiniprogram.BaseEvent) {
+      const v = String((e.currentTarget as any)?.dataset?.value || "1");
       const isQ = v === "1";
       this.setData({
         isQuantifiable: isQ,

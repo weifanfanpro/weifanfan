@@ -1,8 +1,10 @@
-<view class="page page-padding address-page">
+<view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="收货地址" showBack="{true}" />
-  <view class="hero card-elevated anim-in">
-    <view class="hero-glow hero-glow--a"></view>
-    <view class="hero-glow hero-glow--b"></view>
+
+  <!-- Hero -->
+  <view class="addr-hero">
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-star hero-star--1"></view>
     <view class="hero-top">
       <view>
         <view class="hero-title">地址簿</view>
@@ -11,42 +13,59 @@
       <view class="hero-badge">{{list.length}} 个地址</view>
     </view>
     <view class="hero-footer">
-      <view class="hero-foot-note">可管理家庭、公司等多个场景地址</view>
+      <text class="hero-foot-note">可管理家庭、公司等多个场景地址</text>
     </view>
   </view>
 
+  <!-- 空状态 -->
   <view wx:if="{{!loading && list.length === 0}}" class="empty-wrap">
-    <view class="empty-illustration"></view>
-    <view class="empty-title">暂无收货地址</view>
-    <view class="empty-desc">建议先新增常用地址，结算时将自动优先带出默认地址</view>
-    <t-button theme="primary" block bind:tap="onAddAddress">去新增地址</t-button>
+    <view class="empty-state">
+      <view class="empty-buddy">
+        <view class="empty-pill-body">
+          <view class="empty-pill-left">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-right">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-mouth"></view>
+        </view>
+      </view>
+      <text class="empty-title">暂无收货地址</text>
+      <text class="empty-desc">建议先新增常用地址，结算时将自动优先带出默认地址</text>
+    </view>
   </view>
 
+  <!-- 地址列表 -->
   <view wx:else class="addr-list">
     <view
       wx:for="{{list}}"
       wx:key="addressId"
-      class="addr-item card tap-scale anim-in {{mode === 'choose' && selectedAddressId === item.addressId ? 'addr-item--active' : ''}}"
+      class="addr-card {{mode === 'choose' && selectedAddressId === item.addressId ? 'addr-card--active' : ''}}"
       data-id="{{item.addressId}}"
-      bind:tap="onChooseAddress"
+      bindtap="onChooseAddress"
     >
-      <view class="addr-head-marker"></view>
+      <view class="card-corner card-corner--tl"></view>
+      <view class="card-corner card-corner--br"></view>
       <view class="addr-line-1">
         <text class="addr-name">{{item.receiver}}</text>
         <text class="addr-phone">{{item.phone}}</text>
-        <text wx:if="{{item.isDefault}}" class="addr-default">默认</text>
-        <text wx:if="{{item.tag}}" class="addr-tag">{{item.tag}}</text>
+        <text wx:if="{{item.isDefault}}" class="addr-badge addr-badge--default">默认</text>
+        <text wx:if="{{item.tag}}" class="addr-badge addr-badge--tag">{{item.tag}}</text>
       </view>
       <view class="addr-line-2">{{item.region}} {{item.detail}}</view>
       <view class="addr-actions">
-        <view class="action-btn action-btn--primary {{item.isDefault ? 'action-btn--disabled' : ''}}" data-id="{{item.addressId}}" catch:tap="onSetDefault">设为默认</view>
-        <view class="action-btn action-btn--edit" data-id="{{item.addressId}}" catch:tap="onEditAddress">编辑</view>
-        <view class="action-btn action-btn--danger" data-id="{{item.addressId}}" catch:tap="onDeleteAddress">删除</view>
+        <view class="action-btn {{item.isDefault ? 'action-btn--disabled' : ''}}" data-id="{{item.addressId}}" catchtap="onSetDefault">设为默认</view>
+        <view class="action-btn action-btn--edit" data-id="{{item.addressId}}" catchtap="onEditAddress">编辑</view>
+        <view class="action-btn action-btn--danger" data-id="{{item.addressId}}" catchtap="onDeleteAddress">删除</view>
       </view>
     </view>
   </view>
 
-  <view class="address-bottom-action">
-    <t-button theme="primary" block bind:tap="onAddAddress">新增地址</t-button>
+  <!-- 底部新增按钮 -->
+  <view class="bottom-bar">
+    <view class="btn btn--primary tap-scale" bindtap="onAddAddress">
+      <text class="btn-text">新增地址</text>
+    </view>
   </view>
 </view>

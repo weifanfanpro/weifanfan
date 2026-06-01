@@ -2,6 +2,7 @@ package com.dingdong.medicine.controller;
 
 import com.dingdong.medicine.common.result.R;
 import com.dingdong.medicine.dto.request.AiChatSendRequest;
+import com.dingdong.medicine.dto.request.CheckReminderPlanRequest;
 import com.dingdong.medicine.dto.response.AiChatResponse;
 import com.dingdong.medicine.entity.AiChatSession;
 import com.dingdong.medicine.service.AiChatService;
@@ -50,5 +51,12 @@ public class AiChatController {
                                             @RequestParam Long reminderId) {
         String openid = (String) request.getAttribute("openid");
         return R.ok(aiChatService.checkReminder(openid, reminderId));
+    }
+
+    @PostMapping("/check-reminder-plan")
+    public R<AiChatResponse> checkReminderPlan(HttpServletRequest request,
+                                                 @RequestBody CheckReminderPlanRequest planRequest) {
+        String openid = (String) request.getAttribute("openid");
+        return R.ok(aiChatService.checkReminderPlan(openid, planRequest));
     }
 }

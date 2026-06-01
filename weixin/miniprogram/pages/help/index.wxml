@@ -1,57 +1,171 @@
 <view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="帮助中心" showBack="{true}" />
-  <view class="support-hero">
-    <view class="support-hero-glow"></view>
+
+  <!-- 蓝色渐变 Hero -->
+  <view class="help-hero">
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-star hero-star--1"></view>
     <view class="hero-title">{{heroTitle}}</view>
     <view class="hero-sub">{{heroSubtitle}}</view>
   </view>
 
-  <view class="faq-card card">
-    <view class="faq-head">
-      <view class="faq-title">常见问题</view>
-      <view class="faq-sub muted small">点击展开查看详细说明</view>
+  <!-- 快速开始卡片 -->
+  <view class="quick-card">
+    <view class="quick-icon">
+      <view class="quick-icon-pill"></view>
     </view>
-    <t-collapse value="{{opened}}" bind:change="onChange">
-    <t-collapse-panel value="start" header="如何开始使用？">
-      <view class="txt">
-        <view>1）在首页点击“添加药品”，或进入“扫药”拍照识别药盒/说明书。</view>
-        <view>2）在药品详情或识别结果中，点击“设置服药提醒”，选择每日次数、时间和用量。</view>
-        <view>3）到服药时间后，在首页点击“尽快服用/已服用”，即可完成一次打卡记录。</view>
-      </view>
-    </t-collapse-panel>
-    <t-collapse-panel value="scan" header="扫药识别能做什么？">
-      <view class="txt">
-        <view>1）扫药会通过 OCR + AI 从药盒/说明书中提取：药品名称、适应症、用法用量等信息，用来快速生成一份“参考方案”。</view>
-        <view>2）实际服用请始终以医生医嘱和药品说明书为准，本工具不提供诊疗建议。</view>
-      </view>
-    </t-collapse-panel>
-    <t-collapse-panel value="family" header="家人如何帮我管理？">
-      <view class="txt">
-        <view>1）在“我的 &gt; 家人账号绑定”中生成绑定码，让家属扫码或输入完成绑定。</view>
-        <view>2）绑定后，家属在自己的账号中切换到你的视角，可以代你添加药品、填写用法用量，并提交到“家属”页作为待激活药品。</view>
-        <view>3）只有当你在 Tab 栏进入“家属”页，点击“激活”并在弹出的订阅消息授权中选择“允许”后，该药品才会进入你的首页提醒和药品清单。</view>
-        <view>4）这样可以保证：家属能帮你录入信息，但是否真正开始提醒，由你本人最后确认并授权。</view>
-      </view>
-    </t-collapse-panel>
-    <t-collapse-panel value="pharmacy" header="如何查找附近药店？">
-      <view class="txt">
-        <view>在首页或「我的」进入「附近药店」，授权定位后，可查看百度地图 POI 中的药店位置。</view>
-        <view>该结果仅为地图兴趣点，不代表药品经营资质认证；购药请到持有《药品经营许可证》的正规门店，并遵医嘱。</view>
-      </view>
-      <view class="mt">
-        <t-button theme="primary" size="medium" block class="tap-scale" bind:tap="onNearby">打开附近药店</t-button>
-      </view>
-    </t-collapse-panel>
-    <t-collapse-panel value="safe" header="安全提醒">
-      <view class="txt">
-        本工具仅辅助提醒，不替代医嘱。若出现不适，请立即就医。
-      </view>
-    </t-collapse-panel>
-    </t-collapse>
+    <view class="quick-info">
+      <view class="quick-title">快速开始</view>
+      <view class="quick-desc">3 步搞定服药提醒</view>
+    </view>
   </view>
 
-  <view class="actions-float">
-    <t-button variant="outline" size="large" block class="tap-scale" bind:tap="back">返回</t-button>
+  <!-- 步骤指引 -->
+  <view class="steps-flow">
+    <view class="step-item">
+      <view class="step-num">1</view>
+      <view class="step-content">
+        <view class="step-title">添加药品</view>
+        <view class="step-desc">首页点击「添加药品」或「扫药」拍照识别药盒</view>
+      </view>
+    </view>
+    <view class="step-line"></view>
+    <view class="step-item">
+      <view class="step-num">2</view>
+      <view class="step-content">
+        <view class="step-title">设置提醒</view>
+        <view class="step-desc">选择每日次数、时间和用量</view>
+      </view>
+    </view>
+    <view class="step-line"></view>
+    <view class="step-item">
+      <view class="step-num">3</view>
+      <view class="step-content">
+        <view class="step-title">按时打卡</view>
+        <view class="step-desc">到时间后在首页点击「尽快服用」完成打卡</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 常见问题卡片 -->
+  <view class="section-label">常见问题</view>
+
+  <!-- 扫药识别 -->
+  <view class="faq-card {{opened === 'scan' ? 'faq-card--open' : ''}}">
+    <view class="faq-header" data-value="scan" bindtap="onTogglePanel">
+      <view class="faq-icon faq-icon--scan">
+        <view class="icon-scan-box">
+          <view class="icon-scan-line"></view>
+        </view>
+      </view>
+      <view class="faq-title-wrap">
+        <view class="faq-title">扫药识别能做什么？</view>
+        <view class="faq-brief">OCR + AI 智能识别</view>
+      </view>
+      <view class="faq-arrow {{opened === 'scan' ? 'faq-arrow--up' : ''}}"></view>
+    </view>
+    <view wx:if="{{opened === 'scan'}}" class="faq-body">
+      <view class="faq-text">
+        <view class="faq-step">
+          <view class="faq-step-num">1</view>
+          <text>扫药通过 OCR + AI 从药盒/说明书中提取药品名称、适应症、用法用量等信息</text>
+        </view>
+        <view class="faq-step">
+          <view class="faq-step-num">2</view>
+          <text>快速生成一份「参考方案」</text>
+        </view>
+      </view>
+      <view class="faq-note">实际服用请始终以医生医嘱和药品说明书为准，本工具不提供诊疗建议。</view>
+    </view>
+  </view>
+
+  <!-- 家人管理 -->
+  <view class="faq-card {{opened === 'family' ? 'faq-card--open' : ''}}">
+    <view class="faq-header" data-value="family" bindtap="onTogglePanel">
+      <view class="faq-icon faq-icon--family">
+        <view class="icon-family-heart"></view>
+      </view>
+      <view class="faq-title-wrap">
+        <view class="faq-title">家人如何帮我管理？</view>
+        <view class="faq-brief">绑定家属 · 代录药品</view>
+      </view>
+      <view class="faq-arrow {{opened === 'family' ? 'faq-arrow--up' : ''}}"></view>
+    </view>
+    <view wx:if="{{opened === 'family'}}" class="faq-body">
+      <view class="faq-text">
+        <view class="faq-step">
+          <view class="faq-step-num">1</view>
+          <text>在「我的 &gt; 家人账号绑定」中生成绑定码</text>
+        </view>
+        <view class="faq-step">
+          <view class="faq-step-num">2</view>
+          <text>家属扫码绑定后，可切换到你的视角代你添加药品</text>
+        </view>
+        <view class="faq-step">
+          <view class="faq-step-num">3</view>
+          <text>你在「家属」页点击「激活」并授权订阅消息后，药品才会进入提醒</text>
+        </view>
+      </view>
+      <view class="faq-note">家属能帮你录入信息，但是否真正开始提醒，由你本人最后确认。</view>
+    </view>
+  </view>
+
+  <!-- 附近药店 -->
+  <view class="faq-card {{opened === 'pharmacy' ? 'faq-card--open' : ''}}">
+    <view class="faq-header" data-value="pharmacy" bindtap="onTogglePanel">
+      <view class="faq-icon faq-icon--pharmacy">
+        <view class="icon-pharmacy-pin"></view>
+      </view>
+      <view class="faq-title-wrap">
+        <view class="faq-title">如何查找附近药店？</view>
+        <view class="faq-brief">定位 · 百度地图 POI</view>
+      </view>
+      <view class="faq-arrow {{opened === 'pharmacy' ? 'faq-arrow--up' : ''}}"></view>
+    </view>
+    <view wx:if="{{opened === 'pharmacy'}}" class="faq-body">
+      <view class="faq-text">
+        <view class="faq-step">
+          <view class="faq-step-num">1</view>
+          <text>在首页或「我的」进入「附近药店」，授权定位</text>
+        </view>
+        <view class="faq-step">
+          <view class="faq-step-num">2</view>
+          <text>查看百度地图 POI 中的药店位置，点击可打开地图导航</text>
+        </view>
+      </view>
+      <view class="faq-note">结果仅为地图兴趣点，不代表药品经营资质认证；购药请到正规门店。</view>
+      <view class="faq-action">
+        <view class="btn btn--primary btn--small tap-scale" bindtap="onNearby">
+          <text class="btn-text">打开附近药店</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 安全提醒 -->
+  <view class="faq-card {{opened === 'safe' ? 'faq-card--open' : ''}}">
+    <view class="faq-header" data-value="safe" bindtap="onTogglePanel">
+      <view class="faq-icon faq-icon--safe">
+        <view class="icon-safe-shield"></view>
+      </view>
+      <view class="faq-title-wrap">
+        <view class="faq-title">安全提醒</view>
+        <view class="faq-brief">本工具仅辅助提醒</view>
+      </view>
+      <view class="faq-arrow {{opened === 'safe' ? 'faq-arrow--up' : ''}}"></view>
+    </view>
+    <view wx:if="{{opened === 'safe'}}" class="faq-body">
+      <view class="faq-text">
+        <view class="faq-step">
+          <view class="faq-step-num">!</view>
+          <text>本工具仅辅助提醒，不替代医嘱。若出现不适，请立即就医。</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 返回按钮 -->
+  <view class="btn btn--ghost tap-scale" bindtap="back">
+    <text class="btn-text btn-text--ghost">返回</text>
   </view>
 </view>
-

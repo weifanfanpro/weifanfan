@@ -104,8 +104,8 @@ Component({
         return false;
       }
     },
-    onToggleFlash(e: WechatMiniprogram.CustomEvent<{ value: boolean }>) {
-      const on = Boolean(e.detail.value);
+    onToggleFlash() {
+      const on = !this.data.flashOn;
       this.setData({ flashOn: on, flashMode: on ? "torch" : "off" });
     },
     onCameraError(e: WechatMiniprogram.CameraError) {

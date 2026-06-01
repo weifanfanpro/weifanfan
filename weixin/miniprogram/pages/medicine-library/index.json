@@ -2,11 +2,6 @@
   "navigationBarTitleText": "药品库",
   "enablePullDownRefresh": true,
   "usingComponents": {
-    "t-button": "tdesign-miniprogram/button/button",
-    "t-empty": "tdesign-miniprogram/empty/empty",
-    "t-input": "tdesign-miniprogram/input/input",
-    "t-loading": "tdesign-miniprogram/loading/loading",
-    "t-switch": "tdesign-miniprogram/switch/switch",
     "custom-navbar": "../../components/custom-navbar/index"
   }
 }

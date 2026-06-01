@@ -1,12 +1,20 @@
-<view class="page page-padding edit-page">
+<view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="编辑地址" showBack="{true}" />
-  <view class="hero card-elevated anim-in">
+
+  <!-- Hero -->
+  <view class="edit-hero">
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-star hero-star--1"></view>
     <view class="hero-title">{{addressId ? '编辑收货地址' : '新增收货地址'}}</view>
     <view class="hero-desc">像电商一样管理你的多个地址</view>
     <view class="hero-tip">请确保手机号与门牌信息准确，方便配送</view>
   </view>
 
-  <view class="card form-card anim-in">
+  <!-- 表单卡片 -->
+  <view class="form-card">
+    <view class="card-corner card-corner--tl"></view>
+    <view class="card-corner card-corner--br"></view>
+
     <view class="form-group-title">基础信息</view>
     <view class="field">
       <view class="label">收件人</view>
@@ -28,21 +36,25 @@
       <view class="label">详细地址</view>
       <textarea class="textarea" value="{{detail}}" placeholder="楼栋、门牌号等详细地址" bindinput="onInputDetail" />
     </view>
+
     <view class="form-group-title form-group-title--secondary">补充信息</view>
     <view class="field">
       <view class="label">地址标签</view>
       <input class="input" value="{{tag}}" maxlength="8" placeholder="例如：家 / 公司" bindinput="onInputTag" />
     </view>
-    <view class="switch-row card-outline">
+    <view class="switch-row">
       <view>
         <view class="label">设为默认地址</view>
         <view class="switch-desc">下单时将优先选中该地址</view>
       </view>
-      <switch checked="{{isDefault}}" color="#2b63ff" bindchange="onSwitchDefault" />
+      <switch checked="{{isDefault}}" color="#4A9DFF" bindchange="onSwitchDefault" />
     </view>
   </view>
 
+  <!-- 底部保存按钮 -->
   <view class="bottom">
-    <t-button block theme="primary" loading="{{submitting}}" bind:tap="onSubmit">保存地址</t-button>
+    <view class="btn btn--primary tap-scale" bindtap="onSubmit">
+      <text class="btn-text">{{submitting ? '保存中...' : '保存地址'}}</text>
+    </view>
   </view>
 </view>

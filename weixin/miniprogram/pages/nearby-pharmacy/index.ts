@@ -111,33 +111,29 @@ Page({
 
     this.setData({ searching: true });
     try {
-      const ret = (await post(`/api/pharmacy/nearby?lat=${userLat}&lng=${userLng}&radius=${radiusM}&pageNum=${pageNum}&pageSize=20&keyword=${encodeURIComponent("药店")}`)) as {
-        list?: Array<{
-          name?: string;
-          address?: string;
-          telephone?: string;
-          distanceM?: number | null;
-          latitude?: number;
-          longitude?: number;
-        }>;
-        hasMore?: boolean;
-        radiusM?: number;
-      };
+      const ret = (await post(`/api/pharmacy/nearby?lat=${userLat}&lng=${userLng}&radius=${radiusM}`)) as Array<{
+        name?: string;
+        address?: string;
+        phone?: string;
+        distance?: number | null;
+        lat?: number;
+        lng?: number;
+      }> | null;
 
-      const raw = ret?.list || [];
+      const raw = Array.isArray(ret) ? ret : [];
       const mapped: Row[] = raw.map((item, idx) => {
         const name = String(item.name || "药店");
         const address = String(item.address || "");
-        const tel = String(item.telephone || "").trim();
+        const tel = String(item.phone || "").trim();
         const parts = [address, tel ? `电话 ${tel}` : ""].filter(Boolean);
         return {
           key: `${pageNum}-${idx}-${name}`,
           name,
           address,
           desc: parts.join(" · ") || "地址暂无",
-          distText: formatDistance(item.distanceM ?? null),
-          latitude: Number(item.latitude),
-          longitude: Number(item.longitude),
+          distText: formatDistance(item.distance ?? null),
+          latitude: Number(item.lat),
+          longitude: Number(item.lng),
         };
       });
 
@@ -145,11 +141,10 @@ Page({
       this.setData({
         list: nextList,
         pageNum,
-        hasMore: !!ret?.hasMore,
-        radiusM: typeof ret?.radiusM === "number" ? ret.radiusM : radiusM,
+        hasMore: mapped.length >= 20,
         searching: false,
         hadSearch: true,
-        locationText: `已定位 · 约 ${typeof ret?.radiusM === "number" ? ret.radiusM : radiusM} 米内`,
+        locationText: `已定位 · 约 ${radiusM} 米内`,
       });
     } catch (e) {
       console.error("nearbyPharmacy", e);

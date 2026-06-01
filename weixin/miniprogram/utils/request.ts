@@ -23,7 +23,6 @@ function getToken(): string {
 function handleAuthFailure() {
   wx.removeStorageSync("token");
   wx.removeStorageSync("openid");
-  wx.removeStorageSync("user_profile");
   const pages = getCurrentPages();
   const current = pages[pages.length - 1] as any;
   const route = current?.route ? `/${current.route}` : "/pages/tab-shell/index";
@@ -59,7 +58,6 @@ export function request<T = any>(options: RequestOptions): Promise<T> {
           return;
         }
         if (data.code !== 0) {
-          wx.showToast({ title: data.message || "请求失败", icon: "none" });
           reject(new Error(data.message || "请求失败"));
           return;
         }

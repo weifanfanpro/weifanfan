@@ -6,6 +6,7 @@ import { getWallet } from "../../api/points";
 type MenuItem = {
   title: string;
   icon: string;
+  cssIcon: string;
   url: string;
 };
 
@@ -30,19 +31,19 @@ Component({
     familyPendingCount: 0,
     menuGroupSubtitle: "药品、记录、风险与余量",
     menuItems: [
-      { title: "我的药品清单", icon: "/assets/icons/medicine-list.png", url: "/pages/medicine-list/index" },
-      { title: "服药历史记录", icon: "/assets/icons/history.png", url: "/pages/history/index" },
-      { title: "漏服统计", icon: "/assets/icons/stats.png", url: "/pages/missed-stats/index" },
-      { title: "药品余量监控", icon: "/assets/icons/stock-monitor.png", url: "/pages/stock-monitor/index" },
+      { title: "我的药品清单", icon: "/assets/icons/medicine-list.png", cssIcon: "mi-pill", url: "/pages/medicine-list/index" },
+      { title: "服药历史记录", icon: "/assets/icons/history.png", cssIcon: "mi-clock", url: "/pages/history/index" },
+      { title: "漏服统计", icon: "/assets/icons/stats.png", cssIcon: "mi-chart", url: "/pages/missed-stats/index" },
+      { title: "药品余量监控", icon: "/assets/icons/stock-monitor.png", cssIcon: "mi-box", url: "/pages/stock-monitor/index" },
     ] as MenuItem[],
     supportGroupSubtitle: "周边与帮助服务入口",
     supportItems: [
-      { title: "积分商城", icon: "/assets/icons/points-mall.png", url: "/pages/points-mall/index" },
-      { title: "附近药店", icon: "/assets/icons/nearby-pharmacy.png", url: "/pages/nearby-pharmacy/index" },
-      { title: "帮助中心", icon: "/assets/icons/help.png", url: "/pages/help/index" },
-      { title: "关于 / 反馈", icon: "/assets/icons/feedback.png", url: "/pages/about/index" },
-      { title: "家人账号绑定", icon: "/assets/icons/fimily-bind.png", url: "/pages/family-bind/index" },
-      { title: "复制用户ID", icon: "/assets/icons/user-default.png", url: "action://copy-user-id" },
+      { title: "积分商城", icon: "/assets/icons/points-mall.png", cssIcon: "mi-star", url: "/pages/points-mall/index" },
+      { title: "附近药店", icon: "/assets/icons/nearby-pharmacy.png", cssIcon: "mi-pin", url: "/pages/nearby-pharmacy/index" },
+      { title: "帮助中心", icon: "/assets/icons/help.png", cssIcon: "mi-help", url: "/pages/help/index" },
+      { title: "关于 / 反馈", icon: "/assets/icons/feedback.png", cssIcon: "mi-chat", url: "/pages/about/index" },
+      { title: "家人账号绑定", icon: "/assets/icons/fimily-bind.png", cssIcon: "mi-link", url: "/pages/family-bind/index" },
+      { title: "复制用户ID", icon: "/assets/icons/user-default.png", cssIcon: "mi-id", url: "action://copy-user-id" },
     ] as MenuItem[],
   },
   pageLifetimes: {

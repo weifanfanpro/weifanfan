@@ -73,6 +73,20 @@ Page({
     }
     (this as any).refreshFamilyPendingCount?.();
     setTitle(this.data.tabIndex);
+    // 等待 app 的 checkAccountChange 完成后再刷新 mine 资料
+    if (this.data.tabIndex === 3) {
+      const app = getApp();
+      const ready = (app as any).__accountReady as Promise<void> | undefined;
+      const doRefresh = () => {
+        const minePanel = this.selectComponent("#mine-panel") as any;
+        minePanel?.loadProfile?.();
+      };
+      if (ready && typeof ready.then === "function") {
+        ready.then(doRefresh);
+      } else {
+        doRefresh();
+      }
+    }
   },
 
   onSwiperChange(e: WechatMiniprogram.SwiperChange) {

@@ -1,22 +1,25 @@
-/* ═══ Chat Panel — 使用全局主题色 ═══ */
+/* ═══════════════════════════════════════════
+   药丸对话 · Chat Panel
+   卡通医疗风格咨询页
+   ═══════════════════════════════════════════ */
 
 .chat-panel {
-  --c-primary: #2E9E8F;
-  --c-primary-light: rgba(46, 158, 143, 0.10);
-  --c-primary-border: rgba(46, 158, 143, 0.18);
-  --c-accent: #E85D5D;
-  --c-accent-light: rgba(232, 93, 93, 0.08);
-  --c-accent-border: rgba(232, 93, 93, 0.15);
-  --c-bg: #f5f2ed;
-  --c-card: #fffefb;
-  --c-text: #1c1917;
-  --c-text-2: #6b645c;
-  --c-text-3: #b0a99f;
-  --c-border: rgba(28, 25, 23, 0.06);
-  --c-user-bubble: #1A1D26;
+  --c-primary: #4A9DFF;
+  --c-primary-light: rgba(74, 157, 255, 0.08);
+  --c-primary-border: rgba(74, 157, 255, 0.15);
+  --c-accent: #FF6B6B;
+  --c-accent-light: rgba(255, 107, 107, 0.08);
+  --c-accent-border: rgba(255, 107, 107, 0.15);
+  --c-bg: #F0F7FF;
+  --c-card: #FFFFFF;
+  --c-text: #1A3A5C;
+  --c-text-2: #3D5A80;
+  --c-text-3: #8BA4C7;
+  --c-border: rgba(74, 157, 255, 0.08);
+  --c-user-bubble: #4A9DFF;
   --c-user-text: #FFFFFF;
   --c-ai-bubble: #FFFFFF;
-  --c-ai-text: #1A1D26;
+  --c-ai-text: #1A3A5C;
 
   min-height: 100%;
   height: 100%;
@@ -29,7 +32,160 @@
   overflow: hidden;
 }
 
-/* ── Toolbar ── */
+/* ═══════════════════════════════════════════
+   CSS-only 图标
+   ═══════════════════════════════════════════ */
+
+/* 菜单图标 (≡) */
+.css-icon--menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  align-items: center;
+  justify-content: center;
+}
+
+.cm-line {
+  width: 28rpx;
+  height: 3rpx;
+  background: var(--c-text-2);
+  border-radius: 2rpx;
+}
+
+/* 加号图标 (+) */
+.css-icon--plus {
+  position: relative;
+  width: 28rpx;
+  height: 28rpx;
+}
+
+.cp-h, .cp-v {
+  position: absolute;
+  background: var(--c-text-2);
+  border-radius: 2rpx;
+}
+
+.cp-h { width: 28rpx; height: 3rpx; top: 12.5rpx; left: 0; }
+.cp-v { width: 3rpx; height: 28rpx; top: 0; left: 12.5rpx; }
+
+/* 关闭图标 (×) */
+.css-icon--close {
+  position: relative;
+  width: 28rpx;
+  height: 28rpx;
+}
+
+.ccl-line {
+  position: absolute;
+  width: 28rpx;
+  height: 3rpx;
+  background: var(--c-text-3);
+  border-radius: 2rpx;
+  top: 12.5rpx;
+  left: 0;
+}
+
+.ccl-line--1 { transform: rotate(45deg); }
+.ccl-line--2 { transform: rotate(-45deg); }
+
+/* 药箱图标 */
+.css-icon--cabinet {
+  position: relative;
+  width: 28rpx;
+  height: 26rpx;
+}
+
+.ccb-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 28rpx;
+  height: 18rpx;
+  border: 2.5rpx solid var(--c-text-2);
+  border-radius: 4rpx;
+}
+
+.ccb-lid {
+  position: absolute;
+  top: 0;
+  left: 2rpx;
+  width: 24rpx;
+  height: 6rpx;
+  border: 2.5rpx solid var(--c-text-2);
+  border-radius: 3rpx;
+}
+
+.ccb-cross {
+  position: absolute;
+  bottom: 4rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12rpx;
+  height: 12rpx;
+}
+
+.ccb-cross::before,
+.ccb-cross::after {
+  content: '';
+  position: absolute;
+  background: var(--c-text-2);
+  border-radius: 1rpx;
+}
+
+.ccb-cross::before {
+  width: 12rpx;
+  height: 3rpx;
+  top: 4.5rpx;
+  left: 0;
+}
+
+.ccb-cross::after {
+  width: 3rpx;
+  height: 12rpx;
+  top: 0;
+  left: 4.5rpx;
+}
+
+/* 加载点动画 */
+.loading-dots {
+  display: flex;
+  gap: 8rpx;
+  align-items: center;
+}
+
+.ld-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: var(--c-primary);
+  animation: dotBounce 1.2s ease-in-out infinite;
+}
+
+.ld-dot--2 { animation-delay: 0.2s; }
+.ld-dot--3 { animation-delay: 0.4s; }
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(0.5); opacity: 0.3; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* 思考过程箭头 */
+.rt-arrow {
+  width: 0;
+  height: 0;
+  border-left: 6rpx solid transparent;
+  border-right: 6rpx solid transparent;
+  border-top: 8rpx solid var(--c-text-3);
+  transition: transform 200ms ease;
+}
+
+.rt-arrow--up {
+  transform: rotate(180deg);
+}
+
+/* ═══════════════════════════════════════════
+   Toolbar
+   ═══════════════════════════════════════════ */
 .toolbar {
   position: relative;
   z-index: 10;
@@ -37,16 +193,16 @@
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 12rpx 0 12rpx 16rpx;
+  padding: 12rpx 24rpx;
   box-sizing: border-box;
-  background: rgba(243, 246, 250, 0.92);
+  background: rgba(240, 247, 255, 0.92);
   border-bottom: 1rpx solid var(--c-border);
   backdrop-filter: blur(10px);
 }
 
 .toolbar-side {
-  width: 80rpx;
-  height: 80rpx;
+  width: 72rpx;
+  height: 72rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,29 +210,29 @@
   z-index: 2;
 }
 
-.toolbar-side--right {
-  position: absolute;
-  right: calc(4rpx + constant(safe-area-inset-right));
-  right: calc(4rpx + env(safe-area-inset-right));
-  top: 50%;
-  transform: translateY(-50%);
+.toolbar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  min-width: 0;
+  padding: 0 8rpx;
 }
 
-.toolbar-center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 55%;
-  z-index: 1;
-  pointer-events: none;
+.toolbar-pill {
+  width: 16rpx;
+  height: 8rpx;
+  border-radius: 4rpx;
+  background: linear-gradient(90deg, #4A9DFF 50%, #A8DAFF 50%);
+  flex-shrink: 0;
 }
 
 .toolbar-title {
   display: block;
   text-align: center;
   font-size: 28rpx;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--c-text);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -84,138 +240,333 @@
 }
 
 .toolbar-btn {
-  width: 80rpx;
-  height: 80rpx;
+  width: 72rpx;
+  height: 72rpx;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 999rpx;
   background: var(--c-card);
   border: 1rpx solid var(--c-border);
-  box-shadow: 0 4rpx 12rpx rgba(26, 29, 38, 0.04);
+  box-shadow: 0 4rpx 12rpx rgba(43, 94, 167, 0.04);
 }
 
 .toolbar-btn--hover {
   opacity: 0.65;
 }
 
-/* ── Drawer ── */
-.drawer-mask {
+/* ═══════════════════════════════════════════
+   记忆药丸墙
+   ═══════════════════════════════════════════ */
+.pill-wall-mask {
   position: fixed;
   left: 0;
   right: 0;
+  top: 0;
+  bottom: 0;
   z-index: 100;
   background: rgba(0, 0, 0, 0);
   pointer-events: none;
-  transition: background 0.28s ease;
+  transition: background 0.3s ease;
 }
 
-.drawer-mask--show {
-  background: rgba(0, 0, 0, 0.35);
+.pill-wall-mask--show {
+  background: rgba(26, 58, 92, 0.4);
+  backdrop-filter: blur(4px);
   pointer-events: auto;
 }
 
-.drawer {
+.pill-wall {
   pointer-events: none;
   position: fixed;
   left: 0;
+  right: 0;
+  top: 0;
   bottom: 0;
-  width: 78%;
-  max-width: 560rpx;
-  background: var(--c-card);
   z-index: 101;
   display: flex;
   flex-direction: column;
-  box-shadow: 10rpx 0 46rpx rgba(26, 29, 38, 0.1);
-  transform: translateX(-100%);
-  transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.2, 1);
+  background: linear-gradient(180deg, #4A9DFF 0%, #6DB8FF 30%, #F0F7FF 100%);
+  transform: translateY(-100%);
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1);
 }
 
-.drawer--open {
+.pill-wall--open {
   pointer-events: auto;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
-.drawer-head {
-  padding: 12rpx 24rpx 20rpx;
+/* 顶部标题 */
+.pw-header {
+  flex-shrink: 0;
+  padding: 80rpx 28rpx 20rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1rpx solid var(--c-border);
 }
 
-.drawer-head-title {
-  font-size: 34rpx;
+.pw-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.pw-pill-deco {
+  width: 24rpx;
+  height: 12rpx;
+  border-radius: 6rpx;
+  background: linear-gradient(90deg, #FFFFFF 50%, rgba(255,255,255,0.4) 50%);
+}
+
+.pw-title {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+  text-shadow: 0 2rpx 8rpx rgba(43, 94, 167, 0.3);
+}
+
+.pw-count {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+.pw-close {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.pw-close .ccl-line {
+  background: #FFFFFF;
+}
+
+/* 滚动区域 */
+.pw-scroll {
+  flex: 1;
+  height: 0;
+  padding: 0 28rpx 48rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 加载态 */
+.pw-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+  gap: 16rpx;
+}
+
+.pw-loading-text {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.pw-loading .ld-dot {
+  background: #FFFFFF;
+}
+
+/* 空态 */
+.pw-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 0;
+}
+
+.pwe-body {
+  width: 80rpx;
+  height: 100rpx;
+  border-radius: 40rpx;
+  background: linear-gradient(180deg, #FFFFFF 50%, rgba(255,255,255,0.5) 50%);
+  position: relative;
+  animation: pillBounce 3s ease-in-out infinite;
+}
+
+.pwe-eye {
+  position: absolute;
+  width: 12rpx;
+  height: 14rpx;
+  background: #2B5EA7;
+  border-radius: 50%;
+  top: 28rpx;
+}
+
+.pwe-eye--l { left: 18rpx; }
+.pwe-eye--r { right: 18rpx; }
+
+.pwe-mouth {
+  position: absolute;
+  width: 16rpx;
+  height: 8rpx;
+  border-bottom: 3rpx solid #2B5EA7;
+  border-radius: 0 0 50% 50%;
+  bottom: 28rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.pwe-text {
+  margin-top: 20rpx;
+  font-size: 30rpx;
   font-weight: 700;
   color: var(--c-text);
 }
 
-.drawer-head-close {
-  padding: 12rpx;
-  color: var(--c-text-3);
-}
-
-.drawer-scroll {
-  flex: 1;
-  height: 0;
-  padding: 16rpx 0 48rpx;
-}
-
-.drawer-state,
-.drawer-state--empty {
-  padding: 80rpx 32rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: var(--c-text-3);
-}
-
-.session-item {
-  display: flex;
-  align-items: stretch;
-  margin: 0 16rpx 12rpx;
-  border-radius: 18rpx;
-  background: var(--c-card);
-  border: 1rpx solid var(--c-border);
-  overflow: hidden;
-}
-
-.session-item--active {
-  background: var(--c-primary-light);
-  border-color: var(--c-primary-border);
-}
-
-.session-item-body {
-  flex: 1;
-  padding: 24rpx 20rpx;
-  min-width: 0;
-}
-
-.session-item-title {
-  display: block;
-  font-size: 30rpx;
-  color: var(--c-text);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.session-item-time {
-  display: block;
+.pwe-sub {
   margin-top: 8rpx;
-  font-size: 22rpx;
+  font-size: 24rpx;
   color: var(--c-text-3);
 }
 
-.session-item-del {
-  width: 88rpx;
+/* 药丸网格 */
+.pw-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20rpx;
+  padding-top: 8rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.pill-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10rpx;
+  padding: 20rpx 8rpx;
+  min-width: 0;
+  border-radius: 24rpx;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1rpx solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4rpx 16rpx rgba(43, 94, 167, 0.08);
+  position: relative;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+  overflow: hidden;
+}
+
+.pill-card:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 8rpx rgba(43, 94, 167, 0.06);
+}
+
+.pill-card--active {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #4A9DFF;
+  box-shadow: 0 4rpx 20rpx rgba(74, 157, 255, 0.2);
+}
+
+/* 药丸角色 */
+.pc-body {
+  width: 64rpx;
+  height: 80rpx;
+  border-radius: 32rpx;
+  background: linear-gradient(180deg, #FFFFFF 50%, #4A9DFF 50%);
+  position: relative;
+  box-shadow: 0 4rpx 12rpx rgba(43, 94, 167, 0.15);
+}
+
+.pc-eye {
+  position: absolute;
+  width: 10rpx;
+  height: 12rpx;
+  background: #2B5EA7;
+  border-radius: 50%;
+  top: 22rpx;
+}
+
+.pc-eye--l { left: 14rpx; }
+.pc-eye--r { right: 14rpx; }
+
+.pc-mouth {
+  position: absolute;
+  width: 12rpx;
+  height: 6rpx;
+  border-bottom: 2.5rpx solid #2B5EA7;
+  border-radius: 0 0 50% 50%;
+  bottom: 20rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 新对话药丸 */
+.pc-body--new {
+  background: linear-gradient(180deg, #E8F2FF 50%, #D1E5FF 50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--c-text-3);
-  border-left: 1rpx solid var(--c-border);
 }
 
-/* ── Thinking pill ── */
+.pc-plus-h, .pc-plus-v {
+  position: absolute;
+  background: #4A9DFF;
+  border-radius: 2rpx;
+}
+
+.pc-plus-h { width: 24rpx; height: 3rpx; }
+.pc-plus-v { width: 3rpx; height: 24rpx; }
+
+.pc-title {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: var(--c-text);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  padding: 0 4rpx;
+  box-sizing: border-box;
+}
+
+.pc-title--new {
+  color: var(--c-primary);
+}
+
+.pc-time {
+  font-size: 18rpx;
+  color: var(--c-text-3);
+}
+
+/* 删除按钮 */
+.pc-del {
+  position: absolute;
+  top: 6rpx;
+  right: 6rpx;
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: rgba(255, 107, 107, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 200ms ease;
+}
+
+.pill-card--del-show .pc-del {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.pc-del .ccl-line {
+  width: 14rpx;
+  height: 2rpx;
+  background: #FF6B6B;
+}
+
+/* ═══════════════════════════════════════════
+   Thinking pill
+   ═══════════════════════════════════════════ */
 .thinking-pill {
   position: fixed;
   left: 50%;
@@ -251,7 +602,9 @@
   50% { opacity: 1; transform: scale(1.1); }
 }
 
-/* ── Chat main area ── */
+/* ═══════════════════════════════════════════
+   Chat main area
+   ═══════════════════════════════════════════ */
 .chat-main {
   position: relative;
   flex: 1;
@@ -261,7 +614,9 @@
   overflow: hidden;
 }
 
-/* ── Welcome ── */
+/* ═══════════════════════════════════════════
+   Welcome — 药丸伙伴
+   ═══════════════════════════════════════════ */
 .welcome {
   flex: 1;
   display: flex;
@@ -272,25 +627,79 @@
   text-align: center;
 }
 
-.welcome-icon-wrap {
-  margin-bottom: 40rpx;
+/* 欢迎药丸伙伴 */
+.welcome-buddy {
+  margin-bottom: 32rpx;
 }
 
-.welcome-icon {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 36rpx;
-  background: var(--c-primary-gradient, linear-gradient(135deg, #2E9E8F, #45BFB0));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 16rpx 40rpx rgba(46, 158, 143, 0.25);
+.wb-body {
+  width: 100rpx;
+  height: 130rpx;
+  border-radius: 50rpx;
+  background: linear-gradient(180deg, #FFFFFF 50%, #4A9DFF 50%);
+  position: relative;
+  box-shadow: 0 8rpx 32rpx rgba(43, 94, 167, 0.2);
+  animation: pillBounce 3s ease-in-out infinite;
 }
 
-.welcome-icon-text {
-  font-size: 44rpx;
-  font-weight: 800;
-  color: #FFFFFF;
+@keyframes pillBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8rpx); }
+}
+
+.wb-eye {
+  position: absolute;
+  width: 20rpx;
+  height: 24rpx;
+  background: #FFFFFF;
+  border-radius: 50%;
+  top: 38rpx;
+  box-shadow: inset 0 2rpx 4rpx rgba(0, 0, 0, 0.05);
+}
+
+.wb-eye--l { left: 22rpx; }
+.wb-eye--r { right: 22rpx; }
+
+.wb-eye::after {
+  content: '';
+  position: absolute;
+  width: 10rpx;
+  height: 12rpx;
+  background: #2B5EA7;
+  border-radius: 50%;
+  bottom: 4rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: pupilLook 4s ease-in-out infinite;
+}
+
+@keyframes pupilLook {
+  0%, 100% { transform: translateX(-50%); }
+  25% { transform: translateX(-30%); }
+  75% { transform: translateX(-70%); }
+}
+
+.wb-cheek {
+  position: absolute;
+  width: 16rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: rgba(255, 179, 102, 0.4);
+  top: 68rpx;
+}
+
+.wb-cheek--l { left: 10rpx; }
+.wb-cheek--r { right: 10rpx; }
+
+.wb-mouth {
+  position: absolute;
+  width: 20rpx;
+  height: 10rpx;
+  border-bottom: 3rpx solid #2B5EA7;
+  border-radius: 0 0 50% 50%;
+  bottom: 32rpx;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .welcome-heading {
@@ -298,14 +707,14 @@
   font-weight: 800;
   color: var(--c-text);
   line-height: 1.35;
-  margin-bottom: 20rpx;
+  margin-bottom: 16rpx;
 }
 
 .welcome-desc {
   font-size: 28rpx;
   color: var(--c-text-3);
   line-height: 1.6;
-  margin-bottom: 48rpx;
+  margin-bottom: 40rpx;
 }
 
 .welcome-hints {
@@ -317,6 +726,9 @@
 }
 
 .welcome-hint {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
   padding: 24rpx 28rpx;
   border-radius: 24rpx;
   background: var(--c-card);
@@ -324,9 +736,51 @@
   font-size: 28rpx;
   color: var(--c-text-2);
   text-align: left;
+  box-shadow: 0 2rpx 8rpx rgba(43, 94, 167, 0.04);
 }
 
-/* ── Chat messages ── */
+/* 快捷问题图标 */
+.wh-icon {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 10rpx;
+  background: var(--c-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wh-pill {
+  width: 18rpx;
+  height: 9rpx;
+  border-radius: 5rpx;
+  background: linear-gradient(90deg, #4A9DFF 50%, #A8DAFF 50%);
+}
+
+.wh-clock {
+  width: 16rpx;
+  height: 16rpx;
+  border: 2.5rpx solid var(--c-primary);
+  border-radius: 50%;
+  position: relative;
+}
+
+.wh-clock::after {
+  content: '';
+  position: absolute;
+  top: 2rpx;
+  left: 50%;
+  width: 2rpx;
+  height: 5rpx;
+  background: var(--c-primary);
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(30deg);
+}
+
+/* ═══════════════════════════════════════════
+   Chat messages
+   ═══════════════════════════════════════════ */
 .chat-scroll {
   flex: 1;
   height: 0;
@@ -361,23 +815,45 @@
   padding: 4rpx 4rpx 0;
 }
 
-/* ── AI avatar ── */
+/* ── AI avatar — 药丸头像 ── */
 .ai-avatar {
   width: 64rpx;
   height: 64rpx;
   border-radius: 20rpx;
-  background: var(--c-primary-gradient, linear-gradient(135deg, #2E9E8F, #45BFB0));
+  background: linear-gradient(135deg, #4A9DFF, #6DB8FF);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   margin-top: 4rpx;
+  overflow: hidden;
+  position: relative;
 }
 
-.ai-avatar-text {
-  font-size: 24rpx;
-  font-weight: 700;
-  color: #FFFFFF;
+.aa-pill {
+  width: 24rpx;
+  height: 40rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  position: relative;
+}
+
+.aa-pill-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: #FFFFFF;
+}
+
+.aa-pill-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .msg-ai-body {
@@ -399,7 +875,7 @@
   background: var(--c-user-bubble);
   color: var(--c-user-text);
   border-bottom-right-radius: 8rpx;
-  box-shadow: 0 10rpx 28rpx rgba(26, 29, 38, 0.15);
+  box-shadow: 0 6rpx 20rpx rgba(74, 157, 255, 0.2);
 }
 
 .bubble--ai {
@@ -407,7 +883,7 @@
   color: var(--c-ai-text);
   border-bottom-left-radius: 8rpx;
   border: 1rpx solid var(--c-border);
-  box-shadow: 0 4rpx 16rpx rgba(26, 29, 38, 0.03);
+  box-shadow: 0 2rpx 12rpx rgba(43, 94, 167, 0.04);
 }
 
 .bubble-text {
@@ -419,13 +895,8 @@
   white-space: pre-wrap;
 }
 
-.bubble-text--user {
-  color: var(--c-user-text);
-}
-
-.bubble-text--ai {
-  color: var(--c-ai-text);
-}
+.bubble-text--user { color: var(--c-user-text); }
+.bubble-text--ai { color: var(--c-ai-text); }
 
 /* ── Reasoning ── */
 .reasoning-block {
@@ -446,7 +917,7 @@
   color: var(--c-text-2);
   line-height: 1.6;
   padding: 16rpx 20rpx;
-  background: var(--c-bg);
+  background: #F0F7FF;
   border-radius: 12rpx;
   border: 1rpx solid var(--c-border);
   margin-bottom: 8rpx;
@@ -473,7 +944,9 @@
   height: 1rpx;
 }
 
-/* ── Option pills ── */
+/* ═══════════════════════════════════════════
+   Option pills
+   ═══════════════════════════════════════════ */
 .option-bar {
   flex-shrink: 0;
   width: 100%;
@@ -503,7 +976,7 @@
   font-size: 24rpx;
   color: var(--c-text-2);
   background: var(--c-card);
-  box-shadow: 0 4rpx 12rpx rgba(26, 29, 38, 0.04);
+  box-shadow: 0 2rpx 8rpx rgba(43, 94, 167, 0.04);
   border: 1rpx solid var(--c-border);
   flex-shrink: 0;
 }
@@ -519,7 +992,70 @@
   color: var(--c-accent);
 }
 
-/* ── Medicine sheet ── */
+/* 选项图标 */
+.op-icon {
+  width: 28rpx;
+  height: 28rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 层叠图标 (深度思考) */
+.opi-layer {
+  position: absolute;
+  width: 20rpx;
+  height: 8rpx;
+  border: 2rpx solid currentColor;
+  border-radius: 2rpx;
+}
+
+.opi-layer--1 { top: 4rpx; }
+.opi-layer--2 { top: 12rpx; width: 16rpx; left: 4rpx; }
+
+/* 地球图标 (联网搜索) */
+.opi-globe {
+  width: 18rpx;
+  height: 18rpx;
+  border: 2rpx solid currentColor;
+  border-radius: 50%;
+}
+
+.opi-globe-line {
+  position: absolute;
+  width: 18rpx;
+  height: 0;
+  border-top: 2rpx solid currentColor;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 药瓶图标 */
+.opi-bottle {
+  width: 12rpx;
+  height: 18rpx;
+  border: 2rpx solid currentColor;
+  border-radius: 2rpx 2rpx 4rpx 4rpx;
+  position: relative;
+}
+
+.opi-bottle::before {
+  content: '';
+  position: absolute;
+  top: -6rpx;
+  left: 2rpx;
+  width: 8rpx;
+  height: 5rpx;
+  border: 2rpx solid currentColor;
+  border-bottom: 0;
+  border-radius: 2rpx 2rpx 0 0;
+}
+
+/* ═══════════════════════════════════════════
+   Medicine sheet
+   ═══════════════════════════════════════════ */
 .sheet-mask {
   position: absolute;
   left: 0;
@@ -545,8 +1081,8 @@
   z-index: 200;
   padding: 24rpx 24rpx 16rpx;
   background: var(--c-card);
-  border-radius: 24rpx 24rpx 0 0;
-  box-shadow: 0 -8rpx 40rpx rgba(26, 29, 38, 0.08);
+  border-radius: 28rpx 28rpx 0 0;
+  box-shadow: 0 -8rpx 40rpx rgba(43, 94, 167, 0.08);
   transform: translateY(100%);
   transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.2, 1);
   pointer-events: none;
@@ -555,6 +1091,14 @@
 .sheet--open {
   transform: translateY(0);
   pointer-events: auto;
+}
+
+.sheet-handle {
+  width: 48rpx;
+  height: 6rpx;
+  border-radius: 3rpx;
+  background: #E8F2FF;
+  margin: 0 auto 16rpx;
 }
 
 .sheet-title {
@@ -566,11 +1110,55 @@
 }
 
 .sheet-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
   padding: 24rpx 20rpx;
   border-radius: 18rpx;
   background: var(--c-card);
   margin-bottom: 16rpx;
   border: 1rpx solid var(--c-border);
+}
+
+.si-icon {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 10rpx;
+  background: var(--c-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* 扫描图标 */
+.sii-lens {
+  width: 14rpx;
+  height: 14rpx;
+  border: 2.5rpx solid var(--c-primary);
+  border-radius: 50%;
+}
+
+.sii-handle {
+  width: 2rpx;
+  height: 6rpx;
+  background: var(--c-primary);
+  transform: rotate(45deg);
+  margin-left: -2rpx;
+  margin-top: 4rpx;
+}
+
+/* 列表图标 */
+.sii-list {
+  width: 16rpx;
+  height: 2rpx;
+  background: var(--c-primary);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 -5rpx 0 var(--c-primary), 0 5rpx 0 var(--c-primary);
 }
 
 .sheet-item-label {
@@ -587,7 +1175,9 @@
   color: var(--c-text-2);
 }
 
-/* ── Input dock ── */
+/* ═══════════════════════════════════════════
+   Input dock
+   ═══════════════════════════════════════════ */
 .input-dock {
   position: relative;
   flex-shrink: 0;
@@ -595,7 +1185,7 @@
   width: 100%;
   box-sizing: border-box;
   padding: 6rpx 24rpx 18rpx;
-  background: rgba(243, 246, 250, 0.92);
+  background: rgba(240, 247, 255, 0.92);
   border-top: 1rpx solid var(--c-border);
   backdrop-filter: blur(10px);
 }
@@ -617,7 +1207,7 @@
   margin-top: 4rpx;
   flex-shrink: 0;
   border: 1rpx solid var(--c-border);
-  box-shadow: 0 6rpx 20rpx rgba(26, 29, 38, 0.04);
+  box-shadow: 0 4rpx 16rpx rgba(43, 94, 167, 0.04);
   box-sizing: border-box;
 }
 
@@ -656,10 +1246,21 @@
   width: 72rpx;
   height: 72rpx;
   border-radius: 50%;
-  background: var(--c-primary-gradient, linear-gradient(135deg, #2E9E8F, #45BFB0));
+  background: linear-gradient(135deg, #4A9DFF, #6DB8FF);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(74, 157, 255, 0.25);
+}
+
+/* CSS 向上箭头 */
+.send-arrow {
+  width: 0;
+  height: 0;
+  border-left: 8rpx solid transparent;
+  border-right: 8rpx solid transparent;
+  border-bottom: 12rpx solid #FFFFFF;
+  margin-top: -4rpx;
 }
 
 /* ── Consult chip ── */
@@ -696,7 +1297,7 @@
 
 .consult-chip-hint {
   font-size: 22rpx;
-  color: rgba(232, 115, 74, 0.6);
+  color: rgba(255, 107, 107, 0.6);
 }
 
 .consult-chip-x {
@@ -705,8 +1306,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36rpx;
-  line-height: 1;
-  color: var(--c-accent);
-  opacity: 0.7;
+}
+
+.ccx-icon {
+  position: relative;
+  width: 20rpx;
+  height: 20rpx;
+}
+
+.ccx-line {
+  position: absolute;
+  width: 20rpx;
+  height: 2.5rpx;
+  background: var(--c-accent);
+  border-radius: 2rpx;
+  top: 50%;
+  left: 0;
+}
+
+.ccx-line--1 { transform: rotate(45deg); }
+.ccx-line--2 { transform: rotate(-45deg); }
+
+/* ═══ Reduced Motion ═══ */
+@media (prefers-reduced-motion: reduce) {
+  .ld-dot { animation: none; }
+  .thinking-dot { animation: none; }
+  .wb-body { animation: none; }
+  .wb-eye::after { animation: none; }
 }

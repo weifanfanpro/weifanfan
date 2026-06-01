@@ -1,50 +1,67 @@
 <view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="服药记录" showBack="{true}" />
+
+  <!-- 蓝色渐变 Hero -->
   <view class="history-hero">
-    <view class="history-hero-glow"></view>
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-star hero-star--1"></view>
     <view class="hero-title">{{heroTitle}}</view>
     <view class="hero-sub">{{heroSubtitle}}</view>
     <view class="hero-view-capsule">
-      <view class="hero-view-capsule__dot"></view>
-      <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>
+      <view class="view-dot"></view>
+      <text>当前视角：{{viewLabel}}</text>
     </view>
   </view>
 
-  <view class="days-filter-row">
-    <view class="days-label muted small">查看范围：</view>
-    <picker
-      mode="selector"
-      range="{{daysRange}}"
-      value="{{selectedDays}}"
-      bindchange="onDaysChange"
-    >
-      <view class="days-picker">
-        <text class="days-picker-text">{{daysLabel}}</text>
-        <t-icon name="chevron-down" size="28rpx" color="#6b645c" />
+  <!-- 天数筛选 -->
+  <view class="filter-row">
+    <text class="filter-label">查看范围：</text>
+    <picker mode="selector" range="{{daysRange}}" value="{{selectedDays}}" bindchange="onDaysChange">
+      <view class="filter-picker tap-scale">
+        <text class="filter-picker-text">{{daysLabel}}</text>
+        <view class="filter-chevron"></view>
       </view>
     </picker>
   </view>
 
-  <view wx:if="{{list.length === 0}}" class="empty-wrap card">
-    <t-empty description="{{emptyText}}" />
+  <!-- 空状态 -->
+  <view wx:if="{{list.length === 0}}" class="empty-wrap">
+    <view class="empty-state">
+      <view class="empty-buddy">
+        <view class="empty-pill-body">
+          <view class="empty-pill-left">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-right">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-mouth"></view>
+        </view>
+      </view>
+      <text class="empty-title">{{emptyText}}</text>
+    </view>
   </view>
 
-  <view wx:else class="card history-list-card">
-    <view class="history-hint muted small">
-      <text class="history-hint-dot"></text>
+  <!-- 记录列表 -->
+  <view wx:else class="record-list">
+    <view class="list-hint">
+      <view class="hint-dot"></view>
       <text>以下为最近服药完成记录</text>
     </view>
-    <view class="history-list">
-      <view wx:for="{{list}}" wx:key="id" class="history-row tap-scale">
-        <view class="history-row-main">
-          <view class="history-name">{{item.name}}</view>
-          <view class="history-time">{{item.time}}</view>
+    <view
+      wx:for="{{list}}"
+      wx:key="id"
+      class="record-card"
+    >
+      <view class="record-card-left">
+        <view class="icon-pill"></view>
+        <view class="record-card-info">
+          <view class="record-card-name">{{item.name}}</view>
+          <view class="record-card-time">{{item.time}}</view>
         </view>
-        <view class="history-row-side">
-          <t-tag theme="{{item.status === 'ok' ? 'primary' : 'danger'}}">
-            {{item.status === 'ok' ? okText : missedText}}
-          </t-tag>
-        </view>
+      </view>
+      <view class="tag {{item.status === 'ok' ? 'tag--ok' : 'tag--missed'}}">
+        {{item.status === 'ok' ? okText : missedText}}
       </view>
     </view>
   </view>

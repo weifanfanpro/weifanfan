@@ -2,8 +2,6 @@
   "component": true,
   "styleIsolation": "apply-shared",
   "usingComponents": {
-    "t-avatar": "tdesign-miniprogram/avatar/avatar",
-    "t-icon": "tdesign-miniprogram/icon/icon",
     "t-toast": "tdesign-miniprogram/toast/toast"
   }
 }

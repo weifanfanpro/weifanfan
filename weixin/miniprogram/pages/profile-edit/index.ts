@@ -29,7 +29,12 @@ Component({
   },
   methods: {
     onBack(this: any) {
-      wx.navigateBack();
+      const pages = getCurrentPages();
+      if (pages.length > 1) {
+        wx.navigateBack();
+      } else {
+        wx.reLaunch({ url: "/pages/mine/index" });
+      }
     },
 
     async uploadAvatar(this: any, path: string) {

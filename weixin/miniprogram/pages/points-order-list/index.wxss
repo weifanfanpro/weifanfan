@@ -1,94 +1,204 @@
-/* ═══ Points Order List — 暖调古典 ═══ */
-.order-list-page {
-  background: #f5f2ed;
-  background-image:
-    repeating-linear-gradient(
-      0deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    ),
-    repeating-linear-gradient(
-      90deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    );
+/* ═══ Points Order List — 蓝白卡通风格 ═══ */
+
+.page {
   min-height: 100vh;
+  background: #F0F7FF;
 }
 
 .list-tip {
   margin-bottom: 12rpx;
   padding: 12rpx 16rpx;
   border-radius: 14rpx;
-  color: #b0a99f;
+  color: #8BA4C7;
   font-size: 22rpx;
-  background: #fffefb;
-  border: 1rpx solid rgba(28, 25, 23, 0.05);
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
 }
 
-.order-item {
-  margin-bottom: 14rpx;
-  padding: 14rpx;
+/* ═══ Empty State ═══ */
+.empty-wrap {
+  margin-top: 20rpx;
+  padding: 48rpx 24rpx 40rpx;
+  border-radius: 24rpx;
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
+  box-shadow: 0 4rpx 20rpx rgba(43, 94, 167, 0.06);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty-buddy { margin-bottom: 16rpx; }
+
+.empty-pill-body {
+  position: relative;
+  width: 64rpx;
+  height: 84rpx;
+  border-radius: 32rpx;
+  overflow: hidden;
+  box-shadow: 0 6rpx 18rpx rgba(74, 157, 255, 0.18);
+  animation: pillBounce 3s ease-in-out infinite;
+}
+
+@keyframes pillBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8rpx); }
+}
+
+.empty-pill-left {
+  position: absolute; left: 0; top: 0; width: 50%; height: 100%;
+  background: #FFFFFF;
+}
+
+.empty-pill-right {
+  position: absolute; right: 0; top: 0; width: 50%; height: 100%;
+  background: #4A9DFF;
+}
+
+.empty-pill-eye {
+  position: absolute;
+  width: 16rpx; height: 18rpx;
+  background: #FFFFFF;
+  border-radius: 50%;
+  top: 24rpx;
+  box-shadow: inset 0 1rpx 3rpx rgba(0,0,0,0.06);
+}
+
+.empty-pill-left .empty-pill-eye { left: 8rpx; }
+.empty-pill-right .empty-pill-eye { right: 8rpx; }
+
+.empty-pill-pupil {
+  position: absolute;
+  width: 8rpx; height: 10rpx;
+  background: #2B5EA7;
+  border-radius: 50%;
+  bottom: 3rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.empty-pill-mouth {
+  position: absolute;
+  bottom: 22rpx; left: 50%;
+  transform: translateX(-50%);
+  width: 14rpx; height: 6rpx;
+  border-bottom: 2rpx solid #2B5EA7;
+  border-radius: 0 0 50% 50%;
+  z-index: 3;
+}
+
+.empty-title {
+  font-size: 26rpx;
+  color: #8BA4C7;
+  font-weight: 500;
+}
+
+.empty-sub {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #8BA4C7;
+  opacity: 0.7;
+}
+
+/* ═══ Order Card ═══ */
+.order-card {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 12rpx;
+  gap: 16rpx;
+  padding: 16rpx;
+  margin-bottom: 14rpx;
   border-radius: 22rpx;
-  background: #fffefb;
-  border: 1rpx solid rgba(28, 25, 23, 0.05);
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
+  box-shadow: 0 4rpx 16rpx rgba(43, 94, 167, 0.05);
+  transition: transform 150ms ease;
 }
 
-.order-item--deleting {
+.order-card:active {
+  transform: scale(0.98);
+}
+
+.order-card--deleting {
   pointer-events: none;
   animation: orderDeleteFadeUp 220ms ease forwards;
 }
 
-.cover {
-  width: 130rpx;
-  height: 130rpx;
-  border-radius: 12rpx;
-  background: #f5f2ed;
+@keyframes orderDeleteFadeUp {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-16rpx); }
 }
 
-.main {
+/* 装饰角 */
+.card-corner {
+  position: absolute;
+  width: 16rpx;
+  height: 16rpx;
+  pointer-events: none;
+}
+
+.card-corner--tl {
+  top: 8rpx;
+  left: 8rpx;
+  border-top: 2rpx solid rgba(74, 157, 255, 0.15);
+  border-left: 2rpx solid rgba(74, 157, 255, 0.15);
+  border-radius: 4rpx 0 0 0;
+}
+
+.card-corner--br {
+  bottom: 8rpx;
+  right: 8rpx;
+  border-bottom: 2rpx solid rgba(74, 157, 255, 0.15);
+  border-right: 2rpx solid rgba(74, 157, 255, 0.15);
+  border-radius: 0 0 4rpx 0;
+}
+
+.order-cover {
+  width: 130rpx;
+  height: 130rpx;
+  border-radius: 14rpx;
+  background: #F0F7FF;
+  flex-shrink: 0;
+}
+
+.order-main {
   flex: 1;
   min-width: 0;
 }
 
-.name {
+.order-name {
   font-size: 27rpx;
   font-weight: 700;
-  color: #1c1917;
+  color: #1A3A5C;
 }
 
-.meta {
+.order-meta {
   margin-top: 4rpx;
-  color: #b0a99f;
+  color: #8BA4C7;
   font-size: 22rpx;
 }
 
-.right {
+.order-right {
   text-align: right;
+  flex-shrink: 0;
 }
 
-.cost {
-  color: #2E9E8F;
+.order-cost {
+  color: #4A9DFF;
   font-size: 26rpx;
   font-weight: 800;
 }
 
-.status {
+.order-status {
   margin-top: 6rpx;
   font-size: 22rpx;
-  color: #1c1917;
+  color: #1A3A5C;
 }
 
-@keyframes orderDeleteFadeUp {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-16rpx);
-  }
+/* ═══ Reduced Motion ═══ */
+@media (prefers-reduced-motion: reduce) {
+  .empty-pill-body { animation: none; }
 }

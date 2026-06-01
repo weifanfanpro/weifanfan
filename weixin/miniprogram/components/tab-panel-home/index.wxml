@@ -1,223 +1,288 @@
 <view class="page anim-in">
+  <!-- 庆祝彩条 — 两侧喷射 -->
+  <view wx:if="{{showConfetti}}" class="confetti-wrap">
+    <!-- 左侧 -->
+    <view class="cp cp--L1"></view>
+    <view class="cp cp--L2"></view>
+    <view class="cp cp--L3"></view>
+    <view class="cp cp--L4"></view>
+    <view class="cp cp--L5"></view>
+    <view class="cp cp--L6"></view>
+    <view class="cp cp--L7"></view>
+    <view class="cp cp--L8"></view>
+    <view class="cp cp--L9"></view>
+    <view class="cp cp--L10"></view>
+    <!-- 右侧 -->
+    <view class="cp cp--R1"></view>
+    <view class="cp cp--R2"></view>
+    <view class="cp cp--R3"></view>
+    <view class="cp cp--R4"></view>
+    <view class="cp cp--R5"></view>
+    <view class="cp cp--R6"></view>
+    <view class="cp cp--R7"></view>
+    <view class="cp cp--R8"></view>
+    <view class="cp cp--R9"></view>
+    <view class="cp cp--R10"></view>
+  </view>
+
   <scroll-view class="scrollarea" scroll-y type="list">
-    <view class="page-padding safe-shell">
+    <view class="safe-shell">
 
-      <!-- ═══ Hero ═══ -->
-      <view class="card-3d-wrap card-3d-wrap--hero">
-        <view
-          id="tilt-hero"
-          class="hero card-3d"
-          style="{{heroTiltStyle}}"
-          data-tilt-id="tilt-hero"
-          data-tilt-key="hero"
-          bind:touchstart="onTiltTouchStart"
-          bind:touchmove="onTiltTouchMove"
-          bind:touchend="onTiltTouchEnd"
-          bind:touchcancel="onTiltTouchEnd"
-        >
-          <view class="card-3d-shine"></view>
+      <!-- ═══════════════════════════════
+           HERO — 药丸伙伴
+           ═══════════════════════════════ -->
+      <view class="hero">
+        <!-- 背景装饰 -->
+        <view class="hero-cloud hero-cloud--1"></view>
+        <view class="hero-cloud hero-cloud--2"></view>
+        <view class="hero-star hero-star--1"></view>
+        <view class="hero-star hero-star--2"></view>
+        <view class="hero-star hero-star--3"></view>
+        <view class="hero-cross hero-cross--1"></view>
+        <view class="hero-cross hero-cross--2"></view>
 
-          <!-- 回纹角饰 -->
-          <view class="corner corner--tl"></view>
-          <view class="corner corner--tr"></view>
-          <view class="corner corner--bl"></view>
-          <view class="corner corner--br"></view>
-
-          <!-- 水印暗纹 -->
-          <view class="hero-watermark"></view>
-
-          <view class="hero-row">
-            <view class="hero-date">{{dateText}}</view>
-            <view class="hero-time-chip">{{heroTimeText}}</view>
+        <!-- 日期时间 -->
+        <view class="hero-top">
+          <text class="hero-date">{{dateText}}</text>
+          <view class="hero-time-pill">
+            <view class="hero-time-dot"></view>
+            <text class="hero-time-text">{{heroTimeText}}</text>
           </view>
-          <view class="hero-num-row">
-            <text class="hero-num">{{pendingCount}}</text>
-            <view class="hero-num-meta">
-              <text class="hero-num-unit">次待服药</text>
-              <view class="hero-num-bar"></view>
-              <view class="hero-view-pill">
-                <view class="hero-view-dot"></view>
-                <text class="hero-view-text">{{viewLabel}}</text>
+        </view>
+
+        <!-- 药丸角色 -->
+        <view class="pill-buddy">
+          <view class="pill-body">
+            <view class="pill-left">
+              <view class="pill-eye pill-eye--l">
+                <view class="pill-pupil"></view>
+              </view>
+            </view>
+            <view class="pill-right">
+              <view class="pill-eye pill-eye--r">
+                <view class="pill-pupil"></view>
+              </view>
+            </view>
+            <view class="pill-cheek pill-cheek--l"></view>
+            <view class="pill-cheek pill-cheek--r"></view>
+            <view class="pill-mouth {{hasDue ? 'pill-mouth--worried' : 'pill-mouth--happy'}}"></view>
+          </view>
+          <!-- 数字气泡 -->
+          <view class="pill-num-bubble">
+            <text class="pill-num">{{pendingCount}}</text>
+            <text class="pill-num-label">待服药</text>
+          </view>
+          <!-- 视角标签 -->
+          <view wx:if="{{viewLabel !== '本人'}}" class="pill-view-tag">
+            <text class="pill-view-text">{{viewLabel}}</text>
+          </view>
+        </view>
+
+        <!-- 进度胶囊 -->
+        <view class="capsule-progress">
+          <view class="capsule-track">
+            <view class="capsule-fill" style="width: {{dayPercent}}%">
+              <view class="capsule-fill-shine"></view>
+            </view>
+          </view>
+          <view class="capsule-labels">
+            <text class="capsule-label">今日进度</text>
+            <text class="capsule-num">{{dayDoneCount}}/{{dayTotalCount}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- ═══════════════════════════════
+           焦点卡片 — 下一次服药
+           ═══════════════════════════════ -->
+      <block wx:if="{{nextMed}}">
+        <view class="focus focus--{{nextMed.status}}">
+          <!-- 药片装饰 -->
+          <view class="focus-pill-deco">
+            <view class="fpd-cap fpd-cap--left"></view>
+            <view class="fpd-cap fpd-cap--right"></view>
+          </view>
+          <!-- 状态条 -->
+          <view class="focus-status-bar">
+            <view class="focus-status-dot focus-status-dot--{{nextMed.status}}"></view>
+            <text class="focus-status-text focus-status-text--{{nextMed.status}}">{{nextMed.statusLabel}} · {{nextMed.time}}</text>
+            <view wx:if="{{viewLabel !== '本人'}}" class="focus-view-pill">
+              <text class="focus-view-text">{{viewLabel}}</text>
+            </view>
+          </view>
+          <!-- 药品信息 -->
+          <text class="focus-name">{{nextMed.name}}</text>
+          <text class="focus-dose">{{nextMed.dose}}</text>
+          <!-- 操作按钮 -->
+          <view
+            class="focus-btn focus-btn--{{nextMed.status}} {{nextMed.actionDisabled ? 'focus-btn--disabled' : ''}}"
+            bind:tap="onTake"
+            data-id="{{nextMed.id}}"
+            data-disabled="{{nextMed.actionDisabled}}"
+          >
+            <view class="focus-btn-pill"></view>
+            <text class="focus-btn-text">{{nextMed.actionText}}</text>
+          </view>
+        </view>
+      </block>
+
+      <!-- 空态 -->
+      <view wx:if="{{!nextMed && sections.length === 0}}" class="focus focus--empty">
+        <view class="empty-buddy">
+          <view class="eb-body">
+            <view class="eb-eye eb-eye--l"></view>
+            <view class="eb-eye eb-eye--r"></view>
+            <view class="eb-mouth"></view>
+          </view>
+        </view>
+        <text class="empty-title">今天没有服药安排</text>
+        <text class="empty-sub">点击下方添加药品，让我来提醒你～</text>
+      </view>
+
+      <!-- 全部已服用 -->
+      <view wx:if="{{nextMed === null && sections.length > 0}}" class="focus focus--done">
+        <view class="done-buddy">
+          <view class="db-body">
+            <view class="db-eye db-eye--l"></view>
+            <view class="db-eye db-eye--r"></view>
+            <view class="db-mouth"></view>
+            <view class="db-star db-star--1"></view>
+            <view class="db-star db-star--2"></view>
+          </view>
+        </view>
+        <text class="done-title">今日药物全部完成！</text>
+        <text class="done-sub">你真棒，继续保持健康～</text>
+      </view>
+
+      <!-- ═══════════════════════════════
+           快捷入口 — 胶囊按钮
+           ═══════════════════════════════ -->
+      <view class="quick-row">
+        <view class="quick-btn quick-btn--add tap-scale" bind:tap="onAddMedicine">
+          <view class="qb-icon">
+            <view class="qb-plus-h"></view>
+            <view class="qb-plus-v"></view>
+          </view>
+          <text class="qb-text">添加药品</text>
+        </view>
+        <view class="quick-btn quick-btn--scan tap-scale" bind:tap="onGoScan">
+          <view class="qb-icon">
+            <view class="qb-scan-line"></view>
+            <view class="qb-scan-line qb-scan-line--b"></view>
+            <view class="qb-scan-corner qb-scan-corner--tl"></view>
+            <view class="qb-scan-corner qb-scan-corner--tr"></view>
+            <view class="qb-scan-corner qb-scan-corner--bl"></view>
+            <view class="qb-scan-corner qb-scan-corner--br"></view>
+          </view>
+          <text class="qb-text">AI 识药</text>
+        </view>
+        <view class="quick-btn quick-btn--map tap-scale" bind:tap="onNearbyPharmacy">
+          <view class="qb-icon">
+            <view class="qb-pin"></view>
+            <view class="qb-pin-dot"></view>
+          </view>
+          <text class="qb-text">附近药店</text>
+        </view>
+      </view>
+
+      <!-- ═══════════════════════════════
+           风险提示
+           ═══════════════════════════════ -->
+      <view wx:if="{{riskHint}}" class="risk-card risk-card--{{riskLevel}}">
+        <view class="risk-icon">
+          <text class="risk-icon-char">{{riskLevel === 'high' ? '!' : 'i'}}</text>
+        </view>
+        <text class="risk-text">{{riskHint}}</text>
+      </view>
+
+      <!-- ═══════════════════════════════
+           统计行
+           ═══════════════════════════════ -->
+      <view class="stats-row" bind:tap="onOpenStockMonitor">
+        <view class="stat-item">
+          <view class="stat-icon stat-icon--risk">
+            <view class="si-shield"></view>
+          </view>
+          <view class="stat-body">
+            <text class="stat-val">{{riskScore}}分</text>
+            <text class="stat-label">{{riskLevelText}}</text>
+          </view>
+        </view>
+        <view class="stat-sep"></view>
+        <view class="stat-item">
+          <view class="stat-icon stat-icon--stock">
+            <view class="si-box"></view>
+            <view class="si-box-lid"></view>
+          </view>
+          <view class="stat-body">
+            <text class="stat-val">{{lowStockCount}}个</text>
+            <text class="stat-label">余量不足</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- ═══════════════════════════════
+           今日用药时间线
+           ═══════════════════════════════ -->
+      <block wx:if="{{sections.length > 0}}">
+        <view class="timeline-head">
+          <view class="th-pill"></view>
+          <text class="th-title">今日用药</text>
+          <text class="th-count">{{dayTotalCount}} 项</text>
+        </view>
+
+        <block wx:for="{{sections}}" wx:key="key">
+          <view class="slot-bar">
+            <view class="slot-dot"></view>
+            <text class="slot-text">{{item.label}}</text>
+          </view>
+
+          <view
+            wx:for="{{item.items}}"
+            wx:for-item="med"
+            wx:key="id"
+            class="med-row"
+            bind:tap="onOpenDrugDetail"
+            data-medicine-id="{{med.medicineId}}"
+            data-name="{{med.name}}"
+          >
+            <!-- 左侧时间 -->
+            <view class="mr-time">
+              <text class="mr-time-text">{{med.time}}</text>
+            </view>
+            <!-- 节点 -->
+            <view class="mr-node">
+              <view class="mr-stem mr-stem--top"></view>
+              <view class="mr-dot mr-dot--{{med.statusClass}}">
+                <view class="mr-dot-inner"></view>
+              </view>
+              <view class="mr-stem mr-stem--bottom"></view>
+            </view>
+            <!-- 内容卡 -->
+            <view class="mr-card mr-card--{{med.statusClass}}">
+              <view class="mr-card-top">
+                <text class="mr-name">{{med.name}}</text>
+                <view class="mr-tag mr-tag--{{med.statusClass}}">
+                  <text class="mr-tag-text">{{med.statusLabel}}</text>
+                </view>
+              </view>
+              <view class="mr-card-bot">
+                <text class="mr-dose">{{med.dose}}</text>
+                <view
+                  class="mr-btn mr-btn--{{med.statusClass}} {{med.actionPulse ? 'mr-btn--pulse' : ''}} {{med.actionDisabled ? 'mr-btn--disabled' : ''}}"
+                  catch:tap="onTake"
+                  data-id="{{med.id}}"
+                  data-disabled="{{med.actionDisabled}}"
+                >
+                  <text class="mr-btn-text">{{med.actionText}}</text>
+                </view>
               </view>
             </view>
           </view>
-        </view>
-      </view>
+        </block>
+      </block>
 
-      <!-- ═══ Metrics — 轮播 ═══ -->
-      <view class="metrics-wrap">
-        <swiper
-          class="metrics-swiper"
-          duration="350"
-          easing-function="easeInOutCubic"
-          circular="{{false}}"
-          autoplay
-          interval="3500"
-          previous-margin="28rpx"
-          next-margin="28rpx"
-          bind:change="onMetricSwiperChange"
-        >
-          <swiper-item>
-            <view class="swiper-item-wrap">
-              <view class="metric metric--risk">
-                <view class="metric-corner metric-corner--tl"></view>
-                <view class="metric-corner metric-corner--br"></view>
-                <view class="metric-label">漏服风险</view>
-                <view class="metric-val">{{riskScore}}<text class="metric-u">分</text></view>
-                <view class="metric-sub">{{riskLevelText}}</view>
-              </view>
-            </view>
-          </swiper-item>
-          <swiper-item>
-            <view class="swiper-item-wrap">
-              <view class="metric metric--stock" bind:tap="onOpenStockMonitor">
-                <view class="metric-corner metric-corner--tl"></view>
-                <view class="metric-corner metric-corner--br"></view>
-                <view class="metric-label">余量提醒</view>
-                <view class="metric-val">{{lowStockCount}}<text class="metric-u">个</text></view>
-                <view class="metric-sub">点击查看</view>
-              </view>
-            </view>
-          </swiper-item>
-        </swiper>
-        <!-- 自定义指示器 -->
-        <view class="metric-dots">
-          <view class="metric-dot {{metricSwiperIndex === 0 ? 'metric-dot--active' : ''}}"></view>
-          <view class="metric-dot {{metricSwiperIndex === 1 ? 'metric-dot--active' : ''}}"></view>
-        </view>
-      </view>
-
-      <!-- ═══ Risk Hint ═══ -->
-      <view wx:if="{{riskHint}}" class="hint hint--{{riskLevel}}">
-        <text>{{riskLevel === 'high' ? '⚠' : '💡'}} {{riskHint}}</text>
-      </view>
-
-      <!-- ═══ 古典分割线 ═══ -->
-      <view class="ornament-divider">
-        <view class="od-line"></view>
-        <view class="od-center">
-          <view class="od-diamond"></view>
-        </view>
-        <view class="od-line"></view>
-      </view>
-
-      <!-- ═══ Quick Actions ═══ -->
-      <view class="section-head">
-        <view class="sh-ornament"></view>
-        <text class="section-label">快捷操作</text>
-        <view class="sh-ornament sh-ornament--right"></view>
-      </view>
-      <view class="quick">
-        <view class="quick-card tap-scale" bind:tap="onAddMedicine">
-          <view class="qc-corners">
-            <view class="qc-corner qc-corner--tl"></view>
-            <view class="qc-corner qc-corner--br"></view>
-          </view>
-          <view class="qc-icon qc-icon--add">＋</view>
-          <view class="qc-body">
-            <text class="qc-label">添加药品</text>
-            <text class="qc-sub">录入新药品信息</text>
-          </view>
-        </view>
-        <view class="quick-card tap-scale" bind:tap="onGoScan">
-          <view class="qc-corners">
-            <view class="qc-corner qc-corner--tl"></view>
-            <view class="qc-corner qc-corner--br"></view>
-          </view>
-          <view class="qc-icon qc-icon--scan">◎</view>
-          <view class="qc-body">
-            <text class="qc-label">AI 扫描识药</text>
-            <text class="qc-sub">拍照识别药品</text>
-          </view>
-        </view>
-      </view>
-      <view class="quick-full tap-scale" bind:tap="onNearbyPharmacy">
-        <view class="qc-corners">
-          <view class="qc-corner qc-corner--tl"></view>
-          <view class="qc-corner qc-corner--br"></view>
-        </view>
-        <view class="qc-icon qc-icon--pharmacy">⊞</view>
-        <text class="qc-full-label">附近药店</text>
-        <text class="qc-full-sub">查找周边药店 →</text>
-      </view>
-
-      <!-- ═══ 古典分割线 ═══ -->
-      <view class="ornament-divider">
-        <view class="od-line"></view>
-        <view class="od-center">
-          <view class="od-diamond"></view>
-        </view>
-        <view class="od-line"></view>
-      </view>
-
-      <!-- ═══ Empty State ═══ -->
-      <view wx:if="{{sections.length === 0}}" class="card-3d-wrap card-3d-wrap--empty">
-        <view
-          id="tilt-empty"
-          class="empty card-3d"
-          style="{{emptyTiltStyle}}"
-          data-tilt-id="tilt-empty"
-          data-tilt-key="empty"
-          bind:touchstart="onTiltTouchStart"
-          bind:touchmove="onTiltTouchMove"
-          bind:touchend="onTiltTouchEnd"
-          bind:touchcancel="onTiltTouchEnd"
-        >
-          <view class="card-3d-shine"></view>
-          <view class="empty-mark">✓</view>
-          <view class="empty-title">今天暂无待服药</view>
-          <view class="empty-sub">添加药品并设置提醒后，会在这里按时间展示。</view>
-        </view>
-      </view>
-
-      <!-- ═══ Timeline ═══ -->
-      <view
-        wx:for="{{sections}}"
-        wx:key="key"
-        class="tl-section"
-      >
-        <view class="tl-head">
-          <view class="tl-head-dot"></view>
-          <text class="tl-head-label">{{item.label}}</text>
-          <text class="tl-head-count">{{item.items.length}} 条</text>
-        </view>
-
-        <view
-          wx:for="{{item.items}}"
-          wx:for-item="med"
-          wx:key="id"
-          class="tl-row tap-scale"
-          bind:tap="onOpenDrugDetail"
-          data-medicine-id="{{med.medicineId}}"
-          data-name="{{med.name}}"
-        >
-          <view class="tl-time">{{med.time}}</view>
-          <view class="tl-mid">
-            <view class="tl-dot tl-dot--{{med.statusClass}}">
-              <view class="tl-dot-inner"></view>
-            </view>
-            <view class="tl-stem"></view>
-          </view>
-          <view class="tl-card tl-card--{{med.statusClass}}">
-            <view class="tl-top">
-              <text class="tl-name">{{med.name}}</text>
-              <text class="tl-tag tl-tag--{{med.statusClass}}">{{med.statusLabel}}</text>
-            </view>
-            <view class="tl-bottom">
-              <text class="tl-dose">{{med.dose}}</text>
-              <view
-                class="tl-btn tl-btn--{{med.statusClass}} {{med.actionPulse ? 'tl-btn--pulse' : ''}} {{med.actionDisabled ? 'tl-btn--disabled' : ''}}"
-                catch:tap="onTake"
-                data-id="{{med.id}}"
-                data-disabled="{{med.actionDisabled}}"
-              >
-                <text>{{med.actionIcon}} {{med.actionText}}</text>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-
+      <view class="bottom-spacer"></view>
     </view>
   </scroll-view>
 </view>

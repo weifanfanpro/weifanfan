@@ -1,7 +1,11 @@
 <view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="药品余量监控" showBack="{true}" />
+
+  <!-- 蓝色渐变 Hero -->
   <view class="stock-hero">
-    <view class="stock-hero-glow"></view>
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-star hero-star--1"></view>
+    <view class="hero-cross hero-cross--1"></view>
     <view class="hero-title">{{heroTitle}}</view>
     <view class="hero-sub">{{heroSubtitle}}</view>
     <view class="hero-view-capsule">
@@ -10,10 +14,25 @@
     </view>
   </view>
 
+  <!-- 空状态 -->
   <view wx:if="{{list.length === 0}}" class="empty-wrap card">
-    <t-empty description="{{emptyText}}" />
+    <view class="empty-state">
+      <view class="empty-buddy">
+        <view class="empty-pill-body">
+          <view class="empty-pill-left">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-right">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-mouth"></view>
+        </view>
+      </view>
+      <text class="empty-title">{{emptyText}}</text>
+    </view>
   </view>
 
+  <!-- 药品余量列表 -->
   <view wx:else class="stock-list">
     <view
       wx:for="{{list}}"
@@ -22,11 +41,9 @@
     >
       <view class="row row-top">
         <view class="name">{{item.name}}</view>
-        <t-tag
-          theme="{{item.level === 'low' ? 'danger' : (item.level === 'warning' ? 'warning' : (item.level === 'enough' ? 'success' : 'default'))}}"
-        >
+        <view class="tag {{item.level === 'low' ? 'tag--danger' : (item.level === 'warning' ? 'tag--warning' : (item.level === 'enough' ? 'tag--success' : 'tag--default'))}}">
           {{item.levelText}}
-        </t-tag>
+        </view>
       </view>
       <view class="stock-metrics">
         <view class="muted line">当前总量：{{item.totalAmountText}}</view>
@@ -38,15 +55,9 @@
         <text class="remain-val">{{item.daysLeft == null ? '—' : (item.daysLeft + ' 天')}}</text>
       </view>
       <view class="mt16">
-        <t-button
-          variant="outline"
-          size="small"
-          data-name="{{item.name}}"
-          data-medicineid="{{item.medicineId}}"
-          bind:tap="onOpenSetting"
-        >
-          调整提醒与总量
-        </t-button>
+        <view class="btn btn--secondary btn--small tap-scale" data-name="{{item.name}}" data-medicineid="{{item.medicineId}}" bindtap="onOpenSetting">
+          <text class="btn-text btn-text--secondary">调整提醒与总量</text>
+        </view>
       </view>
     </view>
   </view>

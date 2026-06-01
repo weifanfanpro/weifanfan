@@ -1,8 +1,6 @@
 {
   "navigationBarTitleText": "家属二维码",
   "usingComponents": {
-    "t-button": "tdesign-miniprogram/button/button",
-    "t-icon": "tdesign-miniprogram/icon/icon",
     "t-toast": "tdesign-miniprogram/toast/toast",
     "t-qrcode": "tdesign-miniprogram/qrcode/qrcode",
     "custom-navbar": "../../components/custom-navbar/index"

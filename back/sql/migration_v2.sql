@@ -138,10 +138,10 @@ INSERT INTO `points_config` (`config_key`, `config_value`, `description`) VALUES
 ('vip_multiplier',     '2',   'VIP积分倍率')
 ON DUPLICATE KEY UPDATE `config_value` = VALUES(`config_value`);
 
--- 管理员默认账号（密码: admin123，BCrypt 哈希）
+-- 管理员默认账号（密码: admin123，SHA-256 哈希）
 INSERT INTO `admin_accounts` (`username`, `display_name`, `password_hash`, `email`, `phone`, `role`, `permissions`, `status`) VALUES
-('admin', '超级管理员', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5EH', 'admin@dingdong.com', '13800000001', 'super_admin', '["全部权限"]', 'enabled'),
-('operator', '运营管理员', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5EH', 'ops@dingdong.com', '13800000002', 'operator', '["商品管理","订单管理","用户管理"]', 'enabled')
+('admin', '超级管理员', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'admin@dingdong.com', '13800000001', 'super_admin', '["全部权限"]', 'enabled'),
+('operator', '运营管理员', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'ops@dingdong.com', '13800000002', 'operator', '["商品管理","订单管理","用户管理"]', 'enabled')
 ON DUPLICATE KEY UPDATE `display_name` = VALUES(`display_name`);
 
 -- 反馈类型补充（给已有反馈数据补上类型）

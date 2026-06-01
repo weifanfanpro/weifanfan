@@ -19,7 +19,7 @@ const emptyDrug: ConsultDetailVm = {
 
 Page({
   data: {
-    opened: ["dose"] as string[],
+    opened: "dose" as string,
     drug: emptyDrug,
   },
 
@@ -41,10 +41,11 @@ Page({
       return;
     }
 
-    this.setData({ drug: vm, opened: ["dose"] });
+    this.setData({ drug: vm, opened: "dose" });
   },
 
-  onCollapseChange(e: WechatMiniprogram.CustomEvent<{ value: string[] }>) {
-    this.setData({ opened: e.detail.value });
+  onTogglePanel(e: WechatMiniprogram.BaseEvent) {
+    const val = String((e.currentTarget as any)?.dataset?.value || "");
+    this.setData({ opened: this.data.opened === val ? "" : val });
   },
 });

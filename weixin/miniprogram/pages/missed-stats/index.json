@@ -1,12 +1,6 @@
 {
   "navigationBarTitleText": "漏服统计",
   "usingComponents": {
-    "t-progress": "tdesign-miniprogram/progress/progress",
-    "t-button": "tdesign-miniprogram/button/button",
-    "t-cell": "tdesign-miniprogram/cell/cell",
-    "t-cell-group": "tdesign-miniprogram/cell-group/cell-group",
-    "t-tag": "tdesign-miniprogram/tag/tag",
-    "t-popup": "tdesign-miniprogram/popup/popup",
     "t-toast": "tdesign-miniprogram/toast/toast",
     "custom-navbar": "../../components/custom-navbar/index"
   }

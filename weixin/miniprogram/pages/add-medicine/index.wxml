@@ -2,63 +2,57 @@
   <custom-navbar title="添加药品" showBack="{true}" />
   <scroll-view class="scrollarea" scroll-y type="list" enhanced="{{true}}" bounces="{{true}}">
     <view class="page-padding safe-bottom content">
+      <!-- 蓝色渐变 Hero -->
       <view class="add-hero">
-        <view class="add-hero-glow"></view>
-        <view class="add-hero-top">
-        </view>
+        <view class="hero-cloud hero-cloud--1"></view>
+        <view class="hero-cloud hero-cloud--2"></view>
+        <view class="hero-star hero-star--1"></view>
+        <view class="hero-star hero-star--2"></view>
+        <view class="hero-cross hero-cross--1"></view>
         <view class="add-hero-title">添加药品</view>
         <view class="add-hero-sub">先录入基础信息，后续再设置提醒。</view>
       </view>
 
+      <!-- Step 1: 药品名称 -->
       <view class="step-card">
         <view class="step-head">
           <view class="step-index">Step 1</view>
           <view class="step-title">填写药品名称</view>
         </view>
         <view class="step-body">
-          <t-input
-            value="{{name}}"
-            placeholder="请输入药品名称"
-            borderless="{{true}}"
-            class="name-input"
-            bind:change="onNameChange"
-          />
+          <input class="app-input" value="{{name}}" placeholder="请输入药品名称" bindinput="onNameChange" />
         </view>
       </view>
 
+      <!-- Step 2: 用药规则 -->
       <view class="step-card">
         <view class="step-head">
           <view class="step-index">Step 2</view>
-          <view class="step-title">填写用药规则（可选）</view>
+          <view class="step-title">填写用药方式</view>
         </view>
         <view class="step-body">
-          <view class="sub-hint muted small">描述用法用量，例如"每日3次，每次2片，饭后服用"。</view>
-          <t-input
-            value="{{rule}}"
-            placeholder="例如：每日3次，每次2片，饭后服用"
-            borderless="{{true}}"
-            class="name-input"
-            bind:change="onRuleChange"
-          />
+          <view class="sub-hint">填写用药方式，例如"口服"、"外用"、"静脉注射"等。</view>
+          <input class="app-input" value="{{rule}}" placeholder="例如：口服、外用、舌下含服" bindinput="onRuleChange" />
         </view>
       </view>
 
+      <!-- Step 3: 药品类型 -->
       <view class="step-card">
         <view class="step-head">
           <view class="step-index">Step 3</view>
           <view class="step-title">选择药品类型</view>
         </view>
         <view class="step-body">
-          <t-radio-group value="{{isQuantifiable ? '1' : '0'}}" bind:change="onQuantifiableChange">
-            <view class="type-option-row">
-              <label class="type-option {{isQuantifiable ? 'type-option--active' : ''}}">
-                <t-radio value="1">可量化</t-radio>
-              </label>
-              <label class="type-option {{!isQuantifiable ? 'type-option--active' : ''}}">
-                <t-radio value="0">不可量化</t-radio>
-              </label>
+          <view class="type-option-row">
+            <view class="type-option {{isQuantifiable ? 'type-option--active' : ''}}" bindtap="onQuantifiableChange" data-value="1">
+              <view class="type-option-dot {{isQuantifiable ? 'type-option-dot--active' : ''}}"></view>
+              <text class="type-option-text">可量化</text>
             </view>
-          </t-radio-group>
+            <view class="type-option {{!isQuantifiable ? 'type-option--active' : ''}}" bindtap="onQuantifiableChange" data-value="0">
+              <view class="type-option-dot {{!isQuantifiable ? 'type-option-dot--active' : ''}}"></view>
+              <text class="type-option-text">不可量化</text>
+            </view>
+          </view>
           <view class="type-tip-grid">
             <view class="type-tip-card">
               <view class="type-tip-card-title">可量化</view>
@@ -72,40 +66,31 @@
         </view>
       </view>
 
+      <!-- Step 4: 每次用量 -->
       <view class="step-card">
         <view class="step-head">
           <view class="step-index">Step 4</view>
-          <view class="step-title">每次用量（可选）</view>
+          <view class="step-title">每次用量</view>
         </view>
         <view class="step-body">
-          <view class="sub-hint muted small">填写单次用量，例如"每次2片"或"每次适量"。</view>
-          <t-input
-            value="{{doseText}}"
-            placeholder="{{isQuantifiable ? '例如：每次 2 片' : '每次适量'}}"
-            borderless="{{true}}"
-            class="name-input"
-            bind:change="onDoseTextChange"
-          />
+          <view class="sub-hint">填写单次用量，例如"每次2片"或"每次适量"。</view>
+          <input class="app-input" value="{{doseText}}" placeholder="{{isQuantifiable ? '例如：每次 2 片' : '每次适量'}}" bindinput="onDoseTextChange" />
         </view>
       </view>
 
+      <!-- Step 5: 药品总量（条件显示） -->
       <view wx:if="{{isQuantifiable}}" class="step-card">
         <view class="step-head">
           <view class="step-index">Step 5</view>
-          <view class="step-title">药品总量（可选）</view>
+          <view class="step-title">药品总量</view>
         </view>
         <view class="step-body">
-          <view class="sub-hint muted small">填写药品总量，便于管理库存。</view>
-          <t-input
-            value="{{totalAmountText}}"
-            placeholder="例如：总量 30 片 / 2 瓶"
-            borderless="{{true}}"
-            class="name-input"
-            bind:change="onTotalAmountTextChange"
-          />
+          <view class="sub-hint">填写药品总量，便于管理库存。</view>
+          <input class="app-input" value="{{totalAmountText}}" placeholder="例如：总量 30 片 / 2 瓶" bindinput="onTotalAmountTextChange" />
         </view>
       </view>
 
+      <!-- 确认卡片 -->
       <view class="step-card">
         <view class="step-head">
           <view class="step-index">确认</view>
@@ -122,11 +107,12 @@
     </view>
   </scroll-view>
 
+  <!-- 底部按钮栏 -->
   <view class="bottom-bar add-bottom-bar">
     <view class="page-padding safe-bottom add-bottom-inner">
-      <t-button theme="primary" size="large" block disabled="{{!name}}" class="add-next-btn tap-scale" bind:tap="goNext">
-        下一步：设置服药提醒
-      </t-button>
+      <view class="btn btn--primary {{!name ? 'btn--disabled' : ''}} tap-scale" bindtap="goNext">
+        <text class="btn-text">下一步：设置服药提醒</text>
+      </view>
     </view>
   </view>
 

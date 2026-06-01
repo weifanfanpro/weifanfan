@@ -59,8 +59,20 @@ export async function sendMessage(params: {
   };
 }
 
-export async function checkReminderPlan(reminderId: number) {
-  return post<any>(`/api/ai-chat/check-reminder?reminderId=${reminderId}`, undefined, 300000);
+export async function checkReminderPlan(params: {
+  enableThinking?: boolean;
+  enableSearch?: boolean;
+  plan: {
+    drugName: string;
+    usageMethodLabel: string;
+    dailyFrequency: string;
+    times: string[];
+    doseText: string;
+    mealTimingLabel: string;
+    repeatWeekdaysText: string;
+  };
+}) {
+  return post<any>("/api/ai-chat/check-reminder-plan", params, 300000);
 }
 
 export function formatChatError(err: unknown): string {

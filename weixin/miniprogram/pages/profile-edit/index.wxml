@@ -1,7 +1,11 @@
 <view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="个人信息" showBack="{true}" />
+
+  <!-- 蓝色渐变 Hero -->
   <view class="profile-hero">
-    <view class="profile-hero-glow"></view>
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-star hero-star--1"></view>
+    <view class="hero-star hero-star--2"></view>
     <view class="profile-hero-main">
       <image class="profile-avatar" src="{{avatarPreviewUrl || profile.avatarUrl}}" mode="aspectFill" />
       <view class="meta">
@@ -12,37 +16,46 @@
     </view>
   </view>
 
+  <!-- 账号资料卡片 -->
   <view class="card account-card">
     <view class="card-title">账号资料</view>
-    <t-cell-group bordered>
-      <t-cell title="昵称">
-        <view slot="note" class="full">
-          <view class="nickname-input-wrap">
-            <input
-              class="nickname-input"
-              type="text"
-              value="{{profile.nickName}}"
-              placeholder="请输入昵称"
-              bindinput="onNicknameInput"
-            />
-          </view>
+
+    <!-- 昵称行 -->
+    <view class="cell-row">
+      <view class="cell-label">昵称</view>
+      <view class="cell-value">
+        <view class="nickname-input-wrap">
+          <input
+            class="nickname-input"
+            type="text"
+            value="{{profile.nickName}}"
+            placeholder="请输入昵称"
+            bindinput="onNicknameInput"
+          />
         </view>
-      </t-cell>
-      <t-cell title="头像">
-        <view slot="note" class="avatar-actions">
-          <t-button size="small" variant="outline" class="tap-scale avatar-pick-btn" bind:tap="onChooseAvatarFromAlbum">从相册选择</t-button>
+      </view>
+    </view>
+
+    <!-- 头像行 -->
+    <view class="cell-row cell-row--last">
+      <view class="cell-label">头像</view>
+      <view class="cell-value">
+        <view class="btn btn--ghost btn--small tap-scale" bindtap="onChooseAvatarFromAlbum">
+          <text class="btn-text btn-text--ghost">从相册选择</text>
         </view>
-      </t-cell>
-    </t-cell-group>
+      </view>
+    </view>
   </view>
 
-  <view class="actions-float">
-    <t-button theme="primary" size="large" block loading="{{loading}}" class="tap-scale" bind:tap="onSave">
-      保存资料
-    </t-button>
-    <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onBack">返回</t-button>
+  <!-- 操作按钮 -->
+  <view class="actions-card">
+    <view class="btn btn--primary tap-scale {{loading ? 'btn--disabled' : ''}}" bindtap="onSave">
+      <text class="btn-text">{{loading ? '保存中…' : '保存资料'}}</text>
+    </view>
+    <view class="btn btn--ghost tap-scale" bindtap="onBack">
+      <text class="btn-text btn-text--ghost">返回</text>
+    </view>
   </view>
 
   <t-toast id="t-toast" />
 </view>
-

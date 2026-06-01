@@ -1,30 +1,75 @@
 <view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="家属二维码" showBack="{true}" />
-  <view class="brand-hero">
+
+  <!-- 蓝色渐变 Hero -->
+  <view class="qr-hero">
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-cloud hero-cloud--2"></view>
+    <view class="hero-star hero-star--1"></view>
+    <view class="hero-star hero-star--2"></view>
     <view class="hero-title">绑定二维码</view>
-    <view class="hero-sub">让照护者使用“扫码绑定”扫描此码即可完成绑定。</view>
+    <view class="hero-sub">让照护者使用「扫码绑定」扫描此码即可完成绑定</view>
   </view>
 
-  <view class="card pad qr-card">
-    <view class="qr-wrap">
-      <t-qrcode
-        value="{{qrValue}}"
-        size="{{qrPx}}"
-        level="M"
-        bg-color="#ffffff"
-      />
+  <!-- 二维码卡片 -->
+  <view class="qr-card">
+    <!-- 装饰角 -->
+    <view class="qr-corner qr-corner--tl"></view>
+    <view class="qr-corner qr-corner--tr"></view>
+    <view class="qr-corner qr-corner--bl"></view>
+    <view class="qr-corner qr-corner--br"></view>
+
+    <!-- QR 码展示框 -->
+    <view class="qr-frame">
+      <view class="qr-frame-inner">
+        <t-qrcode
+          value="{{qrValue}}"
+          size="{{qrPx}}"
+          level="M"
+          bg-color="#ffffff"
+        />
+      </view>
+      <!-- 扫描线动画 -->
+      <view class="qr-scan-line"></view>
     </view>
-    <view class="code-row">
-      <view class="muted small">绑定码</view>
-      <view class="code">{{openid}}</view>
+
+    <!-- 绑定码 -->
+    <view class="code-section">
+      <view class="code-label">我的绑定码</view>
+      <view class="code-value" bindtap="onCopyCode">
+        <text class="code-text">{{openid}}</text>
+        <view class="code-copy-icon">
+          <view class="copy-icon-body"></view>
+          <view class="copy-icon-page"></view>
+        </view>
+      </view>
+      <view class="code-tip">长按上方绑定码可快速复制</view>
     </view>
-    <view class="mt">
-      <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onCopy">
-        复制绑定码
-      </t-button>
+
+    <!-- 复制按钮 -->
+    <view class="btn btn--primary tap-scale" bindtap="onCopy">
+      <text class="btn-text">复制绑定码</text>
+    </view>
+  </view>
+
+  <!-- 使用说明 -->
+  <view class="tip-card">
+    <view class="tip-title">如何使用？</view>
+    <view class="tip-steps">
+      <view class="tip-step">
+        <view class="step-num">1</view>
+        <text class="step-text">将此二维码或绑定码发给家人</text>
+      </view>
+      <view class="tip-step">
+        <view class="step-num">2</view>
+        <text class="step-text">家人在「我来照护」中扫码或输入绑定码</text>
+      </view>
+      <view class="tip-step">
+        <view class="step-num">3</view>
+        <text class="step-text">绑定成功后即可帮你管理用药计划</text>
+      </view>
     </view>
   </view>
 
   <t-toast id="t-toast" />
 </view>
-

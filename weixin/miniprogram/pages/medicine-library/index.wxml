@@ -1,16 +1,22 @@
 <view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="药品库" showBack="{true}" />
+
+  <!-- 蓝色渐变 Hero -->
   <view class="brand-hero">
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-star hero-star--1"></view>
     <view class="hero-title">药品库</view>
     <view class="hero-sub">用户加入药单时自动汇总的药品档案（删除个人药单不会删除此处记录）</view>
   </view>
 
-  <view class="search-card card">
-    <t-input
+  <!-- 搜索卡片 -->
+  <view class="search-card">
+    <input
+      class="search-input"
       value="{{keyword}}"
       placeholder="搜索药品名、适应症、用法摘要…"
-      clearable
-      bind:change="onKeywordInput"
+      placeholder-class="search-input-placeholder"
+      bindinput="onKeywordInput"
     />
     <view class="filter-row">
       <picker mode="selector" range="{{usageFilterOptions}}" range-key="label" value="{{usageFilterIndex}}" bindchange="onUsageFilterPicker">
@@ -22,31 +28,70 @@
     </view>
     <view class="filter-row filter-row--switch">
       <text class="filter-label">仅有关联药品 ID</text>
-      <t-switch value="{{filterHasMedicineId}}" bind:change="onHasMedicineIdChange" />
+      <view class="toggle {{filterHasMedicineId ? 'toggle--on' : ''}}" catchtap="noop" bindtap="onHasMedicineIdToggle">
+        <view class="toggle-dot"></view>
+      </view>
     </view>
     <view wx:if="{{keyword || filterUsageMethod || filterMeal || filterHasMedicineId}}" class="filter-actions">
-      <t-button theme="light" size="small" class="tap-scale" bind:tap="onClearSearch">重置条件</t-button>
+      <view class="btn btn--ghost btn--small tap-scale" bindtap="onClearSearch">
+        <text class="btn-text btn-text--ghost">重置条件</text>
+      </view>
     </view>
   </view>
 
+  <!-- 加载中 -->
   <view wx:if="{{list.length === 0 && loading}}" class="empty-wrap">
-    <t-loading size="48rpx" text="加载中…" />
+    <view class="loading-dots">
+      <view class="loading-dot"></view>
+      <view class="loading-dot"></view>
+      <view class="loading-dot"></view>
+    </view>
+    <text class="loading-text">加载中…</text>
   </view>
 
+  <!-- 空状态：有搜索条件 -->
   <view wx:elif="{{list.length === 0 && !loading && hasSearchCondition}}" class="empty-wrap">
-    <t-empty description="暂无匹配档案，试试其他关键词或筛选条件" />
+    <view class="empty-state">
+      <view class="empty-buddy">
+        <view class="empty-pill-body">
+          <view class="empty-pill-left">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-right">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-mouth"></view>
+        </view>
+      </view>
+      <text class="empty-title">暂无匹配档案，试试其他关键词或筛选条件</text>
+    </view>
   </view>
 
+  <!-- 空状态：无搜索条件 -->
   <view wx:elif="{{list.length === 0 && !loading && !hasSearchCondition}}" class="empty-wrap">
-    <t-empty description="暂无档案，先去扫药或添加药品吧" />
+    <view class="empty-state">
+      <view class="empty-buddy">
+        <view class="empty-pill-body">
+          <view class="empty-pill-left">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-right">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-mouth"></view>
+        </view>
+      </view>
+      <text class="empty-title">暂无档案，先去扫药或添加药品吧</text>
+    </view>
   </view>
 
+  <!-- 列表 -->
   <view wx:else class="card lib-list-card">
     <view
       wx:for="{{list}}"
       wx:key="_id"
       class="lib-row tap-scale"
-      bind:tap="onOpen"
+      bindtap="onOpen"
       data-name="{{item.name}}"
       data-id="{{item.medicineId}}"
     >
@@ -60,10 +105,14 @@
         </view>
         <view wx:else class="lib-row-sub muted">{{item.subtitle}}</view>
       </view>
-      <text class="lib-row-arrow">›</text>
+      <view class="css-chevron"></view>
     </view>
     <view wx:if="{{loading && list.length > 0}}" class="load-more">
-      <t-loading size="36rpx" text="加载中…" />
+      <view class="loading-dots loading-dots--small">
+        <view class="loading-dot"></view>
+        <view class="loading-dot"></view>
+        <view class="loading-dot"></view>
+      </view>
     </view>
     <view wx:if="{{!hasMore && list.length > 0}}" class="end-hint muted small">没有更多了</view>
   </view>

@@ -134,6 +134,37 @@ public class AdminAuthController {
         return R.ok(accountMapper.selectList(null));
     }
 
+    @PostMapping("/{username}/status")
+    public R<Void> updateStatus(@RequestHeader("Authorization") String auth,
+                                @PathVariable String username,
+                                @RequestBody Map<String, String> body) {
+        String token = auth.startsWith("Bearer ") ? auth.substring(7) : auth;
+        String operator = redisUtil.get(REDIS_ADMIN_SESSION + token);
+        if (operator == null) {
+            throw new BizException("未登录");
+        }
+        AdminAccount operatorAccount = accountMapper.selectOne(
+                new LambdaQueryWrapper<AdminAccount>()
+                        .eq(AdminAccount::getUsername, operator));
+        if (operatorAccount == null || !ROLE_SUPER_ADMIN.equals(operatorAccount.getRole())) {
+            throw new BizException("无权修改管理员状态");
+        }
+        AdminAccount target = accountMapper.selectOne(
+                new LambdaQueryWrapper<AdminAccount>()
+                        .eq(AdminAccount::getUsername, username));
+        if (target == null) {
+            throw new BizException("管理员不存在");
+        }
+        String newStatus = body.get("status");
+        if (!"enabled".equals(newStatus) && !"disabled".equals(newStatus)) {
+            throw new BizException("无效的状态值");
+        }
+        target.setStatus(newStatus);
+        target.setUpdatedAt(LocalDateTime.now());
+        accountMapper.updateById(target);
+        return R.ok();
+    }
+
     @DeleteMapping("/{username}")
     public R<Void> delete(@RequestHeader("Authorization") String auth,
                            @PathVariable String username) {

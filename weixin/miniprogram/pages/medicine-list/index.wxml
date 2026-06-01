@@ -1,7 +1,12 @@
 <view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="药品清单" showBack="{true}" />
+
+  <!-- 蓝色渐变 Hero -->
   <view class="list-hero">
-    <view class="list-hero-glow"></view>
+    <view class="hero-cloud hero-cloud--1"></view>
+    <view class="hero-cloud hero-cloud--2"></view>
+    <view class="hero-star hero-star--1"></view>
+    <view class="hero-cross hero-cross--1"></view>
     <view class="hero-title">{{heroTitle}}</view>
     <view class="hero-sub">{{heroSubtitle}}</view>
     <view class="hero-view-capsule">
@@ -10,17 +15,34 @@
     </view>
   </view>
 
+  <!-- 空状态 -->
   <view wx:if="{{list.length === 0}}" class="empty-wrap card">
-    <t-empty description="{{emptyText}}" />
+    <view class="empty-state">
+      <view class="empty-buddy">
+        <view class="empty-pill-body">
+          <view class="empty-pill-left">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-right">
+            <view class="empty-pill-eye"><view class="empty-pill-pupil"></view></view>
+          </view>
+          <view class="empty-pill-mouth"></view>
+        </view>
+      </view>
+      <text class="empty-title">{{emptyText}}</text>
+    </view>
     <view class="mt">
-      <t-button theme="primary" size="large" block class="tap-scale" bind:tap="onAdd">添加药品</t-button>
+      <view class="btn btn--primary tap-scale" bindtap="onAdd">
+        <text class="btn-text">添加药品</text>
+      </view>
     </view>
   </view>
 
+  <!-- 药品列表 -->
   <view wx:else class="list-panel card">
     <view class="list-hint">
       <text class="list-hint-dot"></text>
-      <text class="muted small">提示：左滑药品可删除</text>
+      <text class="list-hint-text">提示：左滑药品可删除</text>
     </view>
     <view class="med-list">
       <view
@@ -47,10 +69,10 @@
             <view class="med-rule">{{item.displayRule}}</view>
           </view>
           <view class="med-right">
-            <t-tag theme="{{item.active ? 'primary' : 'default'}}" class="med-status">
+            <view class="tag {{item.active ? 'tag--primary' : 'tag--default'}}">
               {{item.active ? activeText : inactiveText}}
-            </t-tag>
-            <t-icon name="chevron-right" size="36rpx" color="#9aa3b2" />
+            </view>
+            <view class="css-chevron"></view>
           </view>
         </view>
         <view class="swipe-actions">
@@ -61,7 +83,7 @@
             data-id="{{item.medicineId}}"
             bind:tap="onSwipeDelete"
           >
-            <t-icon name="delete" size="36rpx" color="#fff" />
+            <text class="swipe-action-icon">✕</text>
             <text class="swipe-action-text">删除</text>
           </view>
         </view>
@@ -69,7 +91,9 @@
     </view>
 
     <view class="mt">
-      <t-button variant="outline" size="large" block class="tap-scale" bind:tap="onAdd">继续添加药品</t-button>
+      <view class="btn btn--secondary tap-scale" bindtap="onAdd">
+        <text class="btn-text btn-text--secondary">继续添加药品</text>
+      </view>
     </view>
   </view>
 </view>

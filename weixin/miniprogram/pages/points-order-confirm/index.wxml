@@ -1,66 +1,76 @@
-<view class="page page-padding confirm-page">
+<view class="page page-padding safe-bottom anim-in">
   <custom-navbar title="确认兑换" showBack="{true}" />
+
   <view class="confirm-content">
-  <view class="order-hero card-elevated anim-in" wx:if="{{product}}">
-    <view class="order-head">
-      <view class="title">{{product.name}}</view>
-      <view class="order-head-tag">积分兑换</view>
-    </view>
-    <view class="summary-grid">
-      <view class="summary-item">
-        <view class="summary-label">数量</view>
-        <view class="summary-value">{{quantity}}</view>
+    <!-- 商品信息卡片 -->
+    <view class="order-hero" wx:if="{{product}}">
+      <view class="card-corner card-corner--tl"></view>
+      <view class="card-corner card-corner--br"></view>
+      <view class="order-head">
+        <view class="title">{{product.name}}</view>
+        <view class="order-head-tag">积分兑换</view>
       </view>
-      <view class="summary-item">
-        <view class="summary-label">单价</view>
-        <view class="summary-value">{{product.pointsPrice}} 积分</view>
-      </view>
-      <view class="summary-item">
-        <view class="summary-label">总价</view>
-        <view class="summary-value summary-value--main">{{pointsCost}} 积分</view>
-      </view>
-      <view class="summary-item">
-        <view class="summary-label">兑换后剩余</view>
-        <view class="summary-value">{{pointsAfterPay}} 积分</view>
-      </view>
-    </view>
-    <view class="balance {{pointsGap > 0 ? 'balance--warn' : ''}}">
-      <text wx:if="{{pointsGap > 0}}">当前积分不足，还差 {{pointsGap}} 积分</text>
-      <text wx:else>当前可用 {{pointsBalance}} 积分，可直接兑换</text>
-    </view>
-  </view>
-
-  <view class="card mt anim-in address-card">
-    <view class="address-head">
-      <view>
-        <view class="title">收货地址</view>
-        <view class="address-head-sub">请确认收件信息后再提交订单</view>
-      </view>
-      <view class="address-head-action tap-scale" bind:tap="onOpenAddressManage">
-        <text>选择/管理</text>
-        <text class="address-head-arrow">></text>
-      </view>
-    </view>
-    <view wx:if="{{loadingAddress}}" class="address-empty">正在加载地址...</view>
-    <view wx:elif="{{selectedAddress}}">
-      <view class="addr-line-1">
-        <view class="addr-main">
-          <text class="addr-name">{{selectedAddress.receiver}}</text>
-          <text class="addr-phone">{{selectedAddress.phone}}</text>
+      <view class="summary-grid">
+        <view class="summary-item">
+          <view class="summary-label">数量</view>
+          <view class="summary-value">{{quantity}}</view>
         </view>
-        <text wx:if="{{selectedAddress.isDefault}}" class="addr-default">默认</text>
+        <view class="summary-item">
+          <view class="summary-label">单价</view>
+          <view class="summary-value">{{product.pointsPrice}} 积分</view>
+        </view>
+        <view class="summary-item">
+          <view class="summary-label">总价</view>
+          <view class="summary-value summary-value--main">{{pointsCost}} 积分</view>
+        </view>
+        <view class="summary-item">
+          <view class="summary-label">兑换后剩余</view>
+          <view class="summary-value">{{pointsAfterPay}} 积分</view>
+        </view>
       </view>
-      <view class="addr-line-2">{{selectedAddress.region}} {{selectedAddress.detail}}</view>
+      <view class="balance {{pointsGap > 0 ? 'balance--warn' : ''}}">
+        <text wx:if="{{pointsGap > 0}}">当前积分不足，还差 {{pointsGap}} 积分</text>
+        <text wx:else>当前可用 {{pointsBalance}} 积分，可直接兑换</text>
+      </view>
     </view>
-    <view wx:else class="address-empty">
-      <text>暂无收货地址，请先新增</text>
-      <view class="address-add-btn tap-scale" bind:tap="onOpenAddressManage">去新增地址</view>
+
+    <!-- 收货地址卡片 -->
+    <view class="address-card">
+      <view class="card-corner card-corner--tl"></view>
+      <view class="card-corner card-corner--br"></view>
+      <view class="address-head">
+        <view>
+          <view class="title">收货地址</view>
+          <view class="address-head-sub">请确认收件信息后再提交订单</view>
+        </view>
+        <view class="address-head-action tap-scale" bindtap="onOpenAddressManage">
+          <text>选择/管理</text>
+          <text class="address-head-arrow">></text>
+        </view>
+      </view>
+      <view wx:if="{{loadingAddress}}" class="address-empty">正在加载地址...</view>
+      <view wx:elif="{{selectedAddress}}">
+        <view class="addr-line-1">
+          <view class="addr-main">
+            <text class="addr-name">{{selectedAddress.receiver}}</text>
+            <text class="addr-phone">{{selectedAddress.phone}}</text>
+          </view>
+          <text wx:if="{{selectedAddress.isDefault}}" class="addr-default">默认</text>
+        </view>
+        <view class="addr-line-2">{{selectedAddress.region}} {{selectedAddress.detail}}</view>
+      </view>
+      <view wx:else class="address-empty">
+        <text>暂无收货地址，请先新增</text>
+        <view class="address-add-btn tap-scale" bindtap="onOpenAddressManage">去新增地址</view>
+      </view>
     </view>
-  </view>
   </view>
 
+  <!-- 底部提交栏 -->
   <view class="bottom">
     <view class="bottom-hint {{canSubmit ? '' : 'bottom-hint--warn'}}">{{submitHint}}</view>
-    <t-button block theme="primary" disabled="{{!canSubmit}}" loading="{{submitting}}" bind:tap="onSubmit">提交订单</t-button>
+    <view class="btn {{canSubmit ? 'btn--primary' : 'btn--disabled'}} tap-scale" bindtap="onSubmit">
+      <text class="btn-text">{{submitting ? '提交中...' : '提交订单'}}</text>
+    </view>
   </view>
 </view>

@@ -24,6 +24,14 @@ Component({
         success: () => Toast({ context: this, message: "已复制绑定码" }),
       });
     },
+    onCopyCode() {
+      const openid = String((this.data as any).openid || "");
+      if (!openid) return;
+      wx.setClipboardData({
+        data: openid,
+        success: () => Toast({ context: this, message: "已复制绑定码" }),
+      });
+    },
   },
 });
 

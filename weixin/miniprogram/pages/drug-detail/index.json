@@ -1,13 +1,6 @@
 {
   "navigationBarTitleText": "药品信息",
   "usingComponents": {
-    "t-button": "tdesign-miniprogram/button/button",
-    "t-collapse": "tdesign-miniprogram/collapse/collapse",
-    "t-collapse-panel": "tdesign-miniprogram/collapse-panel/collapse-panel",
-    "t-cell": "tdesign-miniprogram/cell/cell",
-    "t-cell-group": "tdesign-miniprogram/cell-group/cell-group",
-    "t-tag": "tdesign-miniprogram/tag/tag",
-    "t-icon": "tdesign-miniprogram/icon/icon",
     "custom-navbar": "../../components/custom-navbar/index"
   }
 }

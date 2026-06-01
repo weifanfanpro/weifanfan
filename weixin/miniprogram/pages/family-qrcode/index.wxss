@@ -1,48 +1,348 @@
-/* ═══ Family QR Code — 暖调古典 ═══ */
-.qr-card {
+/* ═══ Family QR Code — 蓝白卡通「药丸伙伴」风格 ═══ */
+
+.page {
+  min-height: 100vh;
+  background: #F0F7FF;
+}
+
+/* ═══ Hero ═══ */
+.qr-hero {
   position: relative;
   overflow: hidden;
-  margin-top: 18rpx;
-  border-radius: 24rpx;
-  background: #fffefb;
-  border: 1rpx solid rgba(28, 25, 23, 0.05);
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+  border-radius: 28rpx;
+  padding: 28rpx 28rpx 22rpx;
+  margin-bottom: 16rpx;
+  background: linear-gradient(170deg, #4A9DFF 0%, #6DB8FF 40%, #A8DAFF 100%);
+  box-shadow: 0 16rpx 48rpx rgba(74, 157, 255, 0.2);
 }
 
-.qr-card::before {
+.hero-cloud {
+  position: absolute;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+}
+
+.hero-cloud--1 {
+  width: 100rpx;
+  height: 34rpx;
+  top: 16rpx;
+  right: 24rpx;
+  animation: cloudFloat 8s ease-in-out infinite;
+}
+
+.hero-cloud--1::before {
   content: '';
   position: absolute;
-  top: 10rpx;
-  left: 10rpx;
-  width: 18rpx;
-  height: 18rpx;
-  border-top: 1.5rpx solid rgba(46, 158, 143, 0.12);
-  border-left: 1.5rpx solid rgba(46, 158, 143, 0.12);
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  top: -24rpx;
+  left: 16rpx;
+}
+
+.hero-cloud--2 {
+  width: 80rpx;
+  height: 28rpx;
+  bottom: 12rpx;
+  left: 32rpx;
+  animation: cloudFloat 10s ease-in-out infinite 2s;
+}
+
+.hero-cloud--2::before {
+  content: '';
+  position: absolute;
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  top: -20rpx;
+  left: 12rpx;
+}
+
+.hero-star {
+  position: absolute;
+  width: 8rpx;
+  height: 8rpx;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
   pointer-events: none;
-  z-index: 1;
 }
 
-.qr-wrap {
-  display: flex;
-  justify-content: center;
-  padding: 18rpx 0 10rpx;
+.hero-star--1 {
+  bottom: 20rpx;
+  left: 50rpx;
+  animation: starTwinkle 2s ease-in-out infinite;
 }
 
-.code-row {
-  margin-top: 10rpx;
+.hero-star--2 {
+  top: 24rpx;
+  left: 120rpx;
+  width: 6rpx;
+  height: 6rpx;
+  animation: starTwinkle 3s ease-in-out infinite 1s;
 }
 
-.code {
+@keyframes cloudFloat {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(12rpx); }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+.qr-hero .hero-title,
+.qr-hero .hero-sub {
+  position: relative;
+  z-index: 2;
+}
+
+.qr-hero .hero-title {
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+  text-shadow: 0 2rpx 8rpx rgba(43, 94, 167, 0.2);
+}
+
+.qr-hero .hero-sub {
   margin-top: 8rpx;
   font-size: 24rpx;
-  font-weight: 700;
-  letter-spacing: 0.5rpx;
-  color: #1c1917;
-  word-break: break-all;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
 }
 
-.mt {
-  margin-top: 20rpx;
+/* ═══ QR Card ═══ */
+.qr-card {
+  position: relative;
+  border-radius: 24rpx;
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
+  box-shadow: 0 8rpx 32rpx rgba(43, 94, 167, 0.08);
+  padding: 32rpx;
+  margin-bottom: 16rpx;
+}
+
+/* 装饰角 */
+.qr-corner {
+  position: absolute;
+  width: 20rpx;
+  height: 20rpx;
+  pointer-events: none;
+}
+
+.qr-corner--tl {
+  top: 12rpx;
+  left: 12rpx;
+  border-top: 2rpx solid rgba(74, 157, 255, 0.2);
+  border-left: 2rpx solid rgba(74, 157, 255, 0.2);
+  border-radius: 4rpx 0 0 0;
+}
+
+.qr-corner--tr {
+  top: 12rpx;
+  right: 12rpx;
+  border-top: 2rpx solid rgba(74, 157, 255, 0.2);
+  border-right: 2rpx solid rgba(74, 157, 255, 0.2);
+  border-radius: 0 4rpx 0 0;
+}
+
+.qr-corner--bl {
+  bottom: 12rpx;
+  left: 12rpx;
+  border-bottom: 2rpx solid rgba(74, 157, 255, 0.2);
+  border-left: 2rpx solid rgba(74, 157, 255, 0.2);
+  border-radius: 0 0 0 4rpx;
+}
+
+.qr-corner--br {
+  bottom: 12rpx;
+  right: 12rpx;
+  border-bottom: 2rpx solid rgba(74, 157, 255, 0.2);
+  border-right: 2rpx solid rgba(74, 157, 255, 0.2);
+  border-radius: 0 0 4rpx 0;
+}
+
+/* ═══ QR Frame ═══ */
+.qr-frame {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  border-radius: 20rpx;
+  background: rgba(74, 157, 255, 0.03);
+  border: 1rpx dashed rgba(74, 157, 255, 0.15);
+}
+
+.qr-frame-inner {
+  position: relative;
+  padding: 16rpx;
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 16rpx rgba(74, 157, 255, 0.08);
+}
+
+/* 扫描线动画 */
+.qr-scan-line {
+  position: absolute;
+  left: 24rpx;
+  right: 24rpx;
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, #4A9DFF, transparent);
+  opacity: 0;
+  animation: scanLine 3s ease-in-out infinite;
+}
+
+@keyframes scanLine {
+  0%, 100% { opacity: 0; top: 24rpx; }
+  10% { opacity: 0.6; }
+  50% { opacity: 0.6; top: calc(100% - 24rpx); }
+  60% { opacity: 0; top: calc(100% - 24rpx); }
+}
+
+/* ═══ Code Section ═══ */
+.code-section {
+  margin-bottom: 24rpx;
+}
+
+.code-label {
+  font-size: 24rpx;
+  color: #8BA4C7;
+  margin-bottom: 8rpx;
+}
+
+.code-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 20rpx;
+  border-radius: 12rpx;
+  background: rgba(74, 157, 255, 0.04);
+  border: 1rpx solid rgba(74, 157, 255, 0.1);
+  margin-bottom: 8rpx;
+}
+
+.code-text {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #1A3A5C;
+  word-break: break-all;
+  flex: 1;
+}
+
+/* 复制图标 */
+.code-copy-icon {
+  position: relative;
+  width: 28rpx;
+  height: 28rpx;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+.copy-icon-body {
+  position: absolute;
+  top: 4rpx;
+  left: 4rpx;
+  width: 16rpx;
+  height: 18rpx;
+  border: 2rpx solid #4A9DFF;
+  border-radius: 3rpx;
+}
+
+.copy-icon-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16rpx;
+  height: 18rpx;
+  border: 2rpx solid #4A9DFF;
+  border-radius: 3rpx;
+  background: #FFFFFF;
+}
+
+.code-tip {
+  font-size: 22rpx;
+  color: #8BA4C7;
+  text-align: center;
+}
+
+/* ═══ Button ═══ */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 999rpx;
+  transition: transform 150ms ease;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  background: linear-gradient(135deg, #4A9DFF, #6DB8FF);
+  box-shadow: 0 8rpx 24rpx rgba(74, 157, 255, 0.25);
+}
+
+.btn-text {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+/* ═══ Tip Card ═══ */
+.tip-card {
+  border-radius: 22rpx;
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
+  box-shadow: 0 4rpx 20rpx rgba(43, 94, 167, 0.06);
+  padding: 24rpx;
+}
+
+.tip-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1A3A5C;
+  margin-bottom: 16rpx;
+}
+
+.tip-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+
+.tip-step {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+
+.step-num {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4A9DFF, #6DB8FF);
+  color: #FFFFFF;
+  font-size: 22rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-text {
+  font-size: 26rpx;
+  color: #1A3A5C;
+  line-height: 1.5;
+}
+
+/* ═══ Reduced Motion ═══ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-cloud { animation: none; }
+  .hero-star { animation: none; }
+  .qr-scan-line { animation: none; }
 }

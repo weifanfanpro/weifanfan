@@ -1,16 +1,8 @@
-/* ═══ AI Chat Consult Medicine Detail — 暖调古典 ═══ */
+/* ═══ AI Chat Consult Medicine Detail — 蓝白卡通「药丸伙伴」风格 ═══ */
+
 .page {
   min-height: 100vh;
-  background: #f5f2ed;
-  background-image:
-    repeating-linear-gradient(
-      0deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    ),
-    repeating-linear-gradient(
-      90deg, transparent, transparent 79rpx,
-      rgba(28, 25, 23, 0.012) 79rpx, rgba(28, 25, 23, 0.012) 80rpx
-    );
+  background: #F0F7FF;
 }
 
 .scrollarea {
@@ -22,157 +14,188 @@
   padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
 }
 
-.empty-wrap {
-  margin-top: 64rpx;
-}
-
-.search-card {
+/* ═══ Header ═══ */
+.header {
   position: relative;
   overflow: hidden;
-  padding: 24rpx;
-  margin-bottom: 24rpx;
   border-radius: 28rpx;
-  background: #fffefb;
-  border: 1rpx solid rgba(28, 25, 23, 0.05);
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
+  padding: 32rpx 28rpx 24rpx;
+  margin-top: 8rpx;
+  margin-bottom: 18rpx;
+  background: linear-gradient(170deg, #4A9DFF 0%, #6DB8FF 40%, #A8DAFF 100%);
+  box-shadow: 0 16rpx 48rpx rgba(74, 157, 255, 0.2);
 }
 
-.search-card::before {
+/* 云朵 */
+.hero-cloud {
+  position: absolute;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+}
+
+.hero-cloud--1 {
+  width: 100rpx;
+  height: 34rpx;
+  top: 16rpx;
+  right: 20rpx;
+  animation: cloudFloat 8s ease-in-out infinite;
+}
+
+.hero-cloud--1::before {
   content: '';
   position: absolute;
-  top: 10rpx;
-  left: 10rpx;
-  width: 18rpx;
-  height: 18rpx;
-  border-top: 1.5rpx solid rgba(46, 158, 143, 0.12);
-  border-left: 1.5rpx solid rgba(46, 158, 143, 0.12);
-  pointer-events: none;
-  z-index: 1;
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  top: -24rpx;
+  left: 16rpx;
 }
 
-.filter-row {
+/* 星星 */
+.hero-star {
+  position: absolute;
+  width: 8rpx;
+  height: 8rpx;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: starTwinkle 2s ease-in-out infinite;
+}
+
+.hero-star--1 { bottom: 20rpx; left: 40rpx; }
+
+@keyframes cloudFloat {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(12rpx); }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+.drug-name {
+  position: relative;
+  z-index: 2;
+  font-size: 44rpx;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #FFFFFF;
+  text-shadow: 0 2rpx 8rpx rgba(43, 94, 167, 0.2);
+}
+
+.view-hint {
+  position: relative;
+  z-index: 2;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.header-tags {
+  position: relative;
+  z-index: 2;
+  margin-top: 18rpx;
   display: flex;
   flex-wrap: wrap;
-  gap: 16rpx;
-  margin-top: 20rpx;
+  gap: 12rpx;
 }
 
-.filter-row--switch {
-  align-items: center;
-  justify-content: space-between;
-}
-
-.filter-label {
-  font-size: 26rpx;
-  color: #6b645c;
-}
-
-.filter-pill {
-  font-size: 24rpx;
-  padding: 12rpx 20rpx;
+/* ═══ Tags ═══ */
+.tag {
+  font-size: 22rpx;
+  padding: 4rpx 14rpx;
   border-radius: 999rpx;
-  background: rgba(46, 158, 143, 0.06);
-  color: #6b645c;
-  max-width: 320rpx;
+  font-weight: 600;
+}
+
+.tag--primary {
+  color: #4A9DFF;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.tag--default {
+  color: #3D5A80;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* ═══ Collapse / Accordion ═══ */
+.collapse-card {
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  border-radius: 22rpx;
+  background: #FFFFFF;
+  border: 1rpx solid rgba(74, 157, 255, 0.08);
+  box-shadow: 0 4rpx 20rpx rgba(43, 94, 167, 0.06);
 }
 
-.filter-actions {
-  margin-top: 16rpx;
+.accordion-item {
+  border-bottom: 1rpx solid rgba(74, 157, 255, 0.06);
 }
 
-.lib-list-card {
-  position: relative;
-  padding: 0;
-  overflow: hidden;
-  border-radius: 24rpx;
-  background: #fffefb;
-  border: 1rpx solid rgba(28, 25, 23, 0.05);
-  box-shadow:
-    0 12rpx 36rpx rgba(28, 25, 23, 0.04),
-    0 2rpx 8rpx rgba(28, 25, 23, 0.02);
-}
-
-.lib-row {
-  display: flex;
-  align-items: center;
-  padding: 28rpx 24rpx;
-  border-bottom: 1rpx solid rgba(28, 25, 23, 0.05);
-  transition: background 150ms ease;
-}
-
-.lib-row:last-child {
+.accordion-item:last-child {
   border-bottom: none;
 }
 
-.lib-row-main {
-  flex: 1;
-  min-width: 0;
-}
-
-.lib-row-title {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #1c1917;
-  line-height: 1.4;
-}
-
-.lib-title-text {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #1c1917;
-}
-
-.lib-row-sub {
-  margin-top: 8rpx;
-  font-size: 24rpx;
-  color: #6b645c;
-  line-height: 1.5;
-  word-break: break-word;
-}
-
-.lib-row-arrow {
-  flex-shrink: 0;
-  margin-left: 12rpx;
-  font-size: 40rpx;
-  color: #b0a99f;
-  font-weight: 300;
-}
-
-.medicine-rich {
-  display: inline-block;
-  max-width: 100%;
-}
-
-.load-more {
+.accordion-header {
   display: flex;
-  justify-content: center;
-  padding: 32rpx 0 16rpx;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
 }
 
-.end-hint {
-  text-align: center;
-  padding: 24rpx 0 8rpx;
+.accordion-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A3A5C;
 }
 
-.muted {
-  color: #b0a99f;
+.accordion-arrow {
+  width: 14rpx;
+  height: 14rpx;
+  border-top: 2rpx solid #B0C4DE;
+  border-right: 2rpx solid #B0C4DE;
+  transform: rotate(45deg);
+  transition: transform 200ms;
+  flex-shrink: 0;
 }
 
-.small {
-  font-size: 22rpx;
+.accordion-arrow--open {
+  transform: rotate(-135deg);
 }
 
-.es-hl {
-  color: #2E9E8F;
-  font-style: normal;
-  font-weight: 700;
+.accordion-body {
+  padding: 0 24rpx 24rpx;
+  animation: accordionOpen 200ms ease-out;
 }
 
-.es-frag {
-  margin-top: 6rpx;
+@keyframes accordionOpen {
+  from { opacity: 0; transform: translateY(-8rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-text {
+  padding: 18rpx 12rpx;
+  font-size: 28rpx;
+  color: #3D5A80;
+  line-height: 1.6;
+}
+
+.panel-list {
+  padding: 18rpx 12rpx;
+}
+
+.li {
+  font-size: 28rpx;
+  color: #3D5A80;
+  line-height: 1.7;
+  margin: 10rpx 0;
+}
+
+/* ═══ Reduced Motion ═══ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-cloud { animation: none; }
+  .hero-star { animation: none; }
+  .accordion-body { animation: none; }
 }

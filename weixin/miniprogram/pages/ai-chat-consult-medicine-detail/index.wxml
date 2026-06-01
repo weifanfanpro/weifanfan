@@ -2,34 +2,64 @@
   <custom-navbar title="关联药品信息" showBack="{true}" />
   <scroll-view class="scrollarea" scroll-y enhanced show-scrollbar="{{true}}" bounces="{{true}}">
     <view class="page-padding safe-bottom content">
-      <view class="header card">
+      <!-- 蓝色渐变 Header -->
+      <view class="header">
+        <view class="hero-cloud hero-cloud--1"></view>
+        <view class="hero-star hero-star--1"></view>
         <view class="drug-name">{{drug.name}}</view>
-        <view wx:if="{{drug.viewLabel}}" class="view-hint muted">咨询视角：{{drug.viewLabel}}</view>
+        <view wx:if="{{drug.viewLabel}}" class="view-hint">咨询视角：{{drug.viewLabel}}</view>
         <view class="header-tags">
-          <t-tag theme="primary" variant="light">{{drug.tagTimes}}</t-tag>
-          <t-tag theme="default" variant="light">{{drug.tagDose}}</t-tag>
-          <t-tag theme="default" variant="light">{{drug.tagWhen}}</t-tag>
+          <view class="tag tag--primary">{{drug.tagTimes}}</view>
+          <view class="tag tag--default">{{drug.tagDose}}</view>
+          <view class="tag tag--default">{{drug.tagWhen}}</view>
         </view>
       </view>
 
-      <view class="card collapse-card">
-        <t-collapse value="{{opened}}" bind:change="onCollapseChange">
-          <t-collapse-panel value="dose" header="用法用量（最重要）">
+      <!-- 手风琴面板 -->
+      <view class="collapse-card">
+        <!-- 用法用量 -->
+        <view class="accordion-item">
+          <view class="accordion-header" bindtap="onTogglePanel" data-value="dose">
+            <text class="accordion-title">用法用量（最重要）</text>
+            <view class="accordion-arrow {{opened === 'dose' ? 'accordion-arrow--open' : ''}}"></view>
+          </view>
+          <view wx:if="{{opened === 'dose'}}" class="accordion-body">
             <view class="panel-text">{{drug.usageFull}}</view>
-          </t-collapse-panel>
-          <t-collapse-panel value="func" header="主治功能">
+          </view>
+        </view>
+        <!-- 主治功能 -->
+        <view class="accordion-item">
+          <view class="accordion-header" bindtap="onTogglePanel" data-value="func">
+            <text class="accordion-title">主治功能</text>
+            <view class="accordion-arrow {{opened === 'func' ? 'accordion-arrow--open' : ''}}"></view>
+          </view>
+          <view wx:if="{{opened === 'func'}}" class="accordion-body">
             <view class="panel-text">{{drug.indication}}</view>
-          </t-collapse-panel>
-          <t-collapse-panel value="notice" header="注意事项（精简）">
+          </view>
+        </view>
+        <!-- 注意事项 -->
+        <view class="accordion-item">
+          <view class="accordion-header" bindtap="onTogglePanel" data-value="notice">
+            <text class="accordion-title">注意事项（精简）</text>
+            <view class="accordion-arrow {{opened === 'notice' ? 'accordion-arrow--open' : ''}}"></view>
+          </view>
+          <view wx:if="{{opened === 'notice'}}" class="accordion-body">
             <view wx:if="{{drug.precautionsLines.length}}" class="panel-list">
               <view wx:for="{{drug.precautionsLines}}" wx:for-index="idx" wx:key="idx" class="li">· {{item}}</view>
             </view>
             <view wx:else class="panel-text">{{drug.precautions}}</view>
-          </t-collapse-panel>
-          <t-collapse-panel value="contra" header="禁忌/慎用人群">
+          </view>
+        </view>
+        <!-- 禁忌 -->
+        <view class="accordion-item">
+          <view class="accordion-header" bindtap="onTogglePanel" data-value="contra">
+            <text class="accordion-title">禁忌/慎用人群</text>
+            <view class="accordion-arrow {{opened === 'contra' ? 'accordion-arrow--open' : ''}}"></view>
+          </view>
+          <view wx:if="{{opened === 'contra'}}" class="accordion-body">
             <view class="panel-text">{{drug.contraindications}}</view>
-          </t-collapse-panel>
-        </t-collapse>
+          </view>
+        </view>
       </view>
     </view>
   </scroll-view>

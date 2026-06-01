@@ -16,7 +16,7 @@
       <tab-panel-chat class="tab-shell-panel" active="{{tabIndex === 2}}" />
     </swiper-item>
     <swiper-item class="tab-shell-item">
-      <tab-panel-mine class="tab-shell-panel" active="{{tabIndex === 3}}" />
+      <tab-panel-mine id="mine-panel" class="tab-shell-panel" active="{{tabIndex === 3}}" />
     </swiper-item>
   </swiper>
 

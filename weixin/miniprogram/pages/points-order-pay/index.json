@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "模拟支付",
   "usingComponents": {
-    "t-button": "tdesign-miniprogram/button/button",
     "custom-navbar": "../../components/custom-navbar/index"
   }
 }
