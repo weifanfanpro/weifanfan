@@ -17,3 +17,15 @@
 {"level":30,"time":1780223209674,"pid":33456,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
 {"level":30,"time":1780223209675,"pid":38160,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
 {"level":30,"time":1780223209675,"pid":33456,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780277119428,"pid":39508,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780277119428,"pid":39508,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780277245167,"pid":41384,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780277245167,"pid":41384,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780277692140,"pid":37764,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780277692140,"pid":37764,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780277770493,"pid":37996,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780277770493,"pid":37996,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780277813949,"pid":35276,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780277813950,"pid":35276,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}
+{"level":30,"time":1780278185391,"pid":2092,"hostname":"weifanfan","msg":"config>{\"host\":\"47.98.99.93\",\"user\":\"root\",\"password\":\"******\",\"database\":\"dingdong_medicine\",\"port\":3306}"}
+{"level":30,"time":1780278185392,"pid":2092,"hostname":"weifanfan","msg":"MySQL MCP server running on stdio"}

@@ -85,7 +85,7 @@
           data-url="{{item.url}}"
         >
           <view class="mr-left">
-            <view class="mr-icon mr-icon--{{item.cssIcon}}"></view>
+            <image class="mr-icon-img" src="{{item.icon}}" mode="aspectFit"></image>
             <text class="mr-title">{{item.title}}</text>
           </view>
           <view class="mr-arrow">
@@ -110,7 +110,7 @@
           data-url="{{item.url}}"
         >
           <view class="mr-left">
-            <view class="mr-icon mr-icon--{{item.cssIcon}}"></view>
+            <image class="mr-icon-img" src="{{item.icon}}" mode="aspectFit"></image>
             <text class="mr-title">{{item.title}}</text>
           </view>
           <view class="mr-arrow">

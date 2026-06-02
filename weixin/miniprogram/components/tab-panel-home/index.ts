@@ -190,15 +190,12 @@ Component({
   lifetimes: {
     attached() {
       const that = this as any;
-      // 首次进入页面立即刷新一次
       if (typeof that.refresh === "function") {
         that.refresh();
       }
-      // 防止重复创建定时器
       if (that._refreshTimer) {
         clearInterval(that._refreshTimer);
       }
-      // 每 10 秒自动刷新一次（只在当前页面处于前台时有效）
       that._refreshTimer = setInterval(() => {
         if (typeof that.refresh === "function") {
           that.refresh();

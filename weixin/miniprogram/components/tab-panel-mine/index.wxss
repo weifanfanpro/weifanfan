@@ -510,6 +510,12 @@
   position: relative;
 }
 
+.mr-icon-img {
+  width: 44rpx;
+  height: 44rpx;
+  flex-shrink: 0;
+}
+
 /* ── 药丸图标 ── */
 .mr-icon--mi-pill {
   background: #E8F2FF;

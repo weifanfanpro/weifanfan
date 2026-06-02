@@ -159,27 +159,20 @@
            ═══════════════════════════════ -->
       <view class="quick-row">
         <view class="quick-btn quick-btn--add tap-scale" bind:tap="onAddMedicine">
-          <view class="qb-icon">
-            <view class="qb-plus-h"></view>
-            <view class="qb-plus-v"></view>
+          <view class="qb-icon qb-icon--anim qb-icon--float">
+            <image class="qb-img" src="/assets/icons/add-medicine.png" mode="aspectFit"></image>
           </view>
           <text class="qb-text">添加药品</text>
         </view>
         <view class="quick-btn quick-btn--scan tap-scale" bind:tap="onGoScan">
-          <view class="qb-icon">
-            <view class="qb-scan-line"></view>
-            <view class="qb-scan-line qb-scan-line--b"></view>
-            <view class="qb-scan-corner qb-scan-corner--tl"></view>
-            <view class="qb-scan-corner qb-scan-corner--tr"></view>
-            <view class="qb-scan-corner qb-scan-corner--bl"></view>
-            <view class="qb-scan-corner qb-scan-corner--br"></view>
+          <view class="qb-icon qb-icon--anim qb-icon--pulse">
+            <image class="qb-img" src="/assets/icons/ai-scan.png" mode="aspectFit"></image>
           </view>
           <text class="qb-text">AI 识药</text>
         </view>
         <view class="quick-btn quick-btn--map tap-scale" bind:tap="onNearbyPharmacy">
-          <view class="qb-icon">
-            <view class="qb-pin"></view>
-            <view class="qb-pin-dot"></view>
+          <view class="qb-icon qb-icon--anim qb-icon--bounce">
+            <image class="qb-img" src="/assets/icons/nearby-drugstore.png" mode="aspectFit"></image>
           </view>
           <text class="qb-text">附近药店</text>
         </view>
@@ -201,7 +194,7 @@
       <view class="stats-row" bind:tap="onOpenStockMonitor">
         <view class="stat-item">
           <view class="stat-icon stat-icon--risk">
-            <view class="si-shield"></view>
+            <image class="stat-icon-img" src="/assets/icons/risk-shield.png" mode="aspectFit"></image>
           </view>
           <view class="stat-body">
             <text class="stat-val">{{riskScore}}分</text>
@@ -211,8 +204,7 @@
         <view class="stat-sep"></view>
         <view class="stat-item">
           <view class="stat-icon stat-icon--stock">
-            <view class="si-box"></view>
-            <view class="si-box-lid"></view>
+            <image class="stat-icon-img" src="/assets/icons/stock-box.png" mode="aspectFit"></image>
           </view>
           <view class="stat-body">
             <text class="stat-val">{{lowStockCount}}个</text>

@@ -712,6 +712,48 @@
   justify-content: center;
 }
 
+.qb-icon--anim {
+  width: 80rpx;
+  height: 80rpx;
+  margin-bottom: 4rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qb-img {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+.qb-icon--float {
+  animation: iconFloat 2.5s ease-in-out infinite;
+}
+
+.qb-icon--pulse {
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+.qb-icon--bounce {
+  animation: iconBounce 2s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6rpx); }
+}
+
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-8rpx) scale(1.05); }
+  60% { transform: translateY(0) scale(0.97); }
+}
+
 .qb-text {
   font-size: 22rpx;
   font-weight: 600;
@@ -861,8 +903,13 @@
   position: relative;
 }
 
-.stat-icon--risk { background: #FFF8ED; }
-.stat-icon--stock { background: #E8F2FF; }
+.stat-icon-img {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.stat-icon--risk { background: #FFF0E0; }
+.stat-icon--stock { background: #E0F0FF; }
 
 /* 盾牌图标 */
 .si-shield {
