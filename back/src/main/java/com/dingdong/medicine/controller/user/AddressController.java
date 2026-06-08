@@ -1,4 +1,4 @@
-package com.dingdong.medicine.controller;
+package com.dingdong.medicine.controller.user;
 
 import com.dingdong.medicine.common.result.R;
 import com.dingdong.medicine.dto.request.SaveAddressRequest;

@@ -1,4 +1,4 @@
-package com.dingdong.medicine.controller;
+package com.dingdong.medicine.controller.user;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dingdong.medicine.common.result.R;

@@ -71,6 +71,7 @@ function normalizeDoseText(result: ScanResult): ScanResult {
 }
 
 Page({
+  _adding: false,
   data: {
     result: {
       name: "",
@@ -117,6 +118,8 @@ Page({
       Toast({ context: this, message: "缺少药品ID，请重新识别" });
       return;
     }
+    if (this._adding) return;
+    this._adding = true;
     try {
       const v = getViewInfo();
       if (!v.isSelf) {
@@ -157,6 +160,8 @@ Page({
     } catch (err) {
       console.error("onAddAndSetReminder error", err);
       Toast({ context: this, message: "添加失败，请稍后再试" });
+    } finally {
+      this._adding = false;
     }
   },
 
@@ -166,6 +171,8 @@ Page({
       Toast({ context: this, message: "缺少药品ID，请重新识别" });
       return;
     }
+    if (this._adding) return;
+    this._adding = true;
     try {
       const v = getViewInfo();
       if (!v.isSelf) {
@@ -194,6 +201,8 @@ Page({
     } catch (err) {
       console.error("onAddOnly error", err);
       Toast({ context: this, message: "添加失败，请稍后再试" });
+    } finally {
+      this._adding = false;
     }
   },
 

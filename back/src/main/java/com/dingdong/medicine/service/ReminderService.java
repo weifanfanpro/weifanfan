@@ -14,4 +14,5 @@ public interface ReminderService {
     void delete(String openid, Long id);
     Map<String, Object> takeMedicine(String openid, TakeMedicineRequest request);
     List<Reminder> getByUserMedicineId(Long userMedicineId);
+    String testPush(String openid);
 }

@@ -33,6 +33,23 @@ public class UserMedicineServiceImpl implements UserMedicineService {
 
     @Override
     public UserMedicine add(String openid, AddMedicineRequest request) {
+        // 去重：同 owner + 同 medicineId 不重复创建
+        if (request.getMedicineId() != null) {
+            UserMedicine existing = userMedicineMapper.selectOne(
+                    new LambdaQueryWrapper<UserMedicine>()
+                            .eq(UserMedicine::getOwnerOpenid, openid)
+                            .eq(UserMedicine::getMedicineId, request.getMedicineId()));
+            if (existing != null) return existing;
+        }
+        // medicineId 为空时按 name 去重
+        if (request.getMedicineId() == null && request.getName() != null) {
+            UserMedicine existing = userMedicineMapper.selectOne(
+                    new LambdaQueryWrapper<UserMedicine>()
+                            .eq(UserMedicine::getOwnerOpenid, openid)
+                            .eq(UserMedicine::getName, request.getName()));
+            if (existing != null) return existing;
+        }
+
         UserMedicine medicine = new UserMedicine();
         medicine.setOwnerOpenid(openid);
         medicine.setActorOpenid(openid);

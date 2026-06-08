@@ -1,9 +1,13 @@
 package com.dingdong.medicine.service.impl;
 
 import com.alibaba.fastjson2.JSON;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.dingdong.medicine.common.exception.BizException;
 import com.dingdong.medicine.common.util.ChinaTimeUtil;
+import com.dingdong.medicine.common.util.RedisUtil;
 import com.dingdong.medicine.dto.request.CreateReminderPlanRequest;
 import com.dingdong.medicine.dto.request.TakeMedicineRequest;
 import com.dingdong.medicine.entity.*;
@@ -13,11 +17,13 @@ import com.dingdong.medicine.service.PointsService;
 import com.dingdong.medicine.service.ReminderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static com.dingdong.medicine.common.constant.AppConstants.*;
 
@@ -33,6 +39,17 @@ public class ReminderServiceImpl implements ReminderService {
     private final UserMedicineMapper medicineMapper;
     private final FamilyService familyService;
     private final PointsService pointsService;
+    private final UserMapper userMapper;
+    private final RedisUtil redisUtil;
+
+    @Value("${dingdong.wechat.app-id}")
+    private String appId;
+
+    @Value("${dingdong.wechat.app-secret}")
+    private String appSecret;
+
+    @Value("${dingdong.subscribe.template-id}")
+    private String templateId;
 
     @Override
     @Transactional
@@ -225,5 +242,74 @@ public class ReminderServiceImpl implements ReminderService {
     private String formatTotalAmount(double amount, String originalText) {
         String unit = originalText.replaceAll("[0-9.]", "");
         return (int) amount + unit;
+    }
+
+    @Override
+    public String testPush(String openid) {
+        // 查找该用户最近一条提醒
+        List<Reminder> reminders = reminderMapper.selectList(
+                new LambdaQueryWrapper<Reminder>()
+                        .eq(Reminder::getOwnerOpenid, openid)
+                        .orderByDesc(Reminder::getCreatedAt)
+                        .last("LIMIT 1"));
+        if (reminders.isEmpty()) {
+            return "该用户没有提醒记录";
+        }
+        Reminder reminder = reminders.get(0);
+
+        // 获取 access_token
+        String accessToken = getAccessToken();
+        if (accessToken == null) {
+            return "获取 access_token 失败，请检查 appId/appSecret 配置";
+        }
+
+        // 截断字段
+        String safeName = reminder.getMedicineName() != null && reminder.getMedicineName().length() > 20
+                ? reminder.getMedicineName().substring(0, 18) + "…" : reminder.getMedicineName();
+        String safeDose = reminder.getDoseText() != null && reminder.getDoseText().length() > 20
+                ? reminder.getDoseText().substring(0, 18) + "…" : "请按时服药";
+
+        // 构造请求
+        JSONObject body = JSONUtil.createObj();
+        body.set("touser", openid);
+        body.set("template_id", templateId);
+        body.set("page", "pages/tab-shell/index");
+        JSONObject data = JSONUtil.createObj();
+        data.set("thing1", JSONUtil.createObj().set("value", safeName));
+        data.set("time2", JSONUtil.createObj().set("value", reminder.getTime()));
+        data.set("thing3", JSONUtil.createObj().set("value", safeDose));
+        body.set("data", data);
+
+        String url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + accessToken;
+        String result = HttpUtil.createPost(url)
+                .body(body.toString())
+                .execute()
+                .body();
+
+        JSONObject resp = JSONUtil.parseObj(result);
+        int errcode = resp.getInt("errcode", -1);
+        if (errcode == 0) {
+            return "发送成功！medicine=" + reminder.getMedicineName() + ", time=" + reminder.getTime();
+        } else {
+            return "发送失败: errcode=" + errcode + ", errmsg=" + resp.getStr("errmsg");
+        }
+    }
+
+    private String getAccessToken() {
+        String cached = redisUtil.get("wechat:access_token");
+        if (cached != null) return cached;
+
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",
+                appId, appSecret);
+        String result = HttpUtil.get(url);
+        JSONObject json = JSONUtil.parseObj(result);
+        String token = json.getStr("access_token");
+        if (token != null) {
+            int expiresIn = json.getInt("expires_in", 7200);
+            redisUtil.set("wechat:access_token", token, expiresIn - 300, TimeUnit.SECONDS);
+        } else {
+            log.error("获取access_token失败: {}", json.getStr("errmsg"));
+        }
+        return token;
     }
 }

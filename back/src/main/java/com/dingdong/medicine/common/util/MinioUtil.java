@@ -47,6 +47,7 @@ public class MinioUtil {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
                 log.info("创建Bucket: {}", bucketName);
             }
+            // 始终更新策略，确保公开访问
             String policy = """
                     {
                       "Version": "2012-10-17",
@@ -59,6 +60,7 @@ public class MinioUtil {
                     }
                     """.formatted(bucketName);
             minioClient.setBucketPolicy(SetBucketPolicyArgs.builder().bucket(bucketName).config(policy).build());
+            log.info("设置Bucket公开访问策略: {}", bucketName);
         } catch (Exception e) {
             log.error("检查/创建Bucket失败: {}", bucketName, e);
         }
@@ -114,6 +116,18 @@ public class MinioUtil {
             log.error("获取预签名URL失败", e);
             return null;
         }
+    }
+
+    public String getPresignedScanUrl(String objectName) {
+        return getPresignedUrl(bucketScans, objectName);
+    }
+
+    public String extractObjectNameFromUrl(String url) {
+        String prefix = endpoint + "/" + bucketScans + "/";
+        if (url != null && url.startsWith(prefix)) {
+            return url.substring(prefix.length());
+        }
+        return null;
     }
 
     private String getExtension(String filename) {

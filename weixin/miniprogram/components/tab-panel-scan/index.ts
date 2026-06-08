@@ -39,7 +39,8 @@ Component({
     noop() {},
     /** 识别成功 → 扫药结果页（AI 咨询请用「咨询 → 扫描药品」独立页） */
     afterRecognizeSuccess(data: {
-      medicineId: string;
+      id?: number;
+      medicineId?: string;
       name: string;
       indication: string;
       dosage: string;
@@ -53,6 +54,8 @@ Component({
     }) {
       const v = getViewInfo();
       const app = getApp<IAppOption>();
+      // 兼容后端返回 id 或 medicineId
+      const medId = String(data.id || data.medicineId || "").trim();
       (app.globalData as any).scanResult = {
         result: {
           name: data.name,
@@ -69,7 +72,7 @@ Component({
           warnings: data.warnings || [],
           contraindications: data.contraindications || "",
         },
-        medicineId: data.medicineId,
+        medicineId: medId,
         viewIsSelf: v.isSelf,
         viewLabel: v.isSelf ? "本人" : v.label,
       };

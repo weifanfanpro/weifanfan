@@ -1,4 +1,4 @@
-package com.dingdong.medicine.controller;
+package com.dingdong.medicine.controller.user;
 
 import com.dingdong.medicine.common.result.R;
 import com.dingdong.medicine.dto.request.CreateReminderPlanRequest;
@@ -56,5 +56,11 @@ public class ReminderController {
     @GetMapping("/drug-detail-rule")
     public R<List<Reminder>> getByUserMedicineId(@RequestParam Long userMedicineId) {
         return R.ok(reminderService.getByUserMedicineId(userMedicineId));
+    }
+
+    @PostMapping("/test-push")
+    public R<String> testPush(HttpServletRequest request) {
+        String openid = (String) request.getAttribute("openid");
+        return R.ok(reminderService.testPush(openid));
     }
 }

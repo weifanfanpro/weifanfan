@@ -1,7 +1,57 @@
 <view class="page anim-in">
-  <!-- 庆祝彩条 — 两侧喷射 -->
+  <!-- 全屏庆祝效果 -->
   <view wx:if="{{showConfetti}}" class="confetti-wrap">
-    <!-- 左侧 -->
+    <!-- 服药成功文字 -->
+    <view class="confetti-success-text">
+      <text class="success-icon">✓</text>
+      <text class="success-label">服药成功</text>
+    </view>
+
+    <!-- 闪烁星星 -->
+    <view class="star star--1"></view>
+    <view class="star star--2"></view>
+    <view class="star star--3"></view>
+    <view class="star star--4"></view>
+    <view class="star star--5"></view>
+    <view class="star star--6"></view>
+    <view class="star star--7"></view>
+    <view class="star star--8"></view>
+
+    <!-- 顶部飘落彩纸 -->
+    <view class="cf cf--1"></view>
+    <view class="cf cf--2"></view>
+    <view class="cf cf--3"></view>
+    <view class="cf cf--4"></view>
+    <view class="cf cf--5"></view>
+    <view class="cf cf--6"></view>
+    <view class="cf cf--7"></view>
+    <view class="cf cf--8"></view>
+    <view class="cf cf--9"></view>
+    <view class="cf cf--10"></view>
+    <view class="cf cf--11"></view>
+    <view class="cf cf--12"></view>
+    <view class="cf cf--13"></view>
+    <view class="cf cf--14"></view>
+    <view class="cf cf--15"></view>
+    <view class="cf cf--16"></view>
+    <view class="cf cf--17"></view>
+    <view class="cf cf--18"></view>
+    <view class="cf cf--19"></view>
+    <view class="cf cf--20"></view>
+
+    <!-- 中间爆开彩纸 -->
+    <view class="cb cb--1"></view>
+    <view class="cb cb--2"></view>
+    <view class="cb cb--3"></view>
+    <view class="cb cb--4"></view>
+    <view class="cb cb--5"></view>
+    <view class="cb cb--6"></view>
+    <view class="cb cb--7"></view>
+    <view class="cb cb--8"></view>
+    <view class="cb cb--9"></view>
+    <view class="cb cb--10"></view>
+
+    <!-- 左侧喷射 -->
     <view class="cp cp--L1"></view>
     <view class="cp cp--L2"></view>
     <view class="cp cp--L3"></view>
@@ -12,7 +62,7 @@
     <view class="cp cp--L8"></view>
     <view class="cp cp--L9"></view>
     <view class="cp cp--L10"></view>
-    <!-- 右侧 -->
+    <!-- 右侧喷射 -->
     <view class="cp cp--R1"></view>
     <view class="cp cp--R2"></view>
     <view class="cp cp--R3"></view>

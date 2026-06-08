@@ -54,15 +54,34 @@ App<IAppOption>({
     wx.login({
       success: (res) => {
         if (!res.code) return;
-        wxLogin(res.code)
-          .then((data) => {
-            wx.setStorageSync("token", data.token);
-            wx.setStorageSync("openid", data.user.id);
-            setUserProfile(data.user);
-          })
-          .catch((err) => {
-            console.error("login failed", err);
-          });
+        // 先尝试获取微信用户信息
+        wx.getUserProfile({
+          desc: "用于展示头像和昵称",
+          success: (profileRes) => {
+            const ui = profileRes.userInfo;
+            wxLogin(res.code, ui.nickName, ui.avatarUrl)
+              .then((data) => {
+                wx.setStorageSync("token", data.token);
+                wx.setStorageSync("openid", data.user.id);
+                setUserProfile(data.user);
+              })
+              .catch((err) => {
+                console.error("login failed", err);
+              });
+          },
+          fail: () => {
+            // 用户拒绝授权，仅用 code 登录
+            wxLogin(res.code)
+              .then((data) => {
+                wx.setStorageSync("token", data.token);
+                wx.setStorageSync("openid", data.user.id);
+                setUserProfile(data.user);
+              })
+              .catch((err) => {
+                console.error("login failed", err);
+              });
+          },
+        });
       },
     });
   },

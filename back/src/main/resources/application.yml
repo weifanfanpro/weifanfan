@@ -47,8 +47,9 @@ dingdong:
     app-id: ${WX_APPID:wx97624cd8031eae92}
     app-secret: ${WX_SECRET:e7f32066f0a12b3c3ad8c3fd11d66433}
   ai:
-    dashscope-api-key: ${DASHSCOPE_API_KEY:sk-dfb6fa3bac4b46be9ded8581350974bf}
-    dashscope-model: ${DASHSCOPE_MODEL:deepseek-v3}
+    deepseek-api-key: ${DEEPSEEK_API_KEY:sk-dfb6fa3bac4b46be9ded8581350974bf}
+    deepseek-model: ${DEEPSEEK_MODEL:deepseek-v3}
+    deepseek-base-url: ${DEEPSEEK_BASE_URL:https://dashscope.aliyuncs.com/compatible-mode/v1}
   ocr:
     host: ${ALI_OCR_HOST:https://gjbsb.market.alicloudapi.com}
     path: ${ALI_OCR_PATH:/ocrservice/advanced}

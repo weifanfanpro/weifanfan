@@ -176,16 +176,64 @@
           <text class="btn-text btn-text--secondary">{{aiCheckLoading ? '分析中…' : 'AI 检查合理性'}}</text>
         </view>
 
-        <view wx:if="{{aiCheckReasoning}}" class="ai-block ai-block--reasoning">
-          <view class="ai-block-title">思考过程</view>
-          <text class="ai-block-text" user-select>{{aiCheckReasoning}}</text>
-        </view>
-        <view wx:if="{{aiCheckResult}}" class="ai-block">
-          <view class="ai-block-title">分析与建议</view>
-          <text class="ai-block-text" user-select>{{aiCheckResult}}</text>
-        </view>
-        <view wx:if="{{aiSuggestion}}" class="ai-adopt-row">
-          <view wx:if="{{aiSuggestion.summary}}" class="ai-summary-line">{{aiSuggestion.summary}}</view>
+        <!-- 结果区域 -->
+        <view wx:if="{{aiSuggestion}}" class="ai-result">
+          <!-- 合理性标签 -->
+          <view class="ai-verdict {{aiSuggestion.reasonable ? 'ai-verdict--ok' : 'ai-verdict--warn'}}">
+            <view class="ai-verdict-icon">
+              <view wx:if="{{aiSuggestion.reasonable}}" class="ai-verdict-check"></view>
+              <view wx:else class="ai-verdict-cross"></view>
+            </view>
+            <text class="ai-verdict-text">{{aiSuggestion.summary}}</text>
+          </view>
+
+          <!-- 建议详情卡片 -->
+          <view class="ai-detail-card">
+            <view class="ai-detail-row" wx:if="{{aiSuggestion.suggestedDailyFrequency}}">
+              <text class="ai-detail-label">建议频次</text>
+              <text class="ai-detail-value">{{aiSuggestion.suggestedDailyFrequency}} 次/日</text>
+            </view>
+            <view class="ai-detail-row" wx:if="{{aiSuggestion.suggestedTimes && aiSuggestion.suggestedTimes.length}}">
+              <text class="ai-detail-label">建议时间</text>
+              <text class="ai-detail-value">{{aiSuggestion.suggestedTimes.join('、')}}</text>
+            </view>
+            <view class="ai-detail-row" wx:if="{{aiSuggestion.suggestedDoseText}}">
+              <text class="ai-detail-label">建议用量</text>
+              <text class="ai-detail-value">{{aiSuggestion.suggestedDoseText}}</text>
+            </view>
+            <view class="ai-detail-row" wx:if="{{aiSuggestion.suggestedMealTiming && aiSuggestion.suggestedMealTiming !== 'none'}}">
+              <text class="ai-detail-label">进食关系</text>
+              <text class="ai-detail-value">{{aiSuggestion.suggestedMealTiming === 'before' ? '饭前' : aiSuggestion.suggestedMealTiming === 'after' ? '饭后' : '空腹'}}</text>
+            </view>
+            <view class="ai-detail-row" wx:if="{{aiSuggestion.notes}}">
+              <text class="ai-detail-label">补充说明</text>
+              <text class="ai-detail-value">{{aiSuggestion.notes}}</text>
+            </view>
+          </view>
+
+          <!-- AI 分析文本（可折叠） -->
+          <view class="ai-analysis" wx:if="{{aiCheckResult}}">
+            <view class="ai-analysis-toggle" bindtap="toggleAnalysis">
+              <text class="ai-analysis-toggle-text">详细分析</text>
+              <text class="ai-analysis-toggle-arrow {{analysisOpen ? 'ai-analysis-toggle-arrow--open' : ''}}">▶</text>
+            </view>
+            <view wx:if="{{analysisOpen}}" class="ai-analysis-body">
+              <text class="ai-analysis-text" user-select>{{aiCheckResult}}</text>
+            </view>
+          </view>
+
+          <!-- 思考过程（可折叠） -->
+          <view class="ai-analysis" wx:if="{{aiCheckReasoning}}">
+            <view class="ai-analysis-toggle" bindtap="toggleReasoning">
+              <text class="ai-analysis-toggle-text">思考过程</text>
+              <text class="ai-analysis-toggle-arrow {{reasoningOpen ? 'ai-analysis-toggle-arrow--open' : ''}}">▶</text>
+            </view>
+            <view wx:if="{{reasoningOpen}}" class="ai-analysis-body">
+              <text class="ai-analysis-text" user-select>{{aiCheckReasoning}}</text>
+            </view>
+          </view>
+
+          <!-- 采纳按钮 -->
           <view class="btn btn--primary tap-scale" bindtap="onAdoptAiSuggestion">
             <text class="btn-text">采纳建议并填入表单</text>
           </view>

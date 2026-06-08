@@ -68,42 +68,42 @@
         <text class="pwe-sub">开始你的第一次咨询吧～</text>
       </view>
 
-      <!-- 药丸网格 -->
-      <view wx:else class="pw-grid">
-        <!-- 新对话药丸 -->
-        <view class="pill-card pill-card--new tap-scale" bindtap="onNewChat">
-          <view class="pc-body pc-body--new">
-            <view class="pc-plus-h"></view>
-            <view class="pc-plus-v"></view>
-          </view>
-          <text class="pc-title pc-title--new">新对话</text>
-        </view>
-
-        <!-- 历史对话药丸 -->
+      <!-- 对话列表 -->
+      <view wx:else class="pw-list">
         <view
           wx:for="{{sessions}}"
           wx:key="sessionId"
-          class="pill-card {{sessionId == item.sessionId ? 'pill-card--active' : ''}} {{delTargetId == item.sessionId ? 'pill-card--del-show' : ''}}"
-          data-id="{{item.sessionId}}"
-          bindtap="onPickSession"
-          bindlongpress="onLongPressSession"
+          wx:for-index="idx"
+          class="list-item {{sessionId == item.sessionId ? 'list-item--active' : ''}}"
+          data-idx="{{idx}}"
+          bindtap="onPillTap"
         >
-          <view class="pc-body">
-            <view class="pc-eye pc-eye--l"></view>
-            <view class="pc-eye pc-eye--r"></view>
-            <view class="pc-mouth"></view>
+          <view class="list-item-dot"></view>
+          <view class="list-item-body">
+            <text class="list-item-title">{{item.title}}</text>
+            <text class="list-item-time">{{item.timeText}}</text>
           </view>
-          <text class="pc-title">{{item.title}}</text>
-          <text class="pc-time">{{item.timeText}}</text>
-          <view class="pc-del" data-id="{{item.sessionId}}" catchtap="onDeleteSession">
-            <view class="css-icon css-icon--close">
-              <view class="ccl-line ccl-line--1"></view>
-              <view class="ccl-line ccl-line--2"></view>
+          <view class="list-item-del" data-idx="{{idx}}" catchtap="onTapDel">
+            <view class="lid-icon">
+              <view class="lid-line lid-line--1"></view>
+              <view class="lid-line lid-line--2"></view>
             </view>
           </view>
         </view>
       </view>
     </scroll-view>
+
+    <!-- 删除确认弹窗 -->
+    <view wx:if="{{showDelConfirm}}" class="del-confirm-mask" catchtap="onCancelDel">
+      <view class="del-confirm-box" catchtap="">
+        <text class="del-confirm-title">删除对话</text>
+        <text class="del-confirm-desc">确定删除这条历史记录吗？</text>
+        <view class="del-confirm-actions">
+          <view class="del-confirm-btn del-confirm-btn--cancel" bindtap="onCancelDel">取消</view>
+          <view class="del-confirm-btn del-confirm-btn--ok" bindtap="onConfirmDel">删除</view>
+        </view>
+      </view>
+    </view>
   </view>
 
   <!-- ═══ Thinking status pill ═══ -->

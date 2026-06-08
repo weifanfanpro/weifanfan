@@ -113,6 +113,7 @@ Component({
     drawerOpen: false,
     sessions: [] as SessionRow[],
     sessionListLoading: false,
+    showDelConfirm: false,
     delTargetId: "" as string,
 
     // Layout measurements
@@ -363,7 +364,7 @@ Component({
       try {
         const list = await getSessions();
         const sessions: SessionRow[] = list.map((it) => ({
-          sessionId: it.sessionId,
+          sessionId: String(it.id || it.sessionId),
           title: it.title || "新对话",
           timeText: formatSessionTime(it.updatedAt),
         }));
@@ -376,7 +377,7 @@ Component({
     },
 
     onCloseDrawer() {
-      this.setData({ drawerOpen: false, delTargetId: "" });
+      this.setData({ drawerOpen: false, showDelConfirm: false, delTargetId: "" });
     },
 
     onNewChat() {
@@ -393,20 +394,58 @@ Component({
         consultPayload: null,
         sheetVisible: false,
         toolStatusText: "",
-        delTargetId: "",
       });
     },
 
-    async onPickSession(e: WechatMiniprogram.TouchEvent) {
-      // 如果有删除目标，忽略这次 tap（说明刚长按过）
-      if (this.data.delTargetId) return;
-      const id = String(e.currentTarget.dataset.id || "");
+    onPillTap(e: WechatMiniprogram.TouchEvent) {
+      const idx = Number(e.currentTarget.dataset.idx);
+      const session = this.data.sessions[idx];
+      if (!session) return;
+      this.loadSession(String(session.sessionId));
+    },
+
+    onTapDel(e: WechatMiniprogram.TouchEvent) {
+      const idx = Number(e.currentTarget.dataset.idx);
+      const session = this.data.sessions[idx];
+      if (!session) return;
+      this.setData({ showDelConfirm: true, delTargetId: String(session.sessionId) });
+    },
+
+    onCancelDel() {
+      this.setData({ showDelConfirm: false, delTargetId: "" });
+    },
+
+    onConfirmDel() {
+      const id = this.data.delTargetId;
+      if (!id) return;
+      this.setData({ showDelConfirm: false, delTargetId: "" });
+      deleteSession(id)
+        .then(() => {
+          const sessions = this.data.sessions.filter((s) => s.sessionId !== id);
+          this.setData({ sessions });
+          if (this.data.sessionId === id) this.onNewChat();
+          wx.showToast({ title: "已删除", icon: "success" });
+        })
+        .catch((err) => {
+          console.error(err);
+          wx.showToast({ title: "删除失败", icon: "none" });
+        });
+    },
+
+    async loadSession(id: string) {
       if (!id) return;
       wx.showLoading({ title: "加载中", mask: true });
       try {
         const session = await getSession(id);
         wx.hideLoading();
-        const messages = (session.messages || []).map((m) => {
+        // Backend stores messages as a JSON string — parse if needed
+        let rawMessages: any[] = [];
+        if (Array.isArray(session.messages)) {
+          rawMessages = session.messages;
+        } else if (typeof session.messages === "string" && session.messages) {
+          try { rawMessages = JSON.parse(session.messages); } catch { /* ignore */ }
+        }
+        const messages = rawMessages.filter((m: any) => m.role !== "system").map((m: any) => {
           const msg: ChatMsg = {
             role: m.role as "user" | "assistant",
             content: m.content || "",
@@ -421,11 +460,10 @@ Component({
           return msg;
         });
         this.setData({
-          sessionId: session.sessionId,
+          sessionId: String(session.id || session.sessionId),
           sessionTitle: session.title || "对话",
           messages,
           drawerOpen: false,
-          delTargetId: "",
           reasoningOpen: {},
         });
         this.scrollToBottom();
@@ -434,34 +472,6 @@ Component({
         console.error(err);
         Toast({ context: this, selector: "#t-toast", message: "加载会话失败" });
       }
-    },
-
-    onLongPressSession(e: WechatMiniprogram.TouchEvent) {
-      const id = String(e.currentTarget.dataset.id || "");
-      if (!id) return;
-      this.setData({ delTargetId: id });
-    },
-
-    onDeleteSession(e: WechatMiniprogram.TouchEvent) {
-      const id = String(e.currentTarget.dataset.id || "");
-      if (!id) return;
-      this.setData({ delTargetId: "" });
-      wx.showModal({
-        title: "删除对话",
-        content: "确定删除这条历史记录吗？",
-        success: async (res) => {
-          if (!res.confirm) return;
-          try {
-            await deleteSession(id);
-            const sessions = this.data.sessions.filter((s) => s.sessionId !== id);
-            this.setData({ sessions });
-            if (this.data.sessionId === id) this.onNewChat();
-          } catch (err) {
-            console.error(err);
-            Toast({ context: this, selector: "#t-toast", message: "删除失败" });
-          }
-        },
-      });
     },
 
     /* ── Quick question ── */

@@ -387,7 +387,7 @@ Component({
 
         // 触发庆祝彩条
         this.setData({ showConfetti: true });
-        setTimeout(() => this.setData({ showConfetti: false }), 2000);
+        setTimeout(() => this.setData({ showConfetti: false }), 2800);
 
         if (Number.isFinite(Number(ret?.pointsBalance))) {
           try {

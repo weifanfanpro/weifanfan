@@ -42,11 +42,14 @@ public class MedicineServiceImpl implements MedicineService {
     @Value("${dingdong.ocr.appcode}")
     private String ocrAppcode;
 
-    @Value("${dingdong.ai.dashscope-api-key}")
-    private String dashscopeApiKey;
+    @Value("${dingdong.ai.deepseek-api-key}")
+    private String deepseekApiKey;
 
-    @Value("${dingdong.ai.dashscope-model}")
-    private String dashscopeModel;
+    @Value("${dingdong.ai.deepseek-model}")
+    private String deepseekModel;
+
+    @Value("${dingdong.ai.deepseek-base-url}")
+    private String deepseekBaseUrl;
 
     @Override
     public Medicine recognize(String openid, MultipartFile file) {
@@ -57,7 +60,12 @@ public class MedicineServiceImpl implements MedicineService {
         }
 
         String imageUrl = minioUtil.uploadScan(file, openid);
-        String ocrText = callOcr(imageUrl);
+        // 获取预签名URL供OCR使用
+        String objectName = minioUtil.extractObjectNameFromUrl(imageUrl);
+        String presignedUrl = minioUtil.getPresignedScanUrl(objectName);
+        log.info("图片上传成功，预签名URL: {}", presignedUrl);
+
+        String ocrText = callOcr(presignedUrl);
         if (ocrText == null || ocrText.isBlank()) {
             throw new BizException("OCR识别失败，请重新拍照");
         }
@@ -123,20 +131,25 @@ public class MedicineServiceImpl implements MedicineService {
 
     private Medicine callLlmParse(String ocrText) {
         try {
-            String prompt = "请根据以下药品说明书文字，提取结构化信息。返回JSON格式，包含字段：name(药品名称), indication(适应症), dosageSummary(用量概要), isQuantifiable(是否可计量，布尔值), doseText(每次用量), totalAmountText(总量), usageMethod(用法：oral/topical/eye/nose/inhalation/injection/other), dailyFrequency(建议每日频次，整数), mealTiming(餐前/餐后/空腹/无：before/after/empty/none), warnings(注意事项数组), contraindications(禁忌)。\n\n药品文字：" + ocrText;
+            String prompt = "请根据以下药品说明书文字，提取结构化信息。只返回JSON格式，不要包含任何其他文字或markdown标记。\nJSON字段：name(药品名称), indication(适应症), dosageSummary(用量概要), isQuantifiable(是否可计量，布尔值), doseText(每次用量), totalAmountText(总量), usageMethod(用法：oral/topical/eye/nose/inhalation/injection/other), dailyFrequency(建议每日频次，整数), mealTiming(餐前/餐后/空腹/无：before/after/empty/none), warnings(注意事项数组), contraindications(禁忌)。\n\n药品文字：" + ocrText;
 
             JSONObject body = JSONUtil.createObj();
-            body.set("model", dashscopeModel);
+            body.set("model", deepseekModel);
             body.set("messages", JSONUtil.createArray()
                     .put(JSONUtil.createObj().set("role", "user").set("content", prompt)));
             body.set("temperature", 0.1);
 
-            String result = HttpUtil.createPost("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions")
-                    .header("Authorization", "Bearer " + dashscopeApiKey)
+            log.info("调用LLM解析，OCR文本长度: {}", ocrText.length());
+
+            String result = HttpUtil.createPost(deepseekBaseUrl + "/chat/completions")
+                    .header("Authorization", "Bearer " + deepseekApiKey)
                     .header("Content-Type", "application/json")
                     .body(body.toString())
+                    .timeout(30000)
                     .execute()
                     .body();
+
+            log.info("LLM返回结果: {}", result);
 
             JSONObject json = JSONUtil.parseObj(result);
             String content = json.getJSONArray("choices")
@@ -144,7 +157,23 @@ public class MedicineServiceImpl implements MedicineService {
                     .getJSONObject("message")
                     .getStr("content");
 
-            JSONObject medicineJson = JSONUtil.parseObj(content);
+            log.info("LLM原始内容: {}", content);
+
+            // 清理内容：移除markdown代码块标记
+            String cleanedContent = content.trim();
+            if (cleanedContent.startsWith("```json")) {
+                cleanedContent = cleanedContent.substring(7);
+            } else if (cleanedContent.startsWith("```")) {
+                cleanedContent = cleanedContent.substring(3);
+            }
+            if (cleanedContent.endsWith("```")) {
+                cleanedContent = cleanedContent.substring(0, cleanedContent.length() - 3);
+            }
+            cleanedContent = cleanedContent.trim();
+
+            log.info("清理后的JSON内容: {}", cleanedContent);
+
+            JSONObject medicineJson = JSONUtil.parseObj(cleanedContent);
             Medicine medicine = new Medicine();
             medicine.setName(medicineJson.getStr("name"));
             medicine.setIndication(medicineJson.getStr("indication"));

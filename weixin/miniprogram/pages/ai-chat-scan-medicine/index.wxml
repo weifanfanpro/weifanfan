@@ -5,7 +5,7 @@
     <view class="hero-star hero-star--1"></view>
     <view class="hero-cross hero-cross--1"></view>
     <view class="tip">为本次咨询识别药品</view>
-    <view class="muted tip-sub">与底部「扫药」Tab 无关；识别为阿里云 OCR + 通义千问整理（云函数 recognizeMedicine），返回咨询后随问题发给 AI</view>
+    <view class="muted tip-sub">与底部「扫药」Tab 无关；识别为阿里云 OCR + DeepSeek 整理（云函数 recognizeMedicine），返回咨询后随问题发给 AI</view>
     <view class="hero-view-capsule">
       <view class="hero-view-capsule__dot"></view>
       <text class="hero-view-capsule__text">当前视角：{{viewLabel}}</text>

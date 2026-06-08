@@ -1,5 +1,5 @@
 /**
- * 上传并调用 recognizeMedicine：阿里 OCR → 通义千问整理为结构化字段。
+ * 上传并调用 recognizeMedicine：阿里 OCR → DeepSeek 整理为结构化字段。
  */
 import { reminderPlanConsultLines } from "./ai-consult-reminders";
 import type { ViewInfo } from "./view";

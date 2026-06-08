@@ -8,12 +8,14 @@ type ChatMessage = {
 };
 
 type SessionInfo = {
+  id: number;
   sessionId: number;
   title: string;
   updatedAt?: unknown;
 };
 
 type SessionDetail = {
+  id: number;
   sessionId: number;
   title: string;
   messages: ChatMessage[];

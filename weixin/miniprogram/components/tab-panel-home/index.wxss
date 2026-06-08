@@ -1226,7 +1226,7 @@
   .confetti-piece { animation: none !important; }
 }
 
-/* ═══ 庆祝彩条 — 两侧喷射 ═══ */
+/* ═══ 全屏庆祝效果 ═══ */
 .confetti-wrap {
   position: fixed;
   top: 0;
@@ -1238,6 +1238,144 @@
   overflow: hidden;
 }
 
+/* ── 服药成功文字 ── */
+.confetti-success-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  z-index: 10;
+  animation: textPopIn 0.5s ease-out 0.2s both;
+}
+
+.success-icon {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #52D9A0, #4A9DFF);
+  color: #fff;
+  font-size: 56rpx;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(82, 217, 160, 0.4);
+}
+
+.success-label {
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #1A3A5C;
+  text-shadow: 0 2rpx 8rpx rgba(255, 255, 255, 0.8);
+}
+
+@keyframes textPopIn {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  60% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ── 闪烁星星 ── */
+.star {
+  position: absolute;
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: #FFD93D;
+  box-shadow: 0 0 12rpx 4rpx rgba(255, 217, 61, 0.6);
+  animation: starTwinkle 0.8s ease-in-out infinite;
+}
+
+.star--1 { top: 15%; left: 20%; animation-delay: 0s; }
+.star--2 { top: 25%; right: 25%; animation-delay: 0.15s; width: 12rpx; height: 12rpx; }
+.star--3 { top: 40%; left: 15%; animation-delay: 0.3s; width: 20rpx; height: 20rpx; }
+.star--4 { top: 35%; right: 18%; animation-delay: 0.45s; }
+.star--5 { top: 60%; left: 25%; animation-delay: 0.6s; width: 10rpx; height: 10rpx; }
+.star--6 { top: 55%; right: 22%; animation-delay: 0.2s; width: 14rpx; height: 14rpx; }
+.star--7 { top: 70%; left: 30%; animation-delay: 0.5s; }
+.star--8 { top: 65%; right: 28%; animation-delay: 0.35s; width: 18rpx; height: 18rpx; }
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ── 顶部飘落彩纸 ── */
+.cf {
+  position: absolute;
+  top: -20rpx;
+  width: 14rpx;
+  height: 20rpx;
+  border-radius: 3rpx;
+  opacity: 0;
+  animation: confettiFall 2.5s ease-in forwards;
+}
+
+.cf--1  { left: 5%; background: #FF6B6B; animation-delay: 0.00s; }
+.cf--2  { left: 12%; background: #4A9DFF; width: 10rpx; height: 16rpx; border-radius: 50%; animation-delay: 0.08s; }
+.cf--3  { left: 20%; background: #FFB366; width: 16rpx; height: 12rpx; animation-delay: 0.16s; }
+.cf--4  { left: 28%; background: #52D9A0; width: 12rpx; height: 18rpx; border-radius: 50%; animation-delay: 0.24s; }
+.cf--5  { left: 35%; background: #B8A9FF; animation-delay: 0.04s; }
+.cf--6  { left: 42%; background: #FFD93D; width: 18rpx; height: 14rpx; animation-delay: 0.12s; }
+.cf--7  { left: 50%; background: #FF6B6B; width: 10rpx; height: 10rpx; border-radius: 50%; animation-delay: 0.20s; }
+.cf--8  { left: 58%; background: #4A9DFF; width: 14rpx; height: 22rpx; animation-delay: 0.28s; }
+.cf--9  { left: 65%; background: #52D9A0; width: 16rpx; height: 12rpx; animation-delay: 0.06s; }
+.cf--10 { left: 72%; background: #FFB366; width: 12rpx; height: 16rpx; border-radius: 50%; animation-delay: 0.14s; }
+.cf--11 { left: 80%; background: #B8A9FF; animation-delay: 0.22s; }
+.cf--12 { left: 88%; background: #FFD93D; width: 10rpx; height: 14rpx; animation-delay: 0.30s; }
+.cf--13 { left: 95%; background: #FF6B6B; width: 14rpx; height: 18rpx; animation-delay: 0.10s; }
+.cf--14 { left: 8%; background: #4A9DFF; width: 12rpx; height: 12rpx; border-radius: 50%; animation-delay: 0.18s; }
+.cf--15 { left: 32%; background: #52D9A0; animation-delay: 0.26s; }
+.cf--16 { left: 48%; background: #FFB366; width: 16rpx; height: 10rpx; animation-delay: 0.02s; }
+.cf--17 { left: 62%; background: #B8A9FF; width: 10rpx; height: 18rpx; border-radius: 50%; animation-delay: 0.32s; }
+.cf--18 { left: 78%; background: #FFD93D; width: 14rpx; height: 14rpx; animation-delay: 0.08s; }
+.cf--19 { left: 85%; background: #FF6B6B; width: 12rpx; height: 20rpx; animation-delay: 0.20s; }
+.cf--20 { left: 92%; background: #4A9DFF; width: 10rpx; height: 10rpx; border-radius: 50%; animation-delay: 0.28s; }
+
+@keyframes confettiFall {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+  100% { opacity: 0; transform: translateY(110vh) rotate(720deg); }
+}
+
+/* ── 中间爆开彩纸 ── */
+.cb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12rpx;
+  height: 16rpx;
+  border-radius: 3rpx;
+  opacity: 0;
+  animation: confettiBurst 1.8s ease-out forwards;
+}
+
+.cb--1  { background: #FF6B6B; animation: cb1 1.8s ease-out 0.1s forwards; }
+.cb--2  { background: #4A9DFF; width: 10rpx; height: 10rpx; border-radius: 50%; animation: cb2 1.8s ease-out 0.15s forwards; }
+.cb--3  { background: #FFB366; width: 14rpx; height: 12rpx; animation: cb3 1.8s ease-out 0.05s forwards; }
+.cb--4  { background: #52D9A0; width: 8rpx; height: 14rpx; border-radius: 50%; animation: cb4 1.8s ease-out 0.2s forwards; }
+.cb--5  { background: #B8A9FF; animation: cb5 1.8s ease-out 0.12s forwards; }
+.cb--6  { background: #FFD93D; width: 12rpx; height: 12rpx; animation: cb6 1.8s ease-out 0.08s forwards; }
+.cb--7  { background: #FF6B6B; width: 10rpx; height: 18rpx; animation: cb7 1.8s ease-out 0.18s forwards; }
+.cb--8  { background: #4A9DFF; width: 14rpx; height: 10rpx; border-radius: 50%; animation: cb8 1.8s ease-out 0.03s forwards; }
+.cb--9  { background: #52D9A0; animation: cb9 1.8s ease-out 0.22s forwards; }
+.cb--10 { background: #FFB366; width: 10rpx; height: 16rpx; animation: cb10 1.8s ease-out 0.16s forwards; }
+
+@keyframes cb1 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(-180rpx, -280rpx) rotate(400deg); } }
+@keyframes cb2 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(160rpx, -320rpx) rotate(-360deg); } }
+@keyframes cb3 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(-220rpx, -180rpx) rotate(500deg); } }
+@keyframes cb4 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(200rpx, -240rpx) rotate(-420deg); } }
+@keyframes cb5 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(-140rpx, -360rpx) rotate(380deg); } }
+@keyframes cb6 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(240rpx, -160rpx) rotate(-520deg); } }
+@keyframes cb7 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(-260rpx, -200rpx) rotate(440deg); } }
+@keyframes cb8 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(180rpx, -340rpx) rotate(-380deg); } }
+@keyframes cb9 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(-200rpx, -260rpx) rotate(460deg); } }
+@keyframes cb10 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(220rpx, -220rpx) rotate(-400deg); } }
+
+/* ── 两侧喷射彩纸 ── */
 .cp {
   position: absolute;
   width: 16rpx;
@@ -1248,57 +1386,57 @@
 }
 
 /* ── 左侧喷射 ── */
-.cp--L1  { left: 0; background: #FF6B6B; width: 14rpx; height: 20rpx; animation: bL1 1.6s ease-out 0.00s forwards; }
-.cp--L2  { left: 0; background: #FFB366; width: 18rpx; height: 12rpx; border-radius: 2rpx; animation: bL2 1.6s ease-out 0.04s forwards; }
-.cp--L3  { left: 0; background: #4A9DFF; width: 12rpx; height: 28rpx; border-radius: 6rpx; animation: bL3 1.6s ease-out 0.08s forwards; }
-.cp--L4  { left: 0; background: #52D9A0; width: 20rpx; height: 10rpx; animation: bL1 1.6s ease-out 0.02s forwards; }
-.cp--L5  { left: 0; background: #B8A9FF; width: 10rpx; height: 10rpx; border-radius: 50%; animation: bL2 1.6s ease-out 0.12s forwards; }
-.cp--L6  { left: 0; background: #FFD93D; width: 14rpx; height: 14rpx; border-radius: 50%; animation: bL3 1.6s ease-out 0.06s forwards; }
-.cp--L7  { left: 0; background: #FF6B6B; width: 16rpx; height: 22rpx; border-radius: 3rpx; animation: bL1 1.6s ease-out 0.10s forwards; }
-.cp--L8  { left: 0; background: #4A9DFF; width: 10rpx; height: 24rpx; border-radius: 5rpx; animation: bL2 1.6s ease-out 0.14s forwards; }
-.cp--L9  { left: 0; background: #52D9A0; width: 18rpx; height: 8rpx; animation: bL3 1.6s ease-out 0.03s forwards; }
-.cp--L10 { left: 0; background: #FFB366; width: 12rpx; height: 16rpx; border-radius: 3rpx; animation: bL1 1.6s ease-out 0.09s forwards; }
+.cp--L1  { left: 0; background: #FF6B6B; width: 14rpx; height: 20rpx; animation: bL1 2s ease-out 0.00s forwards; }
+.cp--L2  { left: 0; background: #FFB366; width: 18rpx; height: 12rpx; border-radius: 2rpx; animation: bL2 2s ease-out 0.04s forwards; }
+.cp--L3  { left: 0; background: #4A9DFF; width: 12rpx; height: 28rpx; border-radius: 6rpx; animation: bL3 2s ease-out 0.08s forwards; }
+.cp--L4  { left: 0; background: #52D9A0; width: 20rpx; height: 10rpx; animation: bL1 2s ease-out 0.02s forwards; }
+.cp--L5  { left: 0; background: #B8A9FF; width: 10rpx; height: 10rpx; border-radius: 50%; animation: bL2 2s ease-out 0.12s forwards; }
+.cp--L6  { left: 0; background: #FFD93D; width: 14rpx; height: 14rpx; border-radius: 50%; animation: bL3 2s ease-out 0.06s forwards; }
+.cp--L7  { left: 0; background: #FF6B6B; width: 16rpx; height: 22rpx; border-radius: 3rpx; animation: bL1 2s ease-out 0.10s forwards; }
+.cp--L8  { left: 0; background: #4A9DFF; width: 10rpx; height: 24rpx; border-radius: 5rpx; animation: bL2 2s ease-out 0.14s forwards; }
+.cp--L9  { left: 0; background: #52D9A0; width: 18rpx; height: 8rpx; animation: bL3 2s ease-out 0.03s forwards; }
+.cp--L10 { left: 0; background: #FFB366; width: 12rpx; height: 16rpx; border-radius: 3rpx; animation: bL1 2s ease-out 0.09s forwards; }
 
 @keyframes bL1 {
   0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-  40%  { opacity: 1; transform: translate(180rpx, -220rpx) rotate(180deg); }
-  100% { opacity: 0; transform: translate(300rpx, 200rpx) rotate(500deg); }
+  40%  { opacity: 1; transform: translate(200rpx, -300rpx) rotate(180deg); }
+  100% { opacity: 0; transform: translate(350rpx, 250rpx) rotate(600deg); }
 }
 @keyframes bL2 {
   0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-  40%  { opacity: 1; transform: translate(140rpx, -300rpx) rotate(-150deg); }
-  100% { opacity: 0; transform: translate(260rpx, 160rpx) rotate(-460deg); }
+  40%  { opacity: 1; transform: translate(160rpx, -400rpx) rotate(-150deg); }
+  100% { opacity: 0; transform: translate(300rpx, 200rpx) rotate(-520deg); }
 }
 @keyframes bL3 {
   0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-  40%  { opacity: 1; transform: translate(200rpx, -180rpx) rotate(220deg); }
-  100% { opacity: 0; transform: translate(340rpx, 240rpx) rotate(560deg); }
+  40%  { opacity: 1; transform: translate(240rpx, -240rpx) rotate(220deg); }
+  100% { opacity: 0; transform: translate(400rpx, 300rpx) rotate(680deg); }
 }
 
 /* ── 右侧喷射 ── */
-.cp--R1  { right: 0; background: #FF6B6B; width: 14rpx; height: 20rpx; animation: bR1 1.6s ease-out 0.02s forwards; }
-.cp--R2  { right: 0; background: #4A9DFF; width: 18rpx; height: 12rpx; border-radius: 2rpx; animation: bR2 1.6s ease-out 0.06s forwards; }
-.cp--R3  { right: 0; background: #FFB366; width: 12rpx; height: 28rpx; border-radius: 6rpx; animation: bR3 1.6s ease-out 0.10s forwards; }
-.cp--R4  { right: 0; background: #B8A9FF; width: 20rpx; height: 10rpx; animation: bR1 1.6s ease-out 0.01s forwards; }
-.cp--R5  { right: 0; background: #52D9A0; width: 10rpx; height: 10rpx; border-radius: 50%; animation: bR2 1.6s ease-out 0.08s forwards; }
-.cp--R6  { right: 0; background: #FFD93D; width: 14rpx; height: 14rpx; border-radius: 50%; animation: bR3 1.6s ease-out 0.04s forwards; }
-.cp--R7  { right: 0; background: #FF6B6B; width: 16rpx; height: 22rpx; border-radius: 3rpx; animation: bR1 1.6s ease-out 0.12s forwards; }
-.cp--R8  { right: 0; background: #4A9DFF; width: 10rpx; height: 24rpx; border-radius: 5rpx; animation: bR2 1.6s ease-out 0.07s forwards; }
-.cp--R9  { right: 0; background: #FFB366; width: 18rpx; height: 8rpx; animation: bR3 1.6s ease-out 0.03s forwards; }
-.cp--R10 { right: 0; background: #52D9A0; width: 12rpx; height: 16rpx; border-radius: 3rpx; animation: bR1 1.6s ease-out 0.11s forwards; }
+.cp--R1  { right: 0; background: #FF6B6B; width: 14rpx; height: 20rpx; animation: bR1 2s ease-out 0.02s forwards; }
+.cp--R2  { right: 0; background: #4A9DFF; width: 18rpx; height: 12rpx; border-radius: 2rpx; animation: bR2 2s ease-out 0.06s forwards; }
+.cp--R3  { right: 0; background: #FFB366; width: 12rpx; height: 28rpx; border-radius: 6rpx; animation: bR3 2s ease-out 0.10s forwards; }
+.cp--R4  { right: 0; background: #B8A9FF; width: 20rpx; height: 10rpx; animation: bR1 2s ease-out 0.01s forwards; }
+.cp--R5  { right: 0; background: #52D9A0; width: 10rpx; height: 10rpx; border-radius: 50%; animation: bR2 2s ease-out 0.08s forwards; }
+.cp--R6  { right: 0; background: #FFD93D; width: 14rpx; height: 14rpx; border-radius: 50%; animation: bR3 2s ease-out 0.04s forwards; }
+.cp--R7  { right: 0; background: #FF6B6B; width: 16rpx; height: 22rpx; border-radius: 3rpx; animation: bR1 2s ease-out 0.12s forwards; }
+.cp--R8  { right: 0; background: #4A9DFF; width: 10rpx; height: 24rpx; border-radius: 5rpx; animation: bR2 2s ease-out 0.07s forwards; }
+.cp--R9  { right: 0; background: #FFB366; width: 18rpx; height: 8rpx; animation: bR3 2s ease-out 0.03s forwards; }
+.cp--R10 { right: 0; background: #52D9A0; width: 12rpx; height: 16rpx; border-radius: 3rpx; animation: bR1 2s ease-out 0.11s forwards; }
 
 @keyframes bR1 {
   0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-  40%  { opacity: 1; transform: translate(-180rpx, -220rpx) rotate(-180deg); }
-  100% { opacity: 0; transform: translate(-300rpx, 200rpx) rotate(-500deg); }
+  40%  { opacity: 1; transform: translate(-200rpx, -300rpx) rotate(-180deg); }
+  100% { opacity: 0; transform: translate(-350rpx, 250rpx) rotate(-600deg); }
 }
 @keyframes bR2 {
   0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-  40%  { opacity: 1; transform: translate(-140rpx, -300rpx) rotate(150deg); }
-  100% { opacity: 0; transform: translate(-260rpx, 160rpx) rotate(460deg); }
+  40%  { opacity: 1; transform: translate(-160rpx, -400rpx) rotate(150deg); }
+  100% { opacity: 0; transform: translate(-300rpx, 200rpx) rotate(520deg); }
 }
 @keyframes bR3 {
   0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-  40%  { opacity: 1; transform: translate(-200rpx, -180rpx) rotate(-220deg); }
-  100% { opacity: 0; transform: translate(-340rpx, 240rpx) rotate(-560deg); }
+  40%  { opacity: 1; transform: translate(-240rpx, -240rpx) rotate(-220deg); }
+  100% { opacity: 0; transform: translate(-400rpx, 300rpx) rotate(-680deg); }
 }

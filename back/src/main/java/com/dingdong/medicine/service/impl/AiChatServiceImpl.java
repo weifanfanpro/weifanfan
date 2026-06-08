@@ -42,11 +42,14 @@ public class AiChatServiceImpl implements AiChatService {
     private final ReminderMapper reminderMapper;
     private final RedisUtil redisUtil;
 
-    @Value("${dingdong.ai.dashscope-api-key}")
+    @Value("${dingdong.ai.deepseek-api-key}")
     private String apiKey;
 
-    @Value("${dingdong.ai.dashscope-model}")
+    @Value("${dingdong.ai.deepseek-model}")
     private String model;
+
+    @Value("${dingdong.ai.deepseek-base-url}")
+    private String baseUrl;
 
     private static final String SYSTEM_PROMPT = "你是叮咚吃药的AI健康咨询助手。你的职责是提供专业的用药指导、药物相互作用查询和健康科普。请注意：1) 你不替代医嘱，对于严重症状建议用户及时就医；2) 基于提供的药品信息给出针对性建议；3) 回答要简洁明了，适合手机阅读。";
 
@@ -60,7 +63,9 @@ public class AiChatServiceImpl implements AiChatService {
 
     @Override
     public AiChatSession getSessionDetail(String openid, Long sessionId) {
+        log.info("getSessionDetail: openid={}, sessionId={}", openid, sessionId);
         AiChatSession session = sessionMapper.selectById(sessionId);
+        log.info("getSessionDetail: session={}", session);
         if (session == null || !session.getOpenid().equals(openid)) {
             throw new BizException("会话不存在");
         }
@@ -135,7 +140,7 @@ public class AiChatServiceImpl implements AiChatService {
 
         String result;
         try {
-            result = HttpUtil.createPost("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions")
+            result = HttpUtil.createPost(baseUrl + "/chat/completions")
                     .header("Authorization", "Bearer " + apiKey)
                     .header("Content-Type", "application/json")
                     .body(body.toString())
@@ -143,7 +148,7 @@ public class AiChatServiceImpl implements AiChatService {
                     .execute()
                     .body();
         } catch (Exception e) {
-            log.error("调用DashScope API网络异常: {}", e.getMessage(), e);
+            log.error("调用DeepSeek API网络异常: {}", e.getMessage(), e);
             throw new BizException("AI服务网络异常，请检查网络后重试");
         }
 
@@ -152,27 +157,26 @@ public class AiChatServiceImpl implements AiChatService {
         // 检查 API 是否返回错误
         if (json.containsKey("error")) {
             String errMsg = json.getJSONObject("error").getStr("message");
-            log.error("DashScope API返回错误: {}", errMsg);
+            log.error("DeepSeek API返回错误: {}", errMsg);
             throw new BizException("AI服务异常：" + (errMsg != null ? errMsg : "未知错误"));
         }
 
         JSONArray choices = json.getJSONArray("choices");
         if (choices == null || choices.isEmpty()) {
-            log.error("DashScope API返回空choices，原始响应: {}", result);
+            log.error("DeepSeek API返回空choices，原始响应: {}", result);
             throw new BizException("AI服务返回数据异常，请稍后重试");
         }
 
         JSONObject choice = choices.getJSONObject(0);
         JSONObject message = choice.getJSONObject("message");
         if (message == null) {
-            log.error("DashScope API返回空message，原始响应: {}", result);
+            log.error("DeepSeek API返回空message，原始响应: {}", result);
             throw new BizException("AI服务返回数据异常，请稍后重试");
         }
 
         String content = message.getStr("content");
         String reasoning = message.getStr("reasoning_content");
 
-        messages.add(userMsg);
         JSONObject assistantMsg = JSONUtil.createObj().set("role", "assistant").set("content", content);
         messages.add(assistantMsg);
 
@@ -255,8 +259,9 @@ public class AiChatServiceImpl implements AiChatService {
         String timesStr = plan.getTimes() != null ? String.join(", ", plan.getTimes()) : "未设置";
 
         String prompt = String.format("""
-                请评估以下用药提醒计划的合理性，并返回JSON格式的建议。
+                请评估以下用药提醒计划的合理性。
 
+                【输入信息】
                 药品：%s
                 用药方式：%s
                 每日次数：%s 次
@@ -265,16 +270,12 @@ public class AiChatServiceImpl implements AiChatService {
                 用药与进食关系：%s
                 重复规则：%s
 
-                请严格按以下JSON格式返回（不要包含其他文字）：
-                {
-                  "reasonable": true或false,
-                  "summary": "一句话总结",
-                  "suggestedDailyFrequency": 数字,
-                  "suggestedTimes": ["HH:mm", ...],
-                  "suggestedDoseText": "建议剂量文本",
-                  "suggestedMealTiming": "none/before/after/empty",
-                  "notes": "补充说明"
-                }
+                【输出要求】
+                1. 先给出详细分析（包括：当前方案是否合理、与常规用法的对比、潜在风险、改进建议等），用通俗易懂的语言，分点阐述
+                2. 分析结束后，另起一行输出一个JSON块，格式如下：
+                ```json
+                {"reasonable": true或false, "summary": "一句话总结", "suggestedDailyFrequency": 数字, "suggestedTimes": ["HH:mm", ...], "suggestedDoseText": "建议剂量文本", "suggestedMealTiming": "none/before/after/empty", "notes": "补充说明"}
+                ```
                 """,
                 plan.getDrugName() != null ? plan.getDrugName() : "未命名药品",
                 plan.getUsageMethodLabel() != null ? plan.getUsageMethodLabel() : "其他",

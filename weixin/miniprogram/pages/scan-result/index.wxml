@@ -91,15 +91,6 @@
       <view class="btn btn--secondary tap-scale" bindtap="onAddOnly">
         <text class="btn-text btn-text--secondary">{{viewIsSelf ? '仅加入我的药单' : ('仅提交给' + viewLabel + '（待激活）')}}</text>
       </view>
-      <view class="action-gap"></view>
-      <view class="action-row-secondary">
-        <view class="btn btn--secondary btn--half tap-scale" bindtap="onViewDetail">
-          <text class="btn-text btn-text--secondary">查看药品详情</text>
-        </view>
-        <view class="btn btn--accent btn--half tap-scale" bindtap="onAiConsult">
-          <text class="btn-text btn-text--accent">AI 咨询此药</text>
-        </view>
-      </view>
     </view>
   </view>
 

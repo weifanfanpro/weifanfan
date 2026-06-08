@@ -131,7 +131,7 @@ Component({
     timeList: ["08:00", "12:00", "18:00", "22:00"] as string[],
     doseValue: "1",
     doseUnit: "次",
-    /** 用量自然语言文本：由 qwen 生成，用户可编辑 */
+    /** 用量自然语言文本：由 DeepSeek 生成，用户可编辑 */
     doseText: "",
     /** 可量化/不可量化：决定是否展示“总量” */
     isQuantifiable: false,
@@ -162,6 +162,8 @@ Component({
     aiCheckResult: "",
     aiCheckReasoning: "",
     aiSuggestion: null as AiSuggestion | null,
+    analysisOpen: false,
+    reasoningOpen: false,
     resolvingUserMedicineId: false,
     calendarSyncSupported: false,
     calendarSyncing: false,
@@ -439,8 +441,8 @@ Component({
             m.listMedicines(ownerOpenid)
           );
           const match = medicineId
-            ? list.find((x: any) => String(x.medicineId) === String(medicineId))
-            : list.find((x: any) => String(x.name || "") === String(drugName || ""));
+            ? list.find((x: any) => String(x.medicineId || "") === String(medicineId))
+            : list.find((x: any) => (x.name || "").trim() === (drugName || "").trim());
           if (match && match.id) {
             applyUid(String(match.id));
             return;
@@ -474,8 +476,8 @@ Component({
             m.listMedicines(ownerOpenid)
           );
           const match2 = medicineId
-            ? list2.find((x: any) => String(x.medicineId) === String(medicineId))
-            : list2.find((x: any) => String(x.name || "") === String(drugName || ""));
+            ? list2.find((x: any) => String(x.medicineId || "") === String(medicineId))
+            : list2.find((x: any) => (x.name || "").trim() === (drugName || "").trim());
           if (match2 && match2.id) {
             applyUid(String(match2.id));
           }
@@ -762,6 +764,8 @@ Component({
         aiCheckResult: "",
         aiCheckReasoning: "",
         aiSuggestion: null,
+        analysisOpen: false,
+        reasoningOpen: false,
       });
 
       try {
@@ -779,16 +783,32 @@ Component({
           },
         });
 
-        const msg = (result as any).message as { content?: string; reasoning?: string } | undefined;
-        const suggestion = (result as any).suggestion as AiSuggestion | null | undefined;
+        const r = result as any;
+        const content = r.content || (r.message && r.message.content) || "";
+        const reasoning = r.reasoning || (r.message && r.message.reasoning) || "";
+        const suggestion = r.suggestion as AiSuggestion | null | undefined;
+
+        // Strip JSON block from content, keep only free-text
+        let displayContent = content
+          .replace(/\{[\s\S]*?"reasonable"[\s\S]*?\}/g, "")
+          .replace(/```[\s\S]*?```/g, "")
+          .trim();
+
+        // If no free-text remains, build from suggestion fields
+        if (!displayContent && suggestion) {
+          const parts: string[] = [];
+          if (suggestion.summary) parts.push(suggestion.summary);
+          if (suggestion.notes) parts.push(suggestion.notes);
+          displayContent = parts.join("\n");
+        }
 
         this.setData({
-          aiCheckResult: (msg && msg.content) || "",
-          aiCheckReasoning: (msg && msg.reasoning) || "",
+          aiCheckResult: displayContent,
+          aiCheckReasoning: reasoning,
           aiSuggestion: suggestion && typeof suggestion === "object" ? suggestion : null,
         });
 
-        if (!(msg && (msg.content || msg.reasoning))) {
+        if (!content && !reasoning) {
           Toast({ context: this, message: "未返回有效内容，请重试" });
         }
       } catch (e) {
@@ -797,6 +817,14 @@ Component({
       } finally {
         this.setData({ aiCheckLoading: false });
       }
+    },
+
+    toggleAnalysis() {
+      this.setData({ analysisOpen: !this.data.analysisOpen });
+    },
+
+    toggleReasoning() {
+      this.setData({ reasoningOpen: !this.data.reasoningOpen });
     },
 
     onAdoptAiSuggestion() {

@@ -48,11 +48,12 @@ public class ReminderPushScheduler {
 
     private static final String ACCESS_TOKEN_KEY = "wechat:access_token";
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
+    private static final DateTimeFormatter TIME_FULL_FMT = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 15000)
     public void pushReminders() {
         String today = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
-        String nowTime = LocalTime.now().format(TIME_FMT);
+        String nowTimeFull = LocalTime.now().format(TIME_FULL_FMT);
         int dayOfWeek = LocalDate.now().getDayOfWeek().getValue();
 
         List<Reminder> reminders = reminderMapper.selectList(
@@ -60,23 +61,42 @@ public class ReminderPushScheduler {
                         .le(Reminder::getStartDate, today)
                         .eq(Reminder::getNotifyWechat, true));
 
+        log.info("[推送] 本轮检查 {} 条提醒, now={}, dayOfWeek={}", reminders.size(), nowTimeFull, dayOfWeek);
+
         for (Reminder reminder : reminders) {
             try {
-                if (!shouldRemindToday(reminder, dayOfWeek)) continue;
-                if (!isInPushWindow(reminder.getTime(), nowTime)) continue;
-                if (isAlreadyTaken(reminder.getId(), today)) continue;
-                if (isAlreadyPushed(reminder.getId(), today)) continue;
+                if (!shouldRemindToday(reminder, dayOfWeek)) {
+                    log.debug("[推送] 跳过(非今日): id={}", reminder.getId());
+                    continue;
+                }
+                if (!isInPushWindow(reminder.getTime(), nowTimeFull)) {
+                    log.debug("[推送] 跳过(不在窗口): id={} target={} now={}", reminder.getId(), reminder.getTime(), nowTimeFull);
+                    continue;
+                }
+                if (isAlreadyTaken(reminder.getId(), today)) {
+                    log.debug("[推送] 跳过(已服药): id={}", reminder.getId());
+                    continue;
+                }
+                if (isAlreadyPushed(reminder.getId(), today)) {
+                    log.debug("[推送] 跳过(已推送): id={}", reminder.getId());
+                    continue;
+                }
 
                 User user = userMapper.selectById(reminder.getOwnerOpenid());
-                if (user == null) continue;
+                if (user == null) {
+                    log.debug("[推送] 跳过(用户不存在): id={} openid={}", reminder.getId(), reminder.getOwnerOpenid());
+                    continue;
+                }
 
+                log.info("[推送] 发送订阅消息: id={}, to={}, medicine={}", reminder.getId(), user.getId(), reminder.getMedicineName());
                 boolean sent = sendSubscribeMessage(user.getId(), reminder.getMedicineName(),
                         reminder.getTime(), reminder.getDoseText());
+                log.info("[推送] 发送结果: id={}, sent={}", reminder.getId(), sent);
                 if (sent) {
                     recordPush(reminder, today);
                 }
             } catch (Exception e) {
-                log.warn("推送提醒失败, reminderId={}: {}", reminder.getId(), e.getMessage());
+                log.warn("[推送] 推送失败, id={}: {}", reminder.getId(), e.getMessage(), e);
             }
         }
     }
@@ -96,11 +116,12 @@ public class ReminderPushScheduler {
         };
     }
 
-    private boolean isInPushWindow(String reminderTime, String nowTime) {
+    private boolean isInPushWindow(String reminderTime, String nowTimeFull) {
         LocalTime target = LocalTime.parse(reminderTime, TIME_FMT);
-        LocalTime now = LocalTime.parse(nowTime, TIME_FMT);
+        LocalTime now = LocalTime.parse(nowTimeFull, TIME_FULL_FMT);
         long diffSeconds = java.time.Duration.between(target, now).getSeconds();
-        return diffSeconds >= -15 && diffSeconds <= 75;
+        // 15 秒轮询，窗口 -10s ~ +20s，确保到点附近至少命中一次
+        return diffSeconds >= -10 && diffSeconds <= 20;
     }
 
     private boolean isAlreadyTaken(Long reminderId, String date) {
@@ -119,7 +140,15 @@ public class ReminderPushScheduler {
 
     private boolean sendSubscribeMessage(String openid, String medicineName, String time, String doseText) {
         String accessToken = getAccessToken();
-        if (accessToken == null) return false;
+        if (accessToken == null) {
+            log.warn("[推送] 获取 access_token 失败, 无法发送");
+            return false;
+        }
+
+        // thing 类型字段限制 20 字符，超长会被微信 API 静默拒绝
+        String safeName = truncateField(medicineName, 20);
+        String safeDose = truncateField(doseText, 20);
+        if (safeDose == null || safeDose.isEmpty()) safeDose = "请按时服药";
 
         JSONObject body = JSONUtil.createObj();
         body.set("touser", openid);
@@ -127,9 +156,9 @@ public class ReminderPushScheduler {
         body.set("page", "pages/tab-shell/index");
 
         JSONObject data = JSONUtil.createObj();
-        data.set("thing1", JSONUtil.createObj().set("value", medicineName));
+        data.set("thing1", JSONUtil.createObj().set("value", safeName));
         data.set("time2", JSONUtil.createObj().set("value", time));
-        data.set("thing3", JSONUtil.createObj().set("value", doseText != null ? doseText : "请按时服药"));
+        data.set("thing3", JSONUtil.createObj().set("value", safeDose));
         body.set("data", data);
 
         String url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + accessToken;
@@ -144,6 +173,11 @@ public class ReminderPushScheduler {
             log.warn("微信订阅消息发送失败: {}", resp.getStr("errmsg"));
         }
         return errcode == 0;
+    }
+
+    private String truncateField(String value, int maxLen) {
+        if (value == null) return null;
+        return value.length() > maxLen ? value.substring(0, maxLen - 1) + "…" : value;
     }
 
     private void recordPush(Reminder reminder, String date) {
